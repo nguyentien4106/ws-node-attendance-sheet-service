@@ -2,6 +2,7 @@ import { DeviceContainer } from '../models/deviceContainer.js';
 import { handleMessage } from '../services/websocketService.js';
 
 const deviceContainer = new DeviceContainer();
+
 export const onConnection = (ws) => {
   console.log('New client connected');
 

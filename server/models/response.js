@@ -1,0 +1,1 @@
+export const getResponse = obj => JSON.stringify(obj)

@@ -1,12 +1,14 @@
 // const { ActionTypes } = require("../models/actionTypes");
 // const { DeviceContainer } = require("../models/deviceContainer");
+import { RequestTypes } from "../constants/requestType.js"
 import { ActionTypes } from "../models/actionTypes.js"
 import { DeviceContainer } from "../models/deviceContainer.js"
+import { getResponse } from "../models/response.js"
 import * as DeviceService from './deviceService.js'
 
-const container = new DeviceContainer()
+// const container = new DeviceContainer()
 
-const addDevice = (device ) => {
+const addDevice = (device, container) => {
     console.log('addDevice', device)
     container.addDevice(device)
 }
@@ -25,35 +27,39 @@ const connectDevice = (device ) => {
 
 
 export const handleMessage = (ws, message, deviceContainer) => {
-    const json = JSON.parse(message);
+    const request = JSON.parse(message);
 
-    console.log("Received message:", json);
+    console.log("Received message:", request);
 
     // You can implement logic based on the message content
 
-    if (json.type === "greeting") {
-        ws.send(JSON.stringify({ response: "Hello, client!" }));
+    if (request.type === "greeting") {
+        ws.send(request.stringify({ response: "Hello, client!" }));
     }
 
-    if(json.type === "get1"){
+    if(request.type === RequestTypes.GetDevices){
         DeviceService.getAllDevices().then(res => {
             const { rows } = res
-            ws.send(JSON.stringify({ response: rows }));
+            // ws.send(JSON.stringify({ response: rows }));
+            ws.send(getResponse({
+                type: request.type,
+                response: rows
+            }))
         })
 
     }
 
-    if(json.type === "get"){
-        ws.send(JSON.stringify({ response: container.getDevices() }));
-    }
+    // if(request.type === RequestTypes.GetDevices){
+    //     ws.send(JSON.stringify({ type: request.type, data:  }));
+    // }
 
-    switch (json.type) {
+    switch (request.type) {
         case ActionTypes.AddDevice:
-            addDevice(json.data)
+            addDevice(request.data, deviceContainer)
             break;
 
         case ActionTypes.RemoveDevice:
-            removeDevice(json.data)
+            removeDevice(request.data)
             break;
 
         case ActionTypes.UpdateDevice:
