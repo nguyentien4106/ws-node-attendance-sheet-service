@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import DevicesTable from "../components/devices/DevicesTable";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
-// const WS_URL = "ws://127.0.0.1:3000";
 
+const WS_URL = "ws://127.0.0.1:3000";
 export default function Devices() {
     const [devices, setDevices] = useState([])
-    const { sendJsonMessage, readyState } = useWebSocket(process.env.WS_URL, {
+    const { sendJsonMessage, readyState } = useWebSocket(WS_URL, {
         onOpen: () => {
             console.log("WebSocket connection established.");
         },
@@ -33,7 +33,7 @@ export default function Devices() {
     }, [devices])
     return (
         <div>
-            <DevicesTable source={devices}/>
+            <DevicesTable source={devices} sendJsonMessage={sendJsonMessage}/>
         </div>
     );
 }

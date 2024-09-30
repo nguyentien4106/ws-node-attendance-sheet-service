@@ -18,7 +18,7 @@ export class DeviceContainer {
             logger.error("Device with this IP is existed in the system.")
             return new Result(500, "Device with this IP is existed in the system.")
         }
-        const deviceSDK = new Zkteco(device.ip, device.port, 5200, 5000);
+        const deviceSDK = new Zkteco(device.Ip, device.Port, 5200, 5000);
         
         this.devices.push(new DeviceInformation(device.ip, deviceSDK));
         return Result.Success()
