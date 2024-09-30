@@ -4,10 +4,10 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "./constants/requestType";
-const WS_URL = "ws://127.0.0.1:3000";
+import "dotenv/config"
 
 function App() {
-    const { sendJsonMessage, readyState } = useWebSocket(WS_URL, {
+    const { sendJsonMessage, readyState } = useWebSocket(process.env.WS_URL, {
         onOpen: () => {
             console.log("WebSocket connection established.");
         },

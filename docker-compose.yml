@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "5000:5000" # React app default port
+    environment:
+      - WS_URL=ws://127.0.0.1:3000 # API URL for Node.js backend
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+    ports:
+      - "3000:3000" # Node.js backend port
+    environment:
+      # - DATABASE_URL=postgres://postgres:password@db:5432/mydb # PostgreSQL connection string
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Ti100600@
+      - POSTGRES_HOST=db
+      - POSTGRES_DATABASE=attdb
+
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ti100600@
+      POSTGRES_DB: attdb
+    ports:
+      - "5432:5432" # PostgreSQL default port
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
