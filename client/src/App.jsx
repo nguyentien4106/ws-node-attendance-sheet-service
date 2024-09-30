@@ -7,8 +7,7 @@ import { RequestTypes } from "./constants/requestType";
 const WS_URL = "ws://127.0.0.1:3000";
 
 function App() {
-    const [count, setCount] = useState(0);
-    const { sendMessage, sendJsonMessage, readyState } = useWebSocket(WS_URL, {
+    const { sendJsonMessage, readyState } = useWebSocket(WS_URL, {
         onOpen: () => {
             console.log("WebSocket connection established.");
         },
@@ -31,6 +30,7 @@ function App() {
     useEffect(() => {
         getDevices()
     }, []) 
+    
     return (
         <>
             <div>

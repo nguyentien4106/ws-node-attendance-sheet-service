@@ -5,23 +5,28 @@ import { ActionTypes } from "../models/actionTypes.js"
 import { DeviceContainer } from "../models/deviceContainer.js"
 import { getResponse } from "../models/response.js"
 import * as DeviceService from './deviceService.js'
-
+import Zkteco from "zkteco-js"
 // const container = new DeviceContainer()
 
 const addDevice = (device, container) => {
+    const dev = new Zkteco(device.Ip, device.Port, 5200, 5000)
     console.log('addDevice', device)
-    container.addDevice(device)
+    container.addDevice({
+        ip: device.Ip,
+        device: dev
+    })
 }
 
-const removeDevice = (device ) => {
+const removeDevice = (device, container) => {
+    console.log('removeDevice', device)
+    container.remove
+}
+
+const updateDevice = (device) => {
     console.log('removeDevice', device)
 }
 
-const updateDevice = (device ) => {
-    console.log('removeDevice', device)
-}
-
-const connectDevice = (device ) => {
+const connectDevice = (device) => {
     console.log('removeDevice', device)
 }
 
@@ -48,10 +53,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
         })
 
     }
-
-    // if(request.type === RequestTypes.GetDevices){
-    //     ws.send(JSON.stringify({ type: request.type, data:  }));
-    // }
 
     switch (request.type) {
         case ActionTypes.AddDevice:
