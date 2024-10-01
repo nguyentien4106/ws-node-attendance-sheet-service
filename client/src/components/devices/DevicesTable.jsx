@@ -39,11 +39,22 @@ export default function DevicesTable({ sendJsonMessage, source }) {
           <a onClick={() => handleStatus(record)}>
             {record.IsConnected ? "Disconnect" : "Connect"}
           </a>
+          <a onClick={() => handleUser(record)}>
+            {"Get Users"}
+          </a>
         </Space>
       ),
     },
   ];
 
+  const handleUser = record => {
+    if(record.IsConnected){
+      sendJsonMessage({
+        type: RequestTypes.GetUsers,
+        
+      })
+    }
+  }
   const handleStatus = (record) => {
     console.log(record);
     if(record.IsConnected){

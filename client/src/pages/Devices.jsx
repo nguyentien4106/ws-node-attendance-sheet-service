@@ -19,6 +19,16 @@ export default function Devices() {
                 console.log('set device', json.response)
                 setDevices(json.response)
             }
+            if(json.type === RequestTypes.ConnectDevice){
+                const result = json.response
+                console.log('ConnectDevice result', result)
+
+            }
+            if(json.type === RequestTypes.GetUsers){
+                const result = json.response
+                console.log('GetUsers result', result)
+                
+            }
         },
     });
 

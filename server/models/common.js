@@ -4,15 +4,23 @@ export class Result {
         this.message = message;
     }
 
+    isSuccess(){
+        return code === 200
+    }
+
     static Success(){
         return new Result()
+    }
+
+    static Fail(msg = ""){
+        return new Result(400, msg)
     }
     
 }
 
 export class DeviceInformation{
-    constructor(ip, device){
+    constructor(ip, deviceSDK){
         this.ip = ip
-        this.device = device
+        this.deviceSDK = deviceSDK
     }
 }

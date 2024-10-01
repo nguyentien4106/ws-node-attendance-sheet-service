@@ -30,10 +30,7 @@ const updateDevice = (device) => {
 const connectDevice = (device, container) => {
     console.log('connect', device)
 
-    const existed = container.some(item => item.ip === device.Ip)
-    if(existed){
-        container.connect
-    }
+    return container.connectDevice(device)
 }
 
 
@@ -73,7 +70,22 @@ export const handleMessage = (ws, message, deviceContainer) => {
             break;
 
         case ActionTypes.ConnectDevice:
-            connectDevice(request.data, deviceContainer)
+            connectDevice(request.data, deviceContainer).then(res => {
+                console.log(res)
+                ws.send(getResponse({
+                    type: request.type,
+                    response: res
+                }))
+            })
+            break;
+
+        case ActionTypes.GetUsers:
+            deviceContainer.getUsers().then(users => {
+                ws.send(getResponse({
+                    type: request.type,
+                    response: users
+                }))
+            })
             break;
     }
 };
