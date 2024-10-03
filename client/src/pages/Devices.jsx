@@ -33,28 +33,40 @@ export default function Devices() {
         },
         onMessage: (event) => {
             const response = JSON.parse(event.data);
+            setLoading(false)
             if (response.type === RequestTypes.GetDevices) {
-                console.log("set device", response.data);
                 setDevices(response.data);
             }
+
             if (response.type === RequestTypes.ConnectDevice) {
-                const result = response.data;
-                console.log("ConnectDevice result", result);
+                const data = response.data;
+                console.log("ConnectDevice result", data);
+                
+                if(data.code === 200){
+                    setDevices(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { IsConnected: true }) : item))
+                }
             }
+
+            if (response.type === RequestTypes.Disconnect) {
+                const data = response.data;
+                console.log("Disconnect result", data);
+                if(data.code === 200){
+                    setDevices(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { IsConnected: false }) : item))
+                }
+            }
+
             if (response.type === RequestTypes.GetUsers) {
                 const result = response.data;
                 console.log("GetUsers result", result);
             }
 
             if(response.type === RequestTypes.AddDevice){
-                setLoading(false)
                 const device = response.data;
                 setDevices(prev => [...prev, device])
                 console.log("AddDevice result", device);
             }
 
             if(response.type === RequestTypes.RemoveDevice){
-                setLoading(false)
                 const device = response.data;
                 setDevices(prev => prev.filter(item => item.Ip != device.Ip))
                 console.log("RemoveDevice result", device);

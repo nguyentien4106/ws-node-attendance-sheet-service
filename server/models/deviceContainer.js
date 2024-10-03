@@ -2,7 +2,6 @@
 import { logger } from "../config/logger.js";
 import {
     deleteDevice,
-    disconnectAllDevices,
     getAllDevices,
     insertNewDevice,
     setConnectStatus,
@@ -76,11 +75,9 @@ export class DeviceContainer {
                 TIME_OUT,
                 IN_PORT
             );
+
             this.deviceSDKs.push(deviceSDK);
-            logger.info('ready to insert')
-            
             const result = await insertNewDevice(device)
-            console.log('inserted successfully', result)
             return result.rowCount ? Result.Success(device) : Result.Fail(500, "Failed to insert to database", device)
         } catch (err) {
             logger.error(err.message);
@@ -92,26 +89,54 @@ export class DeviceContainer {
     async connectDevice(device) {
         try{
             let success = false;
-            const deviceSDK = this.deviceSDKs.filter(
+            const deviceSDK = this.deviceSDKs.find(
                 (item) => item.ip === device.Ip
             );
-            if (deviceSDK.length) {
-                success = await deviceSDK[0].createSocket();
+            if (deviceSDK) {
+                success = await deviceSDK.createSocket();
+
+                const users = await deviceSDK.getUsers()
+                console.log('users', users)
+                await deviceSDK.getRealTimeLogs((realTimeLog) => {
+                    console.log(realTimeLog);
+                });
                 setConnectStatus(device.Ip, success);
     
-                return success ? Result.Success() : Result.Fail(500, );
+                return success ? Result.Success(device) : Result.Fail(500, "Cannot conenct to device", device);
             }
     
             const newDeviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
-            // newDeviceSDK.getUsers();
-            // newDeviceSDK.disconnect()
+            
             this.deviceSDKs.push(newDeviceSDK);
             success = await newDeviceSDK.createSocket();
             setConnectStatus(device.Ip, success);
+
             return success ? Result.Success(device) : Result.Fail(500, `Can not connect device ip: ${device.Ip}`, device);
         }
         catch(err){
-            logger.error(err)
+            console.error(err.message)
+            return Result.Fail(500, err, device)
+        }
+    }
+
+
+    async disconnectDevice(device) {
+        try{
+            setConnectStatus(device.Ip, false);
+
+            let success = false;
+            const deviceSDK = this.deviceSDKs.find(
+                (item) => item.ip === device.Ip
+            );
+
+            if (deviceSDK) {
+                success = await deviceSDK.disconnect();
+                return success ? Result.Success(device) : Result.Fail(500, "Cannot conenct to device", device);
+            }
+            return Result.Fail(500, `Can not find device ip: ${device.Ip}`, device);
+        }
+        catch(err){
+            console.error(err.message)
             return Result.Fail(500, err, device)
         }
     }

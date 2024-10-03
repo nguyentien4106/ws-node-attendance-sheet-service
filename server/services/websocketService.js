@@ -25,6 +25,12 @@ const connectDevice = (device, container) => {
     return container.connectDevice(device)
 }
 
+const disconnectDevice = (device, container) => {
+    console.log('disconnectDevice', device)
+
+    return container.disconnectDevice(device)
+}
+
 
 export const handleMessage = (ws, message, deviceContainer) => {
     const request = JSON.parse(message);
@@ -53,6 +59,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
             break;
 
         case RequestTypes.ConnectDevice:
+            
             connectDevice(request.data, deviceContainer).then(res => {
                 console.log('RequestTypes.ConnectDevice ', res)
                 ws.send(getResponse({
@@ -63,7 +70,17 @@ export const handleMessage = (ws, message, deviceContainer) => {
                 
             })
             break;
-
+        case RequestTypes.DisconnectDevice:
+            disconnectDevice(request.data, deviceContainer).then(res => {
+                    console.log('RequestTypes.DisconnectDevice ', res)
+                    ws.send(getResponse({
+                        type: request.type,
+                        data: res
+                    }))
+                }).catch(err => {
+                    
+                })
+                break;
         case RequestTypes.GetUsers:
             deviceContainer.getUsers(request.data).then(users => {
                 ws.send(getResponse({

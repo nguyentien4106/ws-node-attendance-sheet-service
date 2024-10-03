@@ -1,6 +1,7 @@
-import React from "react";
-import { Button, Space, Table, Tag, Popconfirm } from "antd";
+import React, { useState } from "react";
+import { Button, Space, Table, Tag, Popconfirm, Modal } from "antd";
 import { RequestTypes } from "../../constants/requestType";
+import { useLoading } from "../../context/LoadingContext";
 
 export default function DevicesTable({ sendJsonMessage, source }) {
     const columns = [
@@ -64,6 +65,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                     >
                         <Button danger>Delete</Button>
                     </Popconfirm>
+                    <Button onClick={() => addUser(record)} disabled={!record.IsConnected}>Add User</Button>
                     <a onClick={() => handleStatus(record)}>
                         {record.IsConnected ? "Disconnect" : "Connect"}
                     </a>
@@ -73,26 +75,14 @@ export default function DevicesTable({ sendJsonMessage, source }) {
         },
     ];
 
-    const handleUser = (record) => {
-        if (record.IsConnected) {
-            sendJsonMessage({
-                type: RequestTypes.GetUsers,
-            });
-        }
-    };
+    const { setLoading } = useLoading()
 
     const handleStatus = (record) => {
-        console.log(record);
-        if (record.IsConnected) {
-            sendJsonMessage({
-                type: RequestTypes.ConnectDevice,
-            });
-        } else {
-            sendJsonMessage({
-                type: RequestTypes.ConnectDevice,
-                data: record,
-            });
-        }
+        setLoading(true)
+        sendJsonMessage({
+            type: record.IsConnected ? RequestTypes.Disconnect : RequestTypes.ConnectDevice,
+            data: record
+        });
     };
 
     const handleDelete = (record) => {
@@ -103,5 +93,21 @@ export default function DevicesTable({ sendJsonMessage, source }) {
         });
     };
 
-    return <Table columns={columns} dataSource={source} rowKey={"Id"}/>;
+
+    const addUser = record => {
+        console.log(record)
+        setOpen(true)
+    }
+    const [open, setOpen] = useState(false)
+
+    return (
+        <>
+            <Modal title="Basic Modal" open={open} onOk={() => console.log('oke')} onCancel={() => setOpen(false)}>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Modal>
+            <Table columns={columns} dataSource={source} rowKey={"Id"}/>
+        </>
+    );
 }
