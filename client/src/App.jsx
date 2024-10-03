@@ -4,45 +4,32 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "./constants/requestType";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import AppLayout from "./layout/AppLayout";
+import Devices from "./pages/Devices";
+import Home from "./pages/Home";
+import { message, Spin } from "antd";
+import { useLoading } from "./context/LoadingContext";
+import { LoadingOutlined } from '@ant-design/icons';
+
 const WS_URL = "ws://127.0.0.1:3000";
 
 function App() {
-    const { sendJsonMessage, readyState } = useWebSocket(WS_URL, {
-        onOpen: () => {
-            console.log("WebSocket connection established.");
-        },
-        onClose: () => {
-            console.log("on closed")
-        },
-        onMessage: (event) => {
-            console.log(JSON.parse(event.data))
-        }
-    });
+    const { loading } = useLoading()
+    const [msg, contextHolder] = message.useMessage();
 
-    console.log(readyState)
-
-    const getDevices = () => {
-        sendJsonMessage({
-            type: RequestTypes.GetDevices
-        })
-    }
-
-    useEffect(() => {
-        getDevices()
-    }, []) 
-    
     return (
         <>
-            <div>
-                <a href="https://react.dev" target="_blank">
-                    <img
-                        src={reactLogo}
-                        className="logo react"
-                        alt="React logo"
-                    />
-                </a>
-            </div>
-            <button onClick={getDevices}>Get Devices</button>
+            {
+                loading &&  <Spin fullscreen indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+            }
+            {contextHolder}
+            <Routes>
+                <Route path="/" element={<AppLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="/devices" element={<Devices />} />
+                </Route>
+            </Routes>
         </>
     );
 }

@@ -1,19 +1,18 @@
 export class Result {
-    constructor(code = 200, message = ""){
+    constructor(code = 200, message = "", data){
         this.code = code;
         this.message = message;
+        this.data = data
     }
 
-    isSuccess(){
-        return code === 200
+    isSuccess = this.code === 200
+
+    static Success(data = null){
+        return new Result(200, "", data)
     }
 
-    static Success(){
-        return new Result()
-    }
-
-    static Fail(msg = ""){
-        return new Result(400, msg)
+    static Fail(err = 500, msg = "", data = null){
+        return new Result(err, msg, data)
     }
     
 }

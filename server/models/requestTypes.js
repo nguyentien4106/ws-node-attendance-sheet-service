@@ -1,4 +1,4 @@
-export const ActionTypes = {
+export const RequestTypes = {
     AddDevice: 0,
     RemoveDevice: 1,
     UpdateDevice: 2,
