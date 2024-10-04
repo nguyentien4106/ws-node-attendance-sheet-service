@@ -45,6 +45,10 @@ export default function Devices() {
                 if(data.code === 200){
                     setDevices(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { IsConnected: true }) : item))
                 }
+                else {
+                    const { syscall, code } = data.message.err.err
+                    message.error(`${syscall} ${code}! Please check the information again.`)
+                }
             }
 
             if (response.type === RequestTypes.Disconnect) {
@@ -52,6 +56,10 @@ export default function Devices() {
                 console.log("Disconnect result", data);
                 if(data.code === 200){
                     setDevices(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { IsConnected: false }) : item))
+                }
+                else {
+                    const { syscall, code } = data.message.err.err
+                    message.error(`${syscall} ${code}! Please check the information again.`)
                 }
             }
 
@@ -61,15 +69,40 @@ export default function Devices() {
             }
 
             if(response.type === RequestTypes.AddDevice){
-                const device = response.data;
-                setDevices(prev => [...prev, device])
-                console.log("AddDevice result", device);
+                const data = response.data;
+                if(data.code === 200){
+                    setDevices(prev => [...prev, data.data])
+
+                }
+                else {
+                    message.error(data.message)
+
+                }
+                console.log("AddDevice result", data);
             }
 
             if(response.type === RequestTypes.RemoveDevice){
-                const device = response.data;
-                setDevices(prev => prev.filter(item => item.Ip != device.Ip))
-                console.log("RemoveDevice result", device);
+                const data = response.data;
+                console.log("RemoveDevice result", data);
+                if(data.code === 200){
+                    setDevices(prev => prev.filter(item => item.Id !== data.data.Id ))
+                }
+                else {
+                    message.error(data.message)
+                }
+            }
+
+            if(response.type === RequestTypes.AddUser){
+                const data = response.data;
+                console.log("AddUser result", data);
+
+                if(data.code === 200){
+                    message.success("Added User successfully to deivce " + data.data.Ip)
+                }
+                else {
+                    console.log()
+                    // message.error(data.message)
+                }
             }
         },
     });

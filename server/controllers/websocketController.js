@@ -7,10 +7,6 @@ deviceContainer.initAll().then(res => {
     console.log('init All', res)
 })
 
-// setInterval(() => {
-//     console.log('curren devices: ',deviceContainer.getDevices().map(item => item.ip).join(", "))
-//   }, 3000)
-
 export const onConnection = (ws) => {
   logger.info("New Client connected");
 

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Space, Table, Tag, Popconfirm, Modal } from "antd";
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
+import UserInformationForm from "../users/UserInformationForm";
 
 export default function DevicesTable({ sendJsonMessage, source }) {
     const columns = [
@@ -65,18 +66,20 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                     >
                         <Button danger>Delete</Button>
                     </Popconfirm>
-                    <Button onClick={() => addUser(record)} disabled={!record.IsConnected}>Add User</Button>
+                    <Button 
+                        onClick={() => addUser(record)} 
+                        // disabled={!record.IsConnected}
+                    >
+                        Add User
+                    </Button>
                     <a onClick={() => handleStatus(record)}>
                         {record.IsConnected ? "Disconnect" : "Connect"}
                     </a>
-                    {/* <a onClick={() => handleUser(record)}>{"Get Users"}</a> */}
                 </Space>
             ),
         },
     ];
-
-    const { setLoading } = useLoading()
-
+    
     const handleStatus = (record) => {
         setLoading(true)
         sendJsonMessage({
@@ -86,26 +89,38 @@ export default function DevicesTable({ sendJsonMessage, source }) {
     };
 
     const handleDelete = (record) => {
-        console.log('handle delete')
+        setLoading(true)
         sendJsonMessage({
             type: RequestTypes.RemoveDevice,
             data: record,
         });
     };
 
-
-    const addUser = record => {
-        console.log(record)
+    const addUser = device => {
         setOpen(true)
+        setDevice(device)
     }
+
     const [open, setOpen] = useState(false)
+    const [device, setDevice] = useState(null)
+
+    const { setLoading } = useLoading()
+    const submitUserFormRef = useRef()
 
     return (
         <>
-            <Modal title="Basic Modal" open={open} onOk={() => console.log('oke')} onCancel={() => setOpen(false)}>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+            <Modal 
+                title={<div className="d-flex justify-content-center">User Information</div>}
+                open={open} 
+                onOk={() => {
+                    submitUserFormRef.current.click()
+                }} 
+                onCancel={() => setOpen(false)}
+                style={{
+                    width: "50%"
+                }}
+            >
+                <UserInformationForm setOpen={setOpen} submitRef={submitUserFormRef} sendJsonMessage={sendJsonMessage} device={device}/>
             </Modal>
             <Table columns={columns} dataSource={source} rowKey={"Id"}/>
         </>

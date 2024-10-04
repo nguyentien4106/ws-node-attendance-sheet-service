@@ -1,10 +1,11 @@
 // const { RequestTypes } = require("../models/RequestTypes");
 // const { DeviceContainer } = require("../models/deviceContainer");
-import { RequestTypes } from "../models/requestTypes.js"
 import { DeviceContainer } from "../models/deviceContainer.js"
 import { getResponse } from "../models/response.js"
 import * as DeviceService from './deviceService.js'
 import { logger } from "../config/logger.js"
+import { RequestTypes } from "../constants/requestType.js"
+import { UserRoles } from "../constants/userRoles.js"
 
 
 const c = new DeviceContainer()
@@ -31,6 +32,11 @@ const disconnectDevice = (device, container) => {
     return container.disconnectDevice(device)
 }
 
+const addUser = (data, container) => {
+    console.log('adduser', data)
+
+    return container.addUser(data.device, data.user);
+}
 
 export const handleMessage = (ws, message, deviceContainer) => {
     const request = JSON.parse(message);
@@ -59,7 +65,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
             break;
 
         case RequestTypes.ConnectDevice:
-            
             connectDevice(request.data, deviceContainer).then(res => {
                 console.log('RequestTypes.ConnectDevice ', res)
                 ws.send(getResponse({
@@ -70,6 +75,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
                 
             })
             break;
+
         case RequestTypes.DisconnectDevice:
             disconnectDevice(request.data, deviceContainer).then(res => {
                     console.log('RequestTypes.DisconnectDevice ', res)
@@ -81,6 +87,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
                     
                 })
                 break;
+
         case RequestTypes.GetUsers:
             deviceContainer.getUsers(request.data).then(users => {
                 ws.send(getResponse({
@@ -99,5 +106,20 @@ export const handleMessage = (ws, message, deviceContainer) => {
                 }))
             })
             break;
+
+        case RequestTypes.AddUser:
+            addUser(request.data, deviceContainer).then(res => {
+                ws.send(getResponse({
+                    type: request.type,
+                    data: res
+                }))
+            })
+            break;
+    
+        case RequestTypes.GetUserRoles:
+            ws.send(getResponse({
+                type: request.type,
+                data: UserRoles
+            }))
     }
 };

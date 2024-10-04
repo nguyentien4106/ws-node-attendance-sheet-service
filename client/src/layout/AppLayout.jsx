@@ -6,37 +6,36 @@ import {
     TeamOutlined,
     UserOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Layout, Menu, message, theme } from "antd";
 import Devices from "../pages/Devices";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
-function getItem(label, key, icon, children) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    };
-}
-const items = [
-    getItem("Devices", "1", <TeamOutlined />),
-    getItem("Users", "2", <DesktopOutlined />),
-    // getItem("User", "sub1", <UserOutlined />, [
-    //     getItem("Tom", "3"),
-    //     getItem("Bill", "4"),
-    //     getItem("Alex", "5"),
-    // ]),
-    // getItem("Team", "sub2", <TeamOutlined />, [
-    //     getItem("Team 1", "6"),
-    //     getItem("Team 2", "8"),
-    // ]),
-    // getItem("Files", "9", <FileOutlined />),
-];
+
+
 const AppLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+    const navigate = useNavigate()
+    const [msg, contextHolder] = message.useMessage();
+
+    const items = [
+        {
+            key: 'Devices',
+            icon: <TeamOutlined />,
+            label: 'Devices',
+            onClick: () => navigate("/Devices")
+        },
+        {
+            key: 'Users',
+            icon: <DesktopOutlined />,
+            label: 'Users',
+            onClick: () => navigate("/Users")
+        },
+    
+    ];
+
     return (
         <Layout
             style={{
@@ -52,7 +51,7 @@ const AppLayout = () => {
                 <div className="demo-logo-vertical" />
                 <Menu
                     theme="dark"
-                    defaultSelectedKeys={["1"]}
+                    defaultSelectedKeys={["Devices"]}
                     mode="inline"
                     items={items}
                 />
@@ -77,7 +76,9 @@ const AppLayout = () => {
                             borderRadius: borderRadiusLG,
                         }}
                     >
-                        <Outlet></Outlet>
+                        <Outlet>
+                            {contextHolder}
+                        </Outlet>
                     </div>
                 </Content>
                 <Footer

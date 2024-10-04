@@ -9,8 +9,8 @@ import {
 import { DeviceInformation, Result } from "./common.js";
 import Zkteco from "zkteco-js";
 
-const TIME_OUT = 5200;
-const IN_PORT = 5000;
+const TIME_OUT = 2200;
+const IN_PORT = 2000;
 
 export class DeviceContainer {
     constructor(devices = []) {
@@ -106,7 +106,7 @@ export class DeviceContainer {
             }
     
             const newDeviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
-            
+            newDeviceSDK.setUser()
             this.deviceSDKs.push(newDeviceSDK);
             success = await newDeviceSDK.createSocket();
             setConnectStatus(device.Ip, success);
@@ -118,7 +118,6 @@ export class DeviceContainer {
             return Result.Fail(500, err, device)
         }
     }
-
 
     async disconnectDevice(device) {
         try{
@@ -206,5 +205,29 @@ export class DeviceContainer {
         }
 
         return true;
+    }
+
+    async addUser(device, user){
+        const deviceSDK = this.deviceSDKs.find(item => item.ip === device.Ip);
+
+        if(!deviceSDK){
+            return Result.Fail(500, "Some errors occur that make service is not existed in system. Please reset and try again.", {device, user})
+        }
+
+        if(!deviceSDK.connectionType){
+            return Result.Fail(500, "Device was not connected! Please connect the device first.",{device, user})
+        }
+
+        try{
+            console.log('setUser before')
+            const result = await deviceSDK.setUser(user.uid, user.userId, user.name, user.password, user.role)
+            console.log(result)
+
+            return result
+        }
+        catch(err){
+            console.log(err)
+            return Result.Fail(500, err, {device, user})
+        }
     }
 }

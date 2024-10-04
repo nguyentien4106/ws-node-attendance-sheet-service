@@ -5,5 +5,6 @@ export const RequestTypes = {
     ConnectDevice: 3,
     GetDevices: 4,
     GetUsers: 5,
-    Disconnect: 6
+    Disconnect: 6,
+    AddUser: 7
 }
