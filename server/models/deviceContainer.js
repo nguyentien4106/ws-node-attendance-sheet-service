@@ -1,4 +1,5 @@
 // Declaration
+import res from "express/lib/response.js";
 import { logger } from "../config/logger.js";
 import {
     deleteDevice,
@@ -94,9 +95,9 @@ export class DeviceContainer {
             );
             if (deviceSDK) {
                 success = await deviceSDK.createSocket();
-
-                const users = await deviceSDK.getUsers()
-                console.log('users', users)
+            
+                // const users = await deviceSDK.getUsers()
+                // console.log('users', users)
                 await deviceSDK.getRealTimeLogs((realTimeLog) => {
                     console.log(realTimeLog);
                 });
@@ -106,7 +107,6 @@ export class DeviceContainer {
             }
     
             const newDeviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
-            newDeviceSDK.setUser()
             this.deviceSDKs.push(newDeviceSDK);
             success = await newDeviceSDK.createSocket();
             setConnectStatus(device.Ip, success);
@@ -128,11 +128,11 @@ export class DeviceContainer {
                 (item) => item.ip === device.Ip
             );
 
-            if (deviceSDK) {
+            if (deviceSDK.connectionType) {
                 success = await deviceSDK.disconnect();
                 return success ? Result.Success(device) : Result.Fail(500, "Cannot conenct to device", device);
             }
-            return Result.Fail(500, `Can not find device ip: ${device.Ip}`, device);
+            return Result.Success(device);
         }
         catch(err){
             console.error(err.message)
@@ -192,42 +192,102 @@ export class DeviceContainer {
     }
 
     async disconnectAll() {
-        logger.info("Disconnect All Devices");
-        for (let deviceSDK in this.deviceSDKs) {
+        console.log("Disconnect All Devices");
+        for (let deviceSDK of this.deviceSDKs) {
+            console.log('disconnect ' + deviceSDK.ip)
+
+            if(!deviceSDK.connectionType){
+                continue
+            }
+
             const result = await deviceSDK.disconnect();
             if(result){
-                logger.info(`Disconnect device = ${deviceSDK.ip} successfully!`)
+                console.log(`Disconnect device = ${deviceSDK.ip} successfully!`)
                 await setConnectStatus(deviceSDK.ip, false)
             }
             else {
-                logger.error(`Disconnect device = ${deviceSDK.ip} failed!`)
+                console.error(`Disconnect device = ${deviceSDK.ip} failed!`)
             }
         }
 
         return true;
     }
 
-    async addUser(device, user){
-        const deviceSDK = this.deviceSDKs.find(item => item.ip === device.Ip);
+    async addUser(user){
+        
+        for(const deviceIp of user.devices){
+            const deviceSDK = this.deviceSDKs.find(item => item.ip === device.Ip);
+
+            if(!deviceSDK){
+                return Result.Fail(500, "Some errors occur that make service is not existed in system. Please reset and try again.", {device, user})
+            }
+    
+            if(!deviceSDK.connectionType){
+                return Result.Fail(500, "Device was not connected! Please connect the device first.",{device, user})
+            }
+    
+            try{
+                console.log('setUser before')
+                const result = await deviceSDK.setUser(user.uid, user.userId, user.name, user.password, user.role)
+                console.log(result)
+    
+                return result
+            }
+            catch(err){
+                console.log(err)
+                return Result.Fail(500, err, {device, user})
+            }
+        }
+    }
+
+    async getAttendances(deviceIp){
+        const deviceSDK = this.deviceSDKs.find(item => item.ip === deviceIp);
 
         if(!deviceSDK){
-            return Result.Fail(500, "Some errors occur that make service is not existed in system. Please reset and try again.", {device, user})
+            return Result.Fail(500, "Some errors occur that make service is not existed in system. Please reset and try again.", deviceIp)
         }
 
         if(!deviceSDK.connectionType){
-            return Result.Fail(500, "Device was not connected! Please connect the device first.",{device, user})
+            return Result.Fail(500, "Device was not connected! Please connect the device first.",deviceIp)
         }
 
         try{
-            console.log('setUser before')
-            const result = await deviceSDK.setUser(user.uid, user.userId, user.name, user.password, user.role)
+            console.log('getAttendances', deviceSDK)
+            const result = await deviceSDK.getAttendances(e => {
+                console.log("e", e)
+            })
             console.log(result)
 
-            return result
+            return Result.Success(result)
         }
         catch(err){
             console.log(err)
-            return Result.Fail(500, err, {device, user})
+            return Result.Fail(500, err, deviceIp)
+        }
+    }
+
+    async deleteUser(data){
+        const deviceSDK = this.deviceSDKs.find(
+            (item) => item.ip === data.deviceIp
+        );
+
+        if(!deviceSDK || !deviceSDK.connectionType){
+            logger.info(`Device with IP = ${deviceIp} was not connected`)
+            return Result.Fail(500, `Device with IP = ${deviceIp} was not connected`)
+        }
+        // let a  = new Zkteco()
+        // a.deleteUser()
+        try{
+            const result = await deviceSDK.deleteUser(data.uid)
+            console.log(result)
+            console.log(typeof result)
+            
+
+            return Result.Success(data)
+        }
+        catch(err){
+            console.error(err)
+            return Result.Fail(500, err.message, data)
         }
     }
 }

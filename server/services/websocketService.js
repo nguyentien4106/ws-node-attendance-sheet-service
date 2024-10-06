@@ -32,12 +32,23 @@ const disconnectDevice = (device, container) => {
     return container.disconnectDevice(device)
 }
 
-const addUser = (data, container) => {
-    console.log('adduser', data)
+const addUser = (user, container) => {
+    console.log('adduser', user)
 
-    return container.addUser(data.device, data.user);
+    return container.addUser(user);
 }
 
+const getAttendances = (device, container) => {
+    console.log('getAttendances', device)
+    
+    return container.getAttendances(device);
+}
+
+const deleteUser = (data, container) => {
+    console.log('deleteUser', data)
+
+    return container.deleteUser(data)
+}
 export const handleMessage = (ws, message, deviceContainer) => {
     const request = JSON.parse(message);
     console.log("Received message:", request);
@@ -116,10 +127,20 @@ export const handleMessage = (ws, message, deviceContainer) => {
             })
             break;
     
-        case RequestTypes.GetUserRoles:
-            ws.send(getResponse({
-                type: request.type,
-                data: UserRoles
-            }))
+        case RequestTypes.GetAttendances:
+            getAttendances(request.data, deviceContainer).then(res => {
+                ws.send(getResponse({
+                    type: request.type,
+                    data: res
+                }))
+            })
+            break;
+        case RequestTypes.DeleteUser:
+            deleteUser(request.data, deviceContainer).then(res => {
+                ws.send(getResponse({
+                    type: request.type,
+                    data: res
+                }))
+            })
     }
 };

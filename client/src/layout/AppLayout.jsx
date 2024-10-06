@@ -33,7 +33,12 @@ const AppLayout = () => {
             label: 'Users',
             onClick: () => navigate("/Users")
         },
-    
+        {
+            key: 'Attendances',
+            icon: <DesktopOutlined />,
+            label: 'Attendances',
+            onClick: () => navigate("/Attendances")
+        },
     ];
 
     return (

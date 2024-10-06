@@ -83,7 +83,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
     const handleStatus = (record) => {
         setLoading(true)
         sendJsonMessage({
-            type: record.IsConnected ? RequestTypes.Disconnect : RequestTypes.ConnectDevice,
+            type: record.IsConnected ? RequestTypes.DisconnectDevice : RequestTypes.ConnectDevice,
             data: record
         });
     };

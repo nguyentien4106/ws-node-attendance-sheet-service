@@ -12,6 +12,7 @@ import { message, Spin } from "antd";
 import { useLoading } from "./context/LoadingContext";
 import { LoadingOutlined } from '@ant-design/icons';
 import Users from "./pages/Users";
+import Attendances from "./pages/Attendances";
 
 const WS_URL = "ws://127.0.0.1:3000";
 
@@ -28,6 +29,7 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path="/devices" element={<Devices />} />
                     <Route path="/users" element={<Users />} />
+                    <Route path="/attendances" element={<Attendances />} />
                 </Route>
             </Routes>
         </>
