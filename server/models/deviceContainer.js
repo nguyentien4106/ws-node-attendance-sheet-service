@@ -1,5 +1,4 @@
 // Declaration
-import res from "express/lib/response.js";
 import { logger } from "../config/logger.js";
 import {
     deleteDevice,
@@ -9,6 +8,7 @@ import {
 } from "../services/deviceService.js";
 import { DeviceInformation, Result } from "./common.js";
 import Zkteco from "zkteco-js";
+import { initSheet, isSheetsValid } from "../services/sheetService.js";
 
 const TIME_OUT = 2200;
 const IN_PORT = 2000;
@@ -77,6 +77,11 @@ export class DeviceContainer {
                 IN_PORT
             );
 
+            const sheetsValid = await isSheetsValid(device.Sheets)
+            if(!sheetsValid.isSuccess){
+                return sheetsValid
+            }
+
             this.deviceSDKs.push(deviceSDK);
             const result = await insertNewDevice(device)
             return result.rowCount ? Result.Success(device) : Result.Fail(500, "Failed to insert to database", device)
@@ -93,17 +98,16 @@ export class DeviceContainer {
             const deviceSDK = this.deviceSDKs.find(
                 (item) => item.ip === device.Ip
             );
+            
             if (deviceSDK) {
                 success = await deviceSDK.createSocket();
             
-                // const users = await deviceSDK.getUsers()
-                // console.log('users', users)
                 await deviceSDK.getRealTimeLogs((realTimeLog) => {
                     console.log(realTimeLog);
                 });
                 setConnectStatus(device.Ip, success);
     
-                return success ? Result.Success(device) : Result.Fail(500, "Cannot conenct to device", device);
+                return success ? Result.Success(device) : Result.Fail(500, "Cannot connect to device", device);
             }
     
             const newDeviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
@@ -132,6 +136,7 @@ export class DeviceContainer {
                 success = await deviceSDK.disconnect();
                 return success ? Result.Success(device) : Result.Fail(500, "Cannot conenct to device", device);
             }
+            
             return Result.Success(device);
         }
         catch(err){
@@ -182,6 +187,11 @@ export class DeviceContainer {
         );
 
         if(!deviceSDK){
+            logger.info(`Some errors occur. Please reset and try again`)
+            return Result.Fail(500, `Some errors occur. Please reset and try again`)
+        }
+
+        if(!deviceSDK.connectionType){
             logger.info(`Device with IP = ${deviceIp} was not connected`)
             return Result.Fail(500, `Device with IP = ${deviceIp} was not connected`)
         }
@@ -214,30 +224,30 @@ export class DeviceContainer {
     }
 
     async addUser(user){
-        
+        const result = []
         for(const deviceIp of user.devices){
-            const deviceSDK = this.deviceSDKs.find(item => item.ip === device.Ip);
+            const deviceSDK = this.deviceSDKs.find(item => item.ip === deviceIp);
 
             if(!deviceSDK){
-                return Result.Fail(500, "Some errors occur that make service is not existed in system. Please reset and try again.", {device, user})
+                return Result.Fail(500, "Some errors occur that make service is not existed in system. Please reset and try again.", user)
             }
     
             if(!deviceSDK.connectionType){
-                return Result.Fail(500, "Device was not connected! Please connect the device first.",{device, user})
+                return Result.Fail(500, "Device was not connected! Please connect the device first.", user)
             }
     
             try{
-                console.log('setUser before')
-                const result = await deviceSDK.setUser(user.uid, user.userId, user.name, user.password, user.role)
-                console.log(result)
+                const res = await deviceSDK.setUser(user.uid, user.userId, user.name, user.password, user.role)
     
-                return result
+                return result.push(res)
             }
             catch(err){
                 console.log(err)
-                return Result.Fail(500, err, {device, user})
+                return Result.Fail(500, err, user)
             }
         }
+
+        return Result.Success(result)
     }
 
     async getAttendances(deviceIp){

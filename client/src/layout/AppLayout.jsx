@@ -19,25 +19,35 @@ const AppLayout = () => {
     } = theme.useToken();
     const navigate = useNavigate()
     const [msg, contextHolder] = message.useMessage();
+    const [tab, setTab] = useState(["Devices"])
 
     const items = [
         {
             key: 'Devices',
             icon: <TeamOutlined />,
             label: 'Devices',
-            onClick: () => navigate("/Devices")
+            onClick: () => {
+                setTab(["Devices"])
+                navigate("/Devices")
+            }
         },
         {
             key: 'Users',
             icon: <DesktopOutlined />,
             label: 'Users',
-            onClick: () => navigate("/Users")
+            onClick: () => {
+                setTab(["Users"])
+                navigate("/Users")
+            }
         },
         {
             key: 'Attendances',
             icon: <DesktopOutlined />,
             label: 'Attendances',
-            onClick: () => navigate("/Attendances")
+            onClick: () => {
+                setTab(["Attendances"])
+                navigate("/Attendances")
+            }
         },
     ];
 
@@ -56,6 +66,7 @@ const AppLayout = () => {
                 <div className="demo-logo-vertical" />
                 <Menu
                     theme="dark"
+                    selectedKeys={tab}
                     defaultSelectedKeys={["Devices"]}
                     mode="inline"
                     items={items}

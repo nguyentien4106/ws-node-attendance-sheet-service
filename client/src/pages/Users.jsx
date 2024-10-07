@@ -19,7 +19,7 @@ export default function Users() {
       const response = JSON.parse(event.data);
       setLoading(false);
       if (response.type === RequestTypes.GetDevices) {
-        setDevices(response.data.filter((item) => item.IsConnected));
+        setDevices(response.data.filter((item) => !item.IsConnected));
       }
 
       if (response.type === RequestTypes.GetUsers) {
@@ -57,7 +57,6 @@ export default function Users() {
 
   return (
     <div>
-      <Button onClick={() => setOpen(true)}>Add User</Button>
       <div className="d-flex justify-content-between">
         <h2>Users</h2>
         <Space>
@@ -70,10 +69,12 @@ export default function Users() {
           >
             {devices?.map((item) => (
               <Select.Option key={item.Id} value={item.Ip}>
-                {item.Ip}
+                {item.Name}
               </Select.Option>
             ))}
           </Select>
+        <Button onClick={() => setOpen(true)} type="primary">Add User</Button>
+
         </Space>
       </div>
       <UsersTable deviceIp={deviceSelected} users={users} sendJsonMessage={sendJsonMessage}></UsersTable>
@@ -81,6 +82,7 @@ export default function Users() {
         onCancel={() => setOpen(false)}
         open={open}
         onOk={() => submitUserFormRef.current.click()}
+        title={<div className="d-flex justify-content-center mb-3">User Information</div>}
       >
         <UserInformationForm devices={devices} submitRef={submitUserFormRef} sendJsonMessage={sendJsonMessage} device={null} setOpen={setOpen}></UserInformationForm>
       </Modal>

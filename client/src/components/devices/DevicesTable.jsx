@@ -13,6 +13,11 @@ export default function DevicesTable({ sendJsonMessage, source }) {
             render: (text) => <a>{text}</a>,
         },
         {
+            title: "Name",
+            dataIndex: "Name",
+            key: "Name",
+        },
+        {
             title: "Ip",
             dataIndex: "Ip",
             key: "Ip",
@@ -64,17 +69,20 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button danger>Delete</Button>
+                        <Button danger type="primary">Delete</Button>
                     </Popconfirm>
-                    <Button 
+                    {/* <Button 
                         onClick={() => addUser(record)} 
                         // disabled={!record.IsConnected}
                     >
                         Add User
-                    </Button>
-                    <a onClick={() => handleStatus(record)}>
+                    </Button> */}
+                    <Button onClick={() => handleStatus(record)} danger={record.IsConnected} color="#1231da">
                         {record.IsConnected ? "Disconnect" : "Connect"}
-                    </a>
+                    </Button>
+                    {/* <a onClick={() => handleStatus(record)}>
+                        {record.IsConnected ? "Disconnect" : "Connect"}
+                    </a> */}
                 </Space>
             ),
         },

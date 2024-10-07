@@ -2,7 +2,7 @@ import { query } from "../config/db.js";
 import { Result } from "../models/common.js";
 
 
-export const getAllDevices = () => query('SELECT * FROM "Devices" ORDER BY "Id"')
+export const getAllDevices = () => query('SELECT * FROM "Devices"')
 
 export const disconnectAllDevices = () => query('UPDATE "Devices" SET "IsConnected" = false');
 
@@ -27,8 +27,8 @@ export const insertNewDevice = device => {
     }
 
     return query(`WITH device AS (
-        INSERT INTO "Devices"("Ip", "Port", "CommKey", "IsConnected", "Name") 
-        VALUES ('${device.Ip}', ${device.Port}, 0, false, '${device.Name}') RETURNING *
+        INSERT INTO "Devices"("Ip", "Port", "CommKey", "IsConnected") 
+        VALUES ('${device.Ip}', ${device.Port}, 0, false) RETURNING *
     )
     
         INSERT INTO "Sheets"("DeviceId", "SheetName", "DocumentId") 

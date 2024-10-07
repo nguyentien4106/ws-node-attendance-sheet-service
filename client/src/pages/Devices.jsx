@@ -15,6 +15,7 @@ import {
 import { useLoading } from "../context/LoadingContext";
 import { CloseOutlined } from "@ant-design/icons";
 import { notification } from "antd";
+import DeviceForm from "../components/devices/DeviceForm";
 
 const WS_URL = "ws://127.0.0.1:3000";
 export default function Devices() {
@@ -141,7 +142,7 @@ export default function Devices() {
                 onCancel={() => setOpen(false)}
                 width={"50%"}
             >
-                <Form
+                {/* <Form
                     labelCol={{
                         span: 5,
                     }}
@@ -164,6 +165,19 @@ export default function Devices() {
                             {
                                 required: true,
                                 message: "Please input your IP!",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Name"
+                        name="Name"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your Name!",
                             },
                         ]}
                     >
@@ -261,7 +275,8 @@ export default function Devices() {
                             Submit
                         </Button>
                     </Form.Item>
-                </Form>
+                </Form> */}
+                <DeviceForm setLoading={setLoading} setOpen={setOpen} sendJsonMessage={sendJsonMessage} submitRef={submitRef}></DeviceForm>
             </Modal>
         </div>
     );
