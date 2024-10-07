@@ -9,6 +9,7 @@ import {
 import { DeviceInformation, Result } from "./common.js";
 import Zkteco from "zkteco-js";
 import { initSheet, isSheetsValid } from "../services/sheetService.js";
+import { insertNewAtt } from "../services/attendanceService.js";
 
 const TIME_OUT = 2200;
 const IN_PORT = 2000;
@@ -102,8 +103,11 @@ export class DeviceContainer {
             if (deviceSDK) {
                 success = await deviceSDK.createSocket();
             
-                await deviceSDK.getRealTimeLogs((realTimeLog) => {
+                await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
                     console.log(realTimeLog);
+                    const row = await insertNewAtt([realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`)])
+
+                    console.log('insert to db', row)
                 });
                 setConnectStatus(device.Ip, success);
     
@@ -159,12 +163,17 @@ export class DeviceContainer {
         }
 
         const action = async () => {
+            console.log('cation delete')
             const indexSDK = this.deviceSDKs.indexOf(deviceSDK)
             if(indexSDK > -1){
                 this.deviceSDKs.splice(indexSDK, 1)
             }
+            console.log('deviceSDKs', this.deviceSDKs)
+
             const dbSuccess = await deleteDevice(device)
-            return dbSuccess ? Result.Success(device) : Result.Fail(500, "Fail to remove", device)
+
+            console.log('db', dbSuccess)
+            return dbSuccess.rowCount ? Result.Success(device) : Result.Fail(500, "Fail to remove", device)
         }
         // is not being connected
         if(!deviceSDK.connectionType){
@@ -238,7 +247,8 @@ export class DeviceContainer {
     
             try{
                 const res = await deviceSDK.setUser(user.uid, user.userId, user.name, user.password, user.role)
-    
+                console.log('add user', res)
+                
                 return result.push(res)
             }
             catch(err){

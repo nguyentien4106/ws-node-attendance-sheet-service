@@ -1,4 +1,4 @@
-import { Button, Modal, Select, Space, Table } from "antd";
+import { Button, Modal, Popconfirm, Select, Space, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
@@ -19,7 +19,7 @@ export default function Users() {
       const response = JSON.parse(event.data);
       setLoading(false);
       if (response.type === RequestTypes.GetDevices) {
-        setDevices(response.data.filter((item) => !item.IsConnected));
+        setDevices(response.data.filter((item) => item.IsConnected));
       }
 
       if (response.type === RequestTypes.GetUsers) {
@@ -52,8 +52,16 @@ export default function Users() {
       data: deviceSelected,
     });
   }, [deviceSelected]);
-  const [open, setOpen] = useState(false)
-  const submitUserFormRef = useRef()
+
+  const clearUser = () => {
+    console.log();
+    sendJsonMessage({
+      type: RequestTypes.ClearUser,
+      data: deviceSelected
+    })
+  };
+  const [open, setOpen] = useState(false);
+  const submitUserFormRef = useRef();
 
   return (
     <div>
@@ -73,18 +81,49 @@ export default function Users() {
               </Select.Option>
             ))}
           </Select>
-        <Button onClick={() => setOpen(true)} type="primary">Add User</Button>
+          <Button onClick={() => setOpen(true)} type="primary">
+            Add User
+          </Button>
 
+          <Popconfirm
+            title={`Clear User`}
+            description="Are you sure to delete this device?"
+            onConfirm={(e) => {
+              console.log(e);
+              clearUser();
+            }}
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button onClick={() => clearUser()} danger disabled={!deviceSelected}>
+              Clear User
+            </Button>
+          </Popconfirm>
         </Space>
       </div>
-      <UsersTable deviceIp={deviceSelected} users={users} sendJsonMessage={sendJsonMessage}></UsersTable>
-      <Modal 
+      <UsersTable
+        deviceIp={deviceSelected}
+        users={users}
+        sendJsonMessage={sendJsonMessage}
+      ></UsersTable>
+      <Modal
         onCancel={() => setOpen(false)}
         open={open}
         onOk={() => submitUserFormRef.current.click()}
-        title={<div className="d-flex justify-content-center mb-3">User Information</div>}
+        title={
+          <div className="d-flex justify-content-center mb-3">
+            User Information
+          </div>
+        }
       >
-        <UserInformationForm devices={devices} submitRef={submitUserFormRef} sendJsonMessage={sendJsonMessage} device={null} setOpen={setOpen}></UserInformationForm>
+        <UserInformationForm
+          devices={devices}
+          submitRef={submitUserFormRef}
+          sendJsonMessage={sendJsonMessage}
+          device={null}
+          setOpen={setOpen}
+        ></UserInformationForm>
       </Modal>
     </div>
   );

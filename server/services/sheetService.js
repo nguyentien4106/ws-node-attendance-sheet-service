@@ -19,6 +19,9 @@ export const isSheetsValid = async (sheets) => {
     
         } catch (err) {
             console.error(err)
+            if(err.status === 404){
+                return Result.Fail(err.code, "Không tìm thấy Sheet với DocumentId. Xin hãy kiểm tra lại DocumentID.")
+            }
             return Result.Fail(err.code, err.message, sheets)
         }
     }

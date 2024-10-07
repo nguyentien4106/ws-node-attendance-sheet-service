@@ -52,7 +52,7 @@ export default function Devices() {
                 }
             }
 
-            if (response.type === RequestTypes.Disconnect) {
+            if (response.type === RequestTypes.DisconnectDevice) {
                 const data = response.data;
                 console.log("Disconnect result", data);
                 if(data.code === 200){
@@ -126,7 +126,7 @@ export default function Devices() {
     return (
         <div>
             <div className="d-flex justify-content-end mb-3">
-                <Button onClick={() => setOpen(true)}>Add New Device</Button>
+                <Button onClick={() => setOpen(true)} type="primary">Add New Device</Button>
             </div>
             <DevicesTable source={devices} sendJsonMessage={sendJsonMessage} />
             <Modal
