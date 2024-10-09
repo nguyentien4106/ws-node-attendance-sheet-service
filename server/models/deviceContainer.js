@@ -8,8 +8,9 @@ import {
 } from "../services/deviceService.js";
 import { DeviceInformation, Result } from "./common.js";
 import Zkteco from "zkteco-js";
-import { initSheet, isSheetsValid } from "../services/sheetService.js";
+import { appendRow, initSheet, initSheets, isSheetsValid } from "../services/sheetService.js";
 import { insertNewAtt } from "../services/attendanceService.js";
+import { insertNewUser } from "../services/userService.js";
 
 const TIME_OUT = 2200;
 const IN_PORT = 2000;
@@ -17,6 +18,7 @@ const IN_PORT = 2000;
 export class DeviceContainer {
     constructor(devices = []) {
         this.deviceSDKs = devices;
+        this.sheetServices = []
     }
 
     getDevices() {
@@ -102,12 +104,15 @@ export class DeviceContainer {
             
             if (deviceSDK) {
                 success = await deviceSDK.createSocket();
-            
+                this.sheetServices.push({
+                    deviceIp: device.Ip,
+                    sheetService: await initSheets(device.Sheets)
+                })
+
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
                     console.log(realTimeLog);
-                    const row = await insertNewAtt([realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`)])
-
-                    console.log('insert to db', row)
+                    const row = await insertNewAtt([realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`), device.Name])
+                    await appendRow(sheetServices, [realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`), device.Name])
                 });
                 setConnectStatus(device.Ip, success);
     
@@ -246,8 +251,8 @@ export class DeviceContainer {
             }
     
             try{
+                const addDBResult = await insertNewUser([deviceIp])
                 const res = await deviceSDK.setUser(user.uid, user.userId, user.name, user.password, user.role)
-                console.log('add user', res)
                 
                 return result.push(res)
             }

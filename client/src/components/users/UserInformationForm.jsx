@@ -54,7 +54,7 @@ const UserInformationForm = ({
                 Devices: devices.map((item) => item.Ip),
             }}
         >
-            <Form.Item
+            {/* <Form.Item
                 name="uid"
                 label="UID"
                 rules={[
@@ -68,10 +68,10 @@ const UserInformationForm = ({
                     min={0}
                     placeholder="UID of user in machine"
                 />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
                 name="userId"
-                label="User Code"
+                label="User Id"
                 rules={[
                     {
                         required: true,

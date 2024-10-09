@@ -47,6 +47,35 @@ export const initSheet = async (documentId, sheetName) => {
     }
 };
 
-export const appendRow = async (sheets, row) => {
+export const initSheets = async (sheets) => {
+    console.log('sheets', sheets)
+    const sheetServices = []
 
+    for(const sheet of sheets){
+        console.log('sheet', sheet)
+        try {
+            const doc = new GoogleSpreadsheet(sheet.DocumentId, serviceAccountAuth);
+    
+            await doc.loadInfo(); // loads document properties and worksheets
+    
+            // const sheet = doc.sheetsByIndex[0]; // or use `doc.sheetsById[id]` or `doc.sheetsByTitle[title]`
+            if(!(sheet.SheetName in doc.sheetsByTitle)){
+                const sheetService = await doc.addSheet({ title: sheet.SheetName })
+                sheetServices.push(sheetService)
+            }
+            
+            sheetServices.push(doc.sheetsByTitle[sheet.SheetName])
+        } catch (err) {
+            console.error(`sheet ${sheet.DocumentId} error:`, err)
+        }
+    }
+
+    return sheetServices;
+}
+
+export const appendRow = async (sheetServices, row) => {
+    for(const sheet of sheetServices){
+        const larryRow = await sheet.addRow(row);
+        console.log(larryRow)
+    }
 }
