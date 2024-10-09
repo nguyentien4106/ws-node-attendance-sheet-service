@@ -6,29 +6,39 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
     const columns = [
         {
             title: "UID",
-            dataIndex: "uid",
+            dataIndex: "UID",
             key: "UID",
             render: (text) => <a>{text}</a>,
         },
         {
             title: "User ID",
-            dataIndex: "userId",
+            dataIndex: "UserId",
             key: "userId",
         },
         {
             title: "Name",
-            dataIndex: "name",
+            dataIndex: "Name",
             key: "name",
         },
         {
             title: "Password",
-            dataIndex: "password",
+            dataIndex: "Password",
             key: "password",
         },
         {
             title: "Card Number",
-            dataIndex: "carno",
+            dataIndex: "CardNo",
             key: "carno",
+        },        
+        {
+            title: "Display Name",
+            dataIndex: "DisplayName",
+            key: "DisplayName",
+        },        
+        {
+            title: "Device Ip",
+            dataIndex: "DeviceIp",
+            key: "DeviceIp",
         },
         {
             title: "Action",

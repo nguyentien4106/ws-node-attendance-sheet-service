@@ -8,9 +8,9 @@ import {
 } from "../services/deviceService.js";
 import { DeviceInformation, Result } from "./common.js";
 import Zkteco from "zkteco-js";
-import { appendRow, initSheet, initSheets, isSheetsValid } from "../services/sheetService.js";
+import { appendRow, initSheet, initSheets, isSheetsValid } from "../services/dataService.js";
 import { insertNewAtt } from "../services/attendanceService.js";
-import { insertNewUser } from "../services/userService.js";
+import { insertNewUsers } from "../services/userService.js";
 
 const TIME_OUT = 2200;
 const IN_PORT = 2000;
@@ -106,13 +106,20 @@ export class DeviceContainer {
                 success = await deviceSDK.createSocket();
                 this.sheetServices.push({
                     deviceIp: device.Ip,
-                    sheetService: await initSheets(device.Sheets)
+                    // sheetService: await initSheets()
                 })
+
+                if(success){
+                    const users = await deviceSDK.getUsers()
+                    console.log('users', users)
+                    const result = await insertNewUsers(users.data, deviceSDK.ip)
+                    console.log('insert data', result)
+                }
 
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
                     console.log(realTimeLog);
                     const row = await insertNewAtt([realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`), device.Name])
-                    await appendRow(sheetServices, [realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`), device.Name])
+                    // await appendRow(sheetServices, [realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`), device.Name])
                 });
                 setConnectStatus(device.Ip, success);
     
@@ -168,16 +175,12 @@ export class DeviceContainer {
         }
 
         const action = async () => {
-            console.log('cation delete')
             const indexSDK = this.deviceSDKs.indexOf(deviceSDK)
             if(indexSDK > -1){
                 this.deviceSDKs.splice(indexSDK, 1)
             }
-            console.log('deviceSDKs', this.deviceSDKs)
-
             const dbSuccess = await deleteDevice(device)
 
-            console.log('db', dbSuccess)
             return dbSuccess.rowCount ? Result.Success(device) : Result.Fail(500, "Fail to remove", device)
         }
         // is not being connected

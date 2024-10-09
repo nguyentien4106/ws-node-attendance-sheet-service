@@ -8,5 +8,6 @@ export const RequestTypes = {
     DisconnectDevice: "DisconnectDevice",
     AddUser: "AddUser",
     GetAttendances: "GetAttendances",
-    DeleteUser: "DeleteUser"
+    DeleteUser: "DeleteUser",
+    GetAllUsers: "GetAllUsers",
 }

@@ -9,5 +9,6 @@ export const RequestTypes = {
     AddUser: "AddUser",
     GetAttendances: "GetAttendances",
     DeleteUser: "DeleteUser",
-    ClearUser: "ClearUser"
+    ClearUser: "ClearUser",
+    GetAllUsers: "GetAllUsers"
 }

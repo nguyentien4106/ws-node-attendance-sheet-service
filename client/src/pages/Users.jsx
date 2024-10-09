@@ -26,6 +26,12 @@ export default function Users() {
         console.log(response.data.data.data);
         setUsers(response.data.data.data);
       }
+
+      if (response.type === RequestTypes.GetAllUsers) {
+        console.log(response);
+        setUsers(response.data);
+
+      }
     },
   });
 
@@ -53,6 +59,12 @@ export default function Users() {
     });
   }, [deviceSelected]);
 
+  useEffect(() => {
+    sendJsonMessage({
+      type: RequestTypes.GetAllUsers,
+      data: deviceSelected,
+    });
+  }, [])
   const clearUser = () => {
     console.log();
     sendJsonMessage({

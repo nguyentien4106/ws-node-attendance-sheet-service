@@ -40,4 +40,12 @@ export const insertNewSheets = (sheets, deviceId) => query(`INSERT INTO "Sheets"
     return `${deviceId}', ${item.SheetName}, ${item.DocumentId})`
 }).join(",")}`)
 
-export const deleteDevice = device => query(`DELETE FROM "Devices" WHERE "Ip" = '${device.Ip}'` )
+export const deleteDevice = async device => {
+    return query(`with delete_devices as (
+  delete from "Devices"
+  where "Ip" = '${device.Ip}'
+  returning "Ip"
+)
+delete from "Users"
+where "DeviceIp" in (select "Ip" from delete_devices);`)
+}

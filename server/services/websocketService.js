@@ -7,6 +7,7 @@ import { logger } from "../config/logger.js";
 import { RequestTypes } from "../constants/requestType.js";
 import { UserRoles } from "../constants/userRoles.js";
 import { Result } from "../models/common.js";
+import { getAllUsers } from "./userService.js";
 
 const c = new DeviceContainer();
 // c.addDevice()
@@ -162,6 +163,18 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 });
+                break;
+
+            case RequestTypes.GetAllUsers:
+                console.log('get all users')
+                getAllUsers().then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res.rows,
+                        })
+                    );
+                })
         }
     } catch (err) {
         console.error(err);
