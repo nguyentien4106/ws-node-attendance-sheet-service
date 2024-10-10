@@ -48,11 +48,8 @@ export const initSheet = async (documentId, sheetName) => {
 };
 
 export const initSheets = async (sheets) => {
-    console.log('sheets', sheets)
     const sheetServices = []
-
     for(const sheet of sheets){
-        console.log('sheet', sheet)
         try {
             const doc = new GoogleSpreadsheet(sheet.DocumentId, serviceAccountAuth);
     
@@ -73,9 +70,8 @@ export const initSheets = async (sheets) => {
     return sheetServices;
 }
 
-export const appendRow = async (sheetServices, row) => {
+export const appendRow = async (sheetServices, rows) => {
     for(const sheet of sheetServices){
-        const larryRow = await sheet.addRow(row);
-        console.log(larryRow)
+        const success = await sheet.addRows(rows);
     }
 }

@@ -54,21 +54,6 @@ const UserInformationForm = ({
                 Devices: devices.map((item) => item.Ip),
             }}
         >
-            {/* <Form.Item
-                name="uid"
-                label="UID"
-                rules={[
-                    {
-                        required: true,
-                    },
-                ]}
-            >
-                <InputNumber
-                    max={3000}
-                    min={0}
-                    placeholder="UID of user in machine"
-                />
-            </Form.Item> */}
             <Form.Item
                 name="userId"
                 label="User Id"
@@ -83,7 +68,7 @@ const UserInformationForm = ({
 
             <Form.Item
                 name="name"
-                label="User's Name"
+                label="Tên trong máy"
                 rules={[
                     {
                         required: true,
@@ -92,7 +77,17 @@ const UserInformationForm = ({
             >
                 <Input maxLength={24} placeholder="Employee Name" />
             </Form.Item>
-
+            <Form.Item
+                name="displayName"
+                label="Tên hiển thị"
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Input maxLength={24} placeholder="Employee Name" />
+            </Form.Item>
             <Form.Item
                 name="password"
                 label="Password"

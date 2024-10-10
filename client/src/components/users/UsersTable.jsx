@@ -16,10 +16,20 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
             key: "userId",
         },
         {
+            title: "Device Ip",
+            dataIndex: "DeviceIp",
+            key: "DeviceIp",
+        },
+        {
             title: "Name",
             dataIndex: "Name",
             key: "name",
         },
+        {
+            title: "Display Name",
+            dataIndex: "DisplayName",
+            key: "DisplayName",
+        },        
         {
             title: "Password",
             dataIndex: "Password",
@@ -30,16 +40,6 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
             dataIndex: "CardNo",
             key: "carno",
         },        
-        {
-            title: "Display Name",
-            dataIndex: "DisplayName",
-            key: "DisplayName",
-        },        
-        {
-            title: "Device Ip",
-            dataIndex: "DeviceIp",
-            key: "DeviceIp",
-        },
         {
             title: "Action",
             key: "action",
@@ -75,7 +75,7 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
     }
 
   return (
-    <Table rowKey={"uid"} dataSource={users} columns={columns}>
+    <Table rowKey={"Id"} dataSource={users} columns={columns}>
     </Table>
   )
 }

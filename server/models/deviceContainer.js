@@ -11,10 +11,13 @@ import Zkteco from "zkteco-js";
 import { appendRow, initSheet, initSheets, isSheetsValid } from "../services/dataService.js";
 import { insertNewAtt } from "../services/attendanceService.js";
 import { insertNewUsers } from "../services/userService.js";
+import { handleRealTimeData } from "../helper/dataHelper.js";
 
 const TIME_OUT = 2200;
 const IN_PORT = 2000;
 
+const UNCONNECTED_ERR_MSG = `Device chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này.`
+const UNEXPECTED_ERR_MSG = 'Đã xảy ra lỗi không mong muốn. Vui lòng reset thiết bị và thử lại hoặc liên hệ quản trị.'
 export class DeviceContainer {
     constructor(devices = []) {
         this.deviceSDKs = devices;
@@ -59,7 +62,6 @@ export class DeviceContainer {
     }
 
     async addDevice(device) {
-        console.log('Add device', device)
         try {
             const existed = this.deviceSDKs.some(
                 (item) => item.ip === device.Ip
@@ -67,8 +69,8 @@ export class DeviceContainer {
             if (existed) {
                 logger.error("Device with this IP is existed in the system.");
                 return new Result(
-                    500,
-                    "Device with this IP is existed in the system.",
+                    200,
+                    "Thiết bị đã có trong hệ thống.",
                     device
                 );
             }
@@ -85,9 +87,18 @@ export class DeviceContainer {
                 return sheetsValid
             }
 
+            const success = await deviceSDK.createSocket()
+            if(success){
+                const users = await deviceSDK.getUsers()
+                console.log('users', users)
+                const result = await insertNewUsers(users.data, deviceSDK.ip)
+                console.log(`${result.rowCount ? "Successfully": "Failed"} to add existing users into DB with count = ${result.rowCount}`)
+                await deviceSDK.disconnect()
+            }
+
             this.deviceSDKs.push(deviceSDK);
             const result = await insertNewDevice(device)
-            return result.rowCount ? Result.Success(device) : Result.Fail(500, "Failed to insert to database", device)
+            return result.rowCount ? Result.Success(device) : Result.Fail(500, "Không thể thêm thiết bị vào hệ thống. Vui lòng reset và thử lại.", device)
         } catch (err) {
             logger.error(err.message);
 
@@ -102,36 +113,36 @@ export class DeviceContainer {
                 (item) => item.ip === device.Ip
             );
             
-            if (deviceSDK) {
+            const connect = async () => {
                 success = await deviceSDK.createSocket();
-                this.sheetServices.push({
-                    deviceIp: device.Ip,
-                    // sheetService: await initSheets()
-                })
-
-                if(success){
-                    const users = await deviceSDK.getUsers()
-                    console.log('users', users)
-                    const result = await insertNewUsers(users.data, deviceSDK.ip)
-                    console.log('insert data', result)
-                }
-
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
-                    console.log(realTimeLog);
-                    const row = await insertNewAtt([realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`), device.Name])
-                    // await appendRow(sheetServices, [realTimeLog.userId, device.Id, new Date(`${realTimeLog.attTime}`), device.Name])
+                    const insertResult = await handleRealTimeData(realTimeLog, device.Id)
+                    console.log('handle data result: ', insertResult)
                 });
                 setConnectStatus(device.Ip, success);
     
                 return success ? Result.Success(device) : Result.Fail(500, "Cannot connect to device", device);
             }
+            
+            if (deviceSDK) {
+                // success = await deviceSDK.createSocket();
+                // await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
+                //     const insertResult = await handleRealTimeData(realTimeLog, device.Id)
+                //     console.log('handle data result: ', insertResult)
+                // });
+                // setConnectStatus(device.Ip, success);
+    
+                // return success ? Result.Success(device) : Result.Fail(500, "Cannot connect to device", device);
+                return await connect()
+            }
     
             const newDeviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
             this.deviceSDKs.push(newDeviceSDK);
-            success = await newDeviceSDK.createSocket();
-            setConnectStatus(device.Ip, success);
+            // success = await newDeviceSDK.createSocket();
+            // setConnectStatus(device.Ip, success);
 
-            return success ? Result.Success(device) : Result.Fail(500, `Can not connect device ip: ${device.Ip}`, device);
+            // return success ? Result.Success(device) : Result.Fail(500, `Can not connect device ip: ${device.Ip}`, device);
+            return await connect()
         }
         catch(err){
             console.error(err.message)
@@ -143,14 +154,13 @@ export class DeviceContainer {
         try{
             setConnectStatus(device.Ip, false);
 
-            let success = false;
             const deviceSDK = this.deviceSDKs.find(
                 (item) => item.ip === device.Ip
             );
 
             if (deviceSDK.connectionType) {
-                success = await deviceSDK.disconnect();
-                return success ? Result.Success(device) : Result.Fail(500, "Cannot conenct to device", device);
+                await deviceSDK.disconnect();
+                return Result.Success(device) 
             }
             
             return Result.Success(device);
@@ -205,12 +215,12 @@ export class DeviceContainer {
 
         if(!deviceSDK){
             logger.info(`Some errors occur. Please reset and try again`)
-            return Result.Fail(500, `Some errors occur. Please reset and try again`)
+            return Result.Fail(500, UNEXPECTED_ERR_MSG)
         }
 
         if(!deviceSDK.connectionType){
             logger.info(`Device with IP = ${deviceIp} was not connected`)
-            return Result.Fail(500, `Device with IP = ${deviceIp} was not connected`)
+            return Result.Fail(500, UNCONNECTED_ERR_MSG)
         }
 
         const users = await deviceSDK.getUsers();
@@ -246,18 +256,20 @@ export class DeviceContainer {
             const deviceSDK = this.deviceSDKs.find(item => item.ip === deviceIp);
 
             if(!deviceSDK){
-                return Result.Fail(500, "Some errors occur that make service is not existed in system. Please reset and try again.", user)
+                return Result.Fail(500, UNEXPECTED_ERR_MSG, user)
             }
     
             if(!deviceSDK.connectionType){
-                return Result.Fail(500, "Device was not connected! Please connect the device first.", user)
+                return Result.Fail(500, UNCONNECTED_ERR_MSG, user)
             }
     
             try{
-                const addDBResult = await insertNewUser([deviceIp])
-                const res = await deviceSDK.setUser(user.uid, user.userId, user.name, user.password, user.role)
+                const users = await deviceSDK.getUser()
+                const lastUid = users.map(item => item.uid).max()
+                const addDBResult = await insertNewUsers([Object.assign(user, { cardno: 0, uid: lastUid + 1 })], deviceSDK.ip, user.displayName)
+                const res = await deviceSDK.setUser(lastUid + 1, user.userId, user.name, user.password, user.role)
                 
-                return result.push(res)
+                return result.push({ addDBResult: addDBResult.rowCount, res })
             }
             catch(err){
                 console.log(err)
@@ -276,7 +288,7 @@ export class DeviceContainer {
         }
 
         if(!deviceSDK.connectionType){
-            return Result.Fail(500, "Device was not connected! Please connect the device first.",deviceIp)
+            return Result.Fail(500, UNCONNECTED_ERR_MSG,deviceIp)
         }
 
         try{

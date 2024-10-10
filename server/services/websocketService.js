@@ -8,6 +8,7 @@ import { RequestTypes } from "../constants/requestType.js";
 import { UserRoles } from "../constants/userRoles.js";
 import { Result } from "../models/common.js";
 import { getAllUsers } from "./userService.js";
+import { getAttendances } from "./attendanceService.js";
 
 const c = new DeviceContainer();
 // c.addDevice()
@@ -39,11 +40,11 @@ const addUser = (user, container) => {
     return container.addUser(user);
 };
 
-const getAttendances = (device, container) => {
-    console.log("getAttendances", device);
+// const getAttendances = (device, container) => {
+//     console.log("getAttendances", device);
 
-    return container.getAttendances(device);
-};
+//     return container.getAttendances(device);
+// };
 
 const deleteUser = (data, container) => {
     console.log("deleteUser", data);
@@ -145,14 +146,22 @@ export const handleMessage = (ws, message, deviceContainer) => {
                 break;
 
             case RequestTypes.GetAttendances:
-                getAttendances(request.data, deviceContainer).then((res) => {
+                getAttendances().then(res => {
                     ws.send(
                         getResponse({
                             type: request.type,
-                            data: res,
+                            data: res.rows,
                         })
                     );
-                });
+                }).catch(err => {
+                    console.log(err)
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: err,
+                        })
+                    );
+                })
                 break;
             case RequestTypes.DeleteUser:
                 deleteUser(request.data, deviceContainer).then((res) => {
