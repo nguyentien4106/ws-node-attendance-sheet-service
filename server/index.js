@@ -6,6 +6,8 @@ import express from 'express';
 import http from 'http';
 import { WebSocketServer } from 'ws';
 import { onConnection } from './controllers/websocketController.js';
+import "dotenv/config"
+
 const app = express();
 const server = http.createServer(app);
 
@@ -14,7 +16,7 @@ const wss = new WebSocketServer({ server });
 
 wss.on('connection', onConnection);
 
-server.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+server.listen(process.env.PORT, () => {
+  console.log('Server is listening on port on' + process.env.PORT);
 });
 

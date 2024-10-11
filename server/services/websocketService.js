@@ -9,6 +9,7 @@ import { UserRoles } from "../constants/userRoles.js";
 import { Result } from "../models/common.js";
 import { getAllUsers } from "./userService.js";
 import { getAttendances } from "./attendanceService.js";
+import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
 
 const c = new DeviceContainer();
 // c.addDevice()
@@ -40,12 +41,6 @@ const addUser = (user, container) => {
     return container.addUser(user);
 };
 
-// const getAttendances = (device, container) => {
-//     console.log("getAttendances", device);
-
-//     return container.getAttendances(device);
-// };
-
 const deleteUser = (data, container) => {
     console.log("deleteUser", data);
 
@@ -54,6 +49,10 @@ const deleteUser = (data, container) => {
 export const handleMessage = (ws, message, deviceContainer) => {
     const request = JSON.parse(message);
     console.log("Received message:", request);
+
+    if(request.type.endsWith("Device")){
+        handleDeviceRequest(request, deviceContainer)
+    }
     try {
         switch (request.type) {
             case RequestTypes.AddDevice:
@@ -163,6 +162,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
                     );
                 })
                 break;
+
             case RequestTypes.DeleteUser:
                 deleteUser(request.data, deviceContainer).then((res) => {
                     ws.send(
@@ -184,6 +184,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 })
+                break;
         }
     } catch (err) {
         console.error(err);

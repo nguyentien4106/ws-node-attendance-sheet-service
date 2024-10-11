@@ -3,7 +3,7 @@ export const RequestTypes = {
     RemoveDevice: "RemoveDevice",
     UpdateDevice: "UpdateDevice",
     ConnectDevice: "ConnectDevice",
-    GetDevices: "GetDevices",
+    GetDevices: "GetAllDevice",
     GetUsers: "GetUsers",
     DisconnectDevice: "DisconnectDevice",
     AddUser: "AddUser",

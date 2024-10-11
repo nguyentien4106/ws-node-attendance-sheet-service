@@ -29,8 +29,7 @@ export const onConnection = (ws) => {
 process.on("SIGTERM", shutDown);
 process.on("SIGINT", shutDown);
 process.on("exit", (code) => {
-  logger.info("App stoped with code " + code);
-  logger.error("App stoped with code " + code);
+    console.log('app exited with ' + code)
 });
 
 function shutDown() {
