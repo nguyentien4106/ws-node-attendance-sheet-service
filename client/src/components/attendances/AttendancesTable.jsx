@@ -5,6 +5,8 @@ import { Excel } from "antd-table-saveas-excel";
 import {
     FileExcelOutlined,
   } from '@ant-design/icons';
+import { renderDateTimeString } from "../../helper/timeHelper";
+
 export default function AttendancesTable({
     attendances,
 }) {
@@ -42,7 +44,7 @@ export default function AttendancesTable({
             dataIndex: "DeviceName",
             key: "DeviceName",
             filters: deviceNameFilters,
-            onFilter: (value, record) => record.DeviceName.startsWith(value),
+            onFilter: (value, record) => record.DeviceName?.startsWith(value),
             filterSearch: true,
             render: renderContent,
         },
@@ -57,7 +59,7 @@ export default function AttendancesTable({
             dataIndex: "UserName",
             key: "UserName",
             filters: userNameFilters,
-            onFilter: (value, record) => record.UserName.startsWith(value),
+            onFilter: (value, record) => record.UserName?.startsWith(value),
             filterSearch: true,
             render: renderContent,
         },
@@ -67,7 +69,7 @@ export default function AttendancesTable({
             key: "VerifyDate",
             sorter: (a, b) =>
                 Date.parse(a.VerifyDate) - Date.parse(b.VerifyDate),
-            render: renderContent,
+            render: (value) => renderDateTimeString(value),
         },
     ];
 

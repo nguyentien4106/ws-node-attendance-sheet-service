@@ -1,11 +1,12 @@
-import { Button, Modal, Popconfirm, Select, Space, Table } from "antd";
+import { Button, message, Modal, Popconfirm, Select, Space, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
 import { useLoading } from "../context/LoadingContext";
 import UserInformationForm from "../components/users/UserInformationForm";
 import UsersTable from "../components/users/UsersTable";
-const WS_URL = "ws://127.0.0.1:3000";
+const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
+
 
 export default function Users() {
   const { sendJsonMessage } = useWebSocket(WS_URL, {
@@ -23,8 +24,19 @@ export default function Users() {
       }
 
       if (response.type === RequestTypes.GetUsers) {
-        console.log(response.data.data.data);
-        setUsers(response.data.data.data);
+        console.log(response.data.data);
+        setUsers(response.data.data);
+      }
+
+      if (response.type === RequestTypes.DeleteUser) {
+        if(response.data.isSuccess){
+          message.success('Xóa User thành công')
+          setUsers(prev => prev.filter(item => item.UID !== response.data.data.uid))
+        }
+        else {
+          message.error(response.data.message)
+
+        }
       }
 
       if (response.type === RequestTypes.GetAllUsers) {
@@ -59,12 +71,6 @@ export default function Users() {
     });
   }, [deviceSelected]);
 
-  useEffect(() => {
-    sendJsonMessage({
-      type: RequestTypes.GetAllUsers,
-      data: deviceSelected,
-    });
-  }, [])
   const clearUser = () => {
     console.log();
     sendJsonMessage({
@@ -80,7 +86,7 @@ export default function Users() {
       <div className="d-flex justify-content-between">
         <h2>Users</h2>
         <Space>
-          <h6>Device : </h6>
+          <h6>Thiết bị : </h6>
           <Select
             style={{
               width: 200,
@@ -94,7 +100,7 @@ export default function Users() {
             ))}
           </Select>
           <Button onClick={() => setOpen(true)} type="primary">
-            Add User
+            Thêm người dùng
           </Button>
 
           <Popconfirm

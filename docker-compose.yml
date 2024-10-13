@@ -1,41 +1,47 @@
 version: '3.8'
-
 services:
-  client:
-    build:
-      context: ./client
-    ports:
-      - "5000:5000" # React app default port
-    environment:
-      - WS_URL=ws://127.0.0.1:3000 # API URL for Node.js backend
-    depends_on:
-      - server
-
-  server:
-    build:
-      context: ./server
-    ports:
-      - "3000:3000" # Node.js backend port
-    environment:
-      # - DATABASE_URL=postgres://postgres:password@db:5432/mydb # PostgreSQL connection string
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Ti100600@
-      - POSTGRES_HOST=db
-      - POSTGRES_DATABASE=attdb
-
-    depends_on:
-      - db
-
-  db:
+  postgres:
     image: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Ti100600@
       POSTGRES_DB: attdb
-    ports:
-      - "5432:5432" # PostgreSQL default port
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d  # Mount db folder with SQL backup file
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres --password Ti100600@"]
+      interval: 10s
+      retries: 5
 
-volumes:
-  postgres_data:
+  db-restore:
+    image: postgres  # Use PostgreSQL image to run the restore script
+    depends_on:
+      - postgres
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    entrypoint: ["/docker-entrypoint-initdb.d/restore.sh"]  # Run the restore script
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ti100600@
+      POSTGRES_DB: attdb
+    restart: "no"
+
+
+  server:
+    build: ./server
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ti100600@
+      POSTGRES_DATABASE: attdb
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: postgres
+    depends_on:
+      - postgres
+      - db-restore
+    ports:
+      - "3002:3000"
+    volumes:
+      - ./server:/app
+    command: "npm run start"  # Adjust based on your server start command

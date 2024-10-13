@@ -45,12 +45,12 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
             </Form.Item>
 
             <Form.Item
-                label="Name"
+                label="Tên thiết bị"
                 name="Name"
                 rules={[
                     {
                         required: true,
-                        message: "Please input your Name!",
+                        message: "Vui lòng nhập tên thiết bị",
                     },
                 ]}
             >
@@ -123,7 +123,7 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
                                 }}
                                 className="d-flex justify-content-center"
                             >
-                                + Add Sheet
+                                + Thêm sheet
                             </Button>
                         </Form.Item>
                     </div>

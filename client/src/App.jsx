@@ -14,11 +14,11 @@ import { LoadingOutlined } from '@ant-design/icons';
 import Users from "./pages/Users";
 import Attendances from "./pages/Attendances";
 
-const WS_URL = "ws://127.0.0.1:3000";
+const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
 
 function App() {
     const { loading } = useLoading()
-
+    console.log(import.meta.env.VITE_WS_URL)
     return (
         <>
             {
@@ -27,7 +27,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<AppLayout />}>
                     <Route index element={<Home />} />
-                    <Route path="/devices" element={<Devices />} />
+                    <Route path="/devices" index element={<Devices />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/attendances" element={<Attendances />} />
                 </Route>

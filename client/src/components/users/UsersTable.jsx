@@ -1,6 +1,7 @@
 import { Button, Space, Table, Popconfirm } from 'antd'
 import React from 'react'
 import { RequestTypes } from '../../constants/requestType';
+import { useLoading } from '../../context/LoadingContext';
 
 export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
     const columns = [
@@ -11,35 +12,35 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
             render: (text) => <a>{text}</a>,
         },
         {
-            title: "User ID",
+            title: "Mã nhân viên",
             dataIndex: "UserId",
             key: "userId",
         },
         {
-            title: "Device Ip",
+            title: "IP thiết bị",
             dataIndex: "DeviceIp",
             key: "DeviceIp",
         },
         {
-            title: "Name",
+            title: "Tên thiết bị",
+            dataIndex: "DeviceName",
+            key: "DeviceName",
+        },
+        {
+            title: "Tên nhân viên",
             dataIndex: "Name",
             key: "name",
         },
         {
-            title: "Display Name",
+            title: "Tên hiển thị",
             dataIndex: "DisplayName",
             key: "DisplayName",
         },        
         {
-            title: "Password",
+            title: "Mật khẩu",
             dataIndex: "Password",
             key: "password",
         },
-        {
-            title: "Card Number",
-            dataIndex: "CardNo",
-            key: "carno",
-        },        
         {
             title: "Action",
             key: "action",
@@ -47,16 +48,15 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
                 <Space size="middle">
                     <Popconfirm
                         title={`Device: ${record.uid}`}
-                        description="Are you sure to delete this device?"
+                        description={`Bạn có muốn xóa người dùng này khỏi thiết bị ${record.DeviceName}?`}
                         onConfirm={(e) => {
-                            console.log(e)
                             handleDelete(record)
                         }}
                         onCancel={() => {}}
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button danger>Delete</Button>
+                        <Button danger>Xóa</Button>
                     </Popconfirm>
                 </Space>
             ),
@@ -65,17 +65,20 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
 
     const handleDelete = (record) => {
         console.log(record)
+        setLoading(true)
         sendJsonMessage({
             type: RequestTypes.DeleteUser,
             data: {
-                userId: record.uid,
-                deviceIp: deviceIp
+                uid: record.UID,
+                deviceIp: record.DeviceIp
             }
         })
     }
 
+    const { setLoading } = useLoading()
+
   return (
-    <Table rowKey={"Id"} dataSource={users} columns={columns}>
+    <Table rowKey={"Id"} dataSource={users} columns={columns} bordered rowHoverable pagination={{ pageSize: 100 }}>
     </Table>
   )
 }

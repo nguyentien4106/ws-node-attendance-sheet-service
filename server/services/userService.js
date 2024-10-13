@@ -6,5 +6,12 @@ export const insertNewUsers = (users, deviceIp, displayName) => {
     return queryFormat(`INSERT INTO public."Users"("UID", "Name", "Password", "Role", "CardNo", "DisplayName", "UserId", "DeviceIp")`, values)
 }
 
-export const getAllUsers = () => query(`SELECT * FROM public."Users"`)
+export const getAllUsers = (deviceIp) => query(`SELECT "Users".*, "Devices"."Name" as "DeviceName" 
+FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
+WHERE "Users"."DeviceIp" = '${deviceIp}'
+ORDER BY "Users"."Id" DESC`)
+
 export const getUID = (deviceIp) => query(`SELECT "UID" FROM public."Users" WHERE "DeviceIp" = '${deviceIp}' ORDER BY "UID" DESC LIMIT 1`)
+
+export const removeUser = (uid, deviceIp) => query(`DELETE FROM public."Users"
+	WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}';`)

@@ -1,5 +1,21 @@
-import { handleRealTimeData } from "./helper/dataHelper.js";
+// const Zkteco = require("zkteco-js");
+import Zkteco from 'zkteco-js'
+const manageZktecoDevice = async () => {
+    const device = new Zkteco("192.168.1.201", 4370, 5200, 5000);
 
-handleRealTimeData({ userId: '02678', attTime: "2000-01-01"}, 1).then(res => {
-    console.log(res)
-})
+    try {
+        // Create socket connection to the device
+        await device.createSocket();
+        // console.log("clear data")
+
+        const atts = await device.getAttendances()
+        console.log('atts', atts)
+        
+        await device.disconnect();
+    } catch (error) {
+        console.error("Error:", error);
+        await device.disconnect();
+    }
+};
+
+manageZktecoDevice();

@@ -2,7 +2,7 @@ import { query } from "../config/db.js";
 import { Result } from "../models/common.js";
 
 
-export const getAllDevices = () => query('SELECT * FROM "Devices" ORDER BY "Id"')
+export const getAllDevices = () => query('SELECT * FROM "Devices" ORDER BY "Devices"."Id"')
 
 export const disconnectAllDevices = () => query('UPDATE "Devices" SET "IsConnected" = false');
 

@@ -3,7 +3,8 @@ import useWebSocket from "react-use-websocket";
 import { useLoading } from "../context/LoadingContext";
 import { RequestTypes } from "../constants/requestType";
 import AttendancesTable from "../components/attendances/AttendancesTable";
-const WS_URL = "ws://127.0.0.1:3000";
+const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
+
 
 export default function Attendances() {
     const { sendJsonMessage } = useWebSocket(WS_URL, {

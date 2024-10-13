@@ -5,7 +5,7 @@ import { useLoading } from "../../context/LoadingContext";
 import { UserRoles } from "../../constants/userRoles";
 const layout = {
     labelCol: {
-        span: 5,
+        span: 6,
     },
     wrapperCol: {
         span: 16,
@@ -56,14 +56,14 @@ const UserInformationForm = ({
         >
             <Form.Item
                 name="userId"
-                label="User Id"
+                label="Mã nhân viên"
                 rules={[
                     {
                         required: true,
                     },
                 ]}
             >
-                <Input maxLength={9} placeholder="Employee Code" />
+                <Input maxLength={9} placeholder="Mã nhân viên" />
             </Form.Item>
 
             <Form.Item
@@ -75,7 +75,7 @@ const UserInformationForm = ({
                     },
                 ]}
             >
-                <Input maxLength={24} placeholder="Employee Name" />
+                <Input maxLength={24} placeholder="Tên nhân viên" />
             </Form.Item>
             <Form.Item
                 name="displayName"
@@ -85,22 +85,23 @@ const UserInformationForm = ({
                         required: true,
                     },
                 ]}
+                tooltip="Tên này dùng để hiện thị khi chấm công."
             >
-                <Input maxLength={24} placeholder="Employee Name" />
+                <Input maxLength={24} placeholder="Tên hiển thị" />
             </Form.Item>
             <Form.Item
                 name="password"
-                label="Password"
+                label="Mật khẩu"
                 rules={[
                     {
                         required: true,
                     },
                 ]}
             >
-                <Input maxLength={24} placeholder="Employee Password" />
+                <Input maxLength={24} placeholder="Mật khẩu người dùng" />
             </Form.Item>
             <Form.Item
-                label="Role"
+                label="Quyền"
                 name={"role"}
                 rules={[
                     {
@@ -121,13 +122,14 @@ const UserInformationForm = ({
                 </Select>
             </Form.Item>
             <Form.Item
-                label="Devices"
+                label="Thiết bị"
                 name={"devices"}
                 rules={[
                     {
                         required: true,
                     },
                 ]}
+                tooltip="Chỉ hiển thị những thiết bị đã được kết nối. Vui lòng kết nối thiết bị trước khi thêm nhân viên cho thiết bị đó."
             >
                 <Select
                     mode="multiple"

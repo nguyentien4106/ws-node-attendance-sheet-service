@@ -19,8 +19,8 @@ const AppLayout = () => {
     } = theme.useToken();
     const navigate = useNavigate()
     const [msg, contextHolder] = message.useMessage();
-    const [tab, setTab] = useState(["Devices"])
-
+    const [tab, setTab] = useState([window.location.pathname.slice(1).trim() ?? "Devices"])
+    console.log(window.location.pathname.slice(1))
     const items = [
         {
             key: 'Devices',

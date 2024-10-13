@@ -161,6 +161,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 })
+                // deviceContainer.get
                 break;
 
             case RequestTypes.DeleteUser:
@@ -175,7 +176,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
                 break;
 
             case RequestTypes.GetAllUsers:
-                console.log('get all users')
                 getAllUsers().then(res => {
                     ws.send(
                         getResponse({

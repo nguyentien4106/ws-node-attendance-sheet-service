@@ -10,22 +10,24 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy the rest of the application code
-COPY . ./
+COPY . .
 
 # Run the build process (Vite will output to /dist)
 RUN npm run build
 
-# Check if the dist folder exists
-RUN ls /app/dist
+# Step 2: Use Node.js to serve the built app
+FROM node:18
 
-# Step 2: Serve the built app with Nginx
-FROM nginx:alpine
+WORKDIR /app
+
+# Install 'serve' to serve static files
+RUN npm install -g serve
 
 # Copy the built app from the previous stage
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist ./dist
 
-# Expose port 5000
-EXPOSE 80
+# Expose the port (can be any port you want to use, for example 3000)
+EXPOSE 3001
 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Use 'serve' to serve the build
+CMD ["serve", "-s", "dist", "-l", "3001"]
