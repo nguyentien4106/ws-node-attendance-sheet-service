@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Button, Space, Table, Tag, Popconfirm, Modal } from "antd";
+import { Button, Space, Table, Tag, Popconfirm, Modal, Tooltip } from "antd";
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
 import UserInformationForm from "../users/UserInformationForm";
@@ -53,7 +53,6 @@ export default function DevicesTable({ sendJsonMessage, source }) {
             title={`${record.Name} - ${record.Ip}`}
             description="Bạn có muốn xóa thiết bị này?"
             onConfirm={(e) => {
-              console.log(e);
               handleDelete(record);
             }}
             onCancel={() => {}}
@@ -71,10 +70,25 @@ export default function DevicesTable({ sendJsonMessage, source }) {
           >
             {record.IsConnected ? "Ngắt kết nối" : "Kết nối"}
           </Button>
+          <Tooltip title="Đồng bộ dữ liệu chấm công từ máy chấm công lên hệ thống." color="#108ee9">
+            <Button
+              onClick={() => handleSyncData(record)}
+              disabled={!record.IsConnected}
+            >
+              Đồng bộ dữ liệu
+            </Button>
+          </Tooltip>
         </Space>
       ),
     },
   ];
+
+  const handleSyncData = (record) => {
+    sendJsonMessage({
+        type: RequestTypes.SyncData,
+        data: record,
+      });
+  }
 
   const handleStatus = (record) => {
     setLoading(true);
@@ -99,7 +113,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
 
   const { setLoading } = useLoading();
   const submitUserFormRef = useRef();
-  console.log(source)
+  
   return (
     <>
       <Modal

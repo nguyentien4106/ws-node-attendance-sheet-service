@@ -46,6 +46,13 @@ const deleteUser = (data, container) => {
 
     return container.deleteUser(data);
 };
+
+const syncData = (data, container, ws) => {
+    console.log("syncData", data);
+
+    return container.syncData(data, ws)
+} 
+
 export const handleMessage = (ws, message, deviceContainer) => {
     const request = JSON.parse(message);
     console.log("Received message:", request);
@@ -145,7 +152,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
                 break;
 
             case RequestTypes.GetAttendances:
-                getAttendances().then(res => {
+                getAttendances(request.data).then(res => {
                     ws.send(
                         getResponse({
                             type: request.type,
@@ -153,7 +160,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 }).catch(err => {
-                    console.log(err)
                     ws.send(
                         getResponse({
                             type: request.type,
@@ -184,6 +190,16 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 })
+                break;
+
+            case RequestTypes.SyncData:
+                syncData(request.data, deviceContainer, ws)
+                ws.send(
+                    getResponse({
+                        type: request.type,
+                        data: "Done",
+                    })
+                );
                 break;
         }
     } catch (err) {

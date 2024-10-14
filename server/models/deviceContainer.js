@@ -14,9 +14,10 @@ import {
   initSheets,
   isSheetsValid,
 } from "../services/dataService.js";
-import { insertNewAtt } from "../services/attendanceService.js";
+import { insertAttendances, insertNewAtt } from "../services/attendanceService.js";
 import { getAllUsers, insertNewUsers, removeUser } from "../services/userService.js";
 import { handleRealTimeData } from "../helper/dataHelper.js";
+import { getResponse } from "./response.js";
 
 const TIME_OUT = 2200;
 const IN_PORT = 2000;
@@ -350,4 +351,36 @@ export class DeviceContainer {
       return Result.Fail(500, err.message, data);
     }
   }
+
+  async syncData(data, ws) {
+  //   console.log('syncData 1', data)
+  //   const delay = ms => new Promise(res => setTimeout(res, ms));
+  //   const atts = await 
+  //   await delay(10000)
+  //   console.log('finish')
+  //   ws.send(
+  //     getResponse({
+  //         type: "SyncData",
+  //         data: "Done 2",
+  //     })
+  // );
+
+  const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
+
+    if (!deviceSDK || !deviceSDK.ztcp.socket) {
+      logger.info(`Device with IP = ${data.Ip} was not connected`);
+      return Result.Fail(500, UNCONNECTED_ERR_MSG);
+    }
+    try {
+        const atts = await deviceSDK.getAttendances()
+        const users = await deviceSDK.getUsers();
+
+        await insertAttendances(atts.data, users.data)
+        return Result.Success(data);
+    } catch (err) {
+      console.error(err);
+      return Result.Fail(500, err.message, data);
+    }
+  }
+  
 }

@@ -72,7 +72,6 @@ export default function Users() {
   }, [deviceSelected]);
 
   const clearUser = () => {
-    console.log();
     sendJsonMessage({
       type: RequestTypes.ClearUser,
       data: deviceSelected
@@ -103,7 +102,7 @@ export default function Users() {
             Thêm người dùng
           </Button>
 
-          <Popconfirm
+          {/* <Popconfirm
             title={`Clear User`}
             description="Are you sure to delete this device?"
             onConfirm={(e) => {
@@ -117,7 +116,7 @@ export default function Users() {
             <Button onClick={() => clearUser()} danger disabled={!deviceSelected}>
               Clear User
             </Button>
-          </Popconfirm>
+          </Popconfirm> */}
         </Space>
       </div>
       <UsersTable

@@ -10,7 +10,9 @@ const manageZktecoDevice = async () => {
 
         const atts = await device.getAttendances()
         console.log('atts', atts)
-        
+        const users = await device.getUsers()
+        console.log('atts', users)
+
         await device.disconnect();
     } catch (error) {
         console.error("Error:", error);

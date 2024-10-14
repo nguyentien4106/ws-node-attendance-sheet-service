@@ -36,7 +36,6 @@ export default function Devices() {
             const response = JSON.parse(event.data);
             setLoading(false)
             if (response.type === RequestTypes.GetDevices) {
-                console.log(response.data)
                 setDevices(response.data);
             }
 
@@ -91,17 +90,9 @@ export default function Devices() {
                 }
             }
 
-            // if(response.type === RequestTypes.AddUser){
-            //     const data = response.data;
-            //     console.log("AddUser result", data);
-
-            //     if(data.code === 200){
-            //         message.success("Added User successfully to deivce " + data.data.Ip)
-            //     }
-            //     else {
-            //         console.log()
-            //     }
-            // }
+            if(response.type === RequestTypes.SyncData){
+                console.log(response)
+            }
         },
     });
 

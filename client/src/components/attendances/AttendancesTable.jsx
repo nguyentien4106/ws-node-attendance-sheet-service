@@ -64,6 +64,12 @@ export default function AttendancesTable({
             render: renderContent,
         },
         {
+            title: "Name",
+            dataIndex: "Name",
+            key: "Name",
+            render: renderContent,
+        },
+        {
             title: "Att Time",
             dataIndex: "VerifyDate",
             key: "VerifyDate",
