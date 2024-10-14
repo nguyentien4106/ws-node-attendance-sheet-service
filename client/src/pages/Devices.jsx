@@ -63,10 +63,6 @@ export default function Devices() {
                 }
             }
 
-            // if (response.type === RequestTypes.GetUsers) {
-            //     const result = response.data;
-            // }
-
             if(response.type === RequestTypes.AddDevice){
                 const data = response.data;
                 if(data.code === 200){
@@ -91,14 +87,26 @@ export default function Devices() {
             }
 
             if(response.type === RequestTypes.SyncData){
-                console.log(response)
+                const data = response.data;
+                if(data.isSuccess){
+                    message.success("Đồng bộ dữ liệu thành công")
+                }
+                else {
+                    message.error(data.message)
+                }
+            }
+
+            if(response.type === "GetDevicesSheets"){
+                console.log('res', response)
+                setDevices(response.data.data);
+
             }
         },
     });
 
     useEffect(() => {
         sendJsonMessage({
-            type: RequestTypes.GetDevices,
+            type: "GetDevicesSheets",
         });
     }, []);
 

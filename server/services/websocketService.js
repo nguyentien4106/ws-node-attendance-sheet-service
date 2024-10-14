@@ -57,9 +57,9 @@ export const handleMessage = (ws, message, deviceContainer) => {
     const request = JSON.parse(message);
     console.log("Received message:", request);
 
-    if(request.type.endsWith("Device")){
-        handleDeviceRequest(request, deviceContainer)
-    }
+    // if(request.type.endsWith("Device")){
+    //     handleDeviceRequest(request, deviceContainer)
+    // }
     try {
         switch (request.type) {
             case RequestTypes.AddDevice:
@@ -194,12 +194,18 @@ export const handleMessage = (ws, message, deviceContainer) => {
 
             case RequestTypes.SyncData:
                 syncData(request.data, deviceContainer, ws)
-                ws.send(
-                    getResponse({
-                        type: request.type,
-                        data: "Done",
-                    })
-                );
+                
+                break;
+                
+            case "GetDevicesSheets":
+                DeviceService.getAllDevicesWithSheets().then(res=> {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res,
+                        })
+                    );
+                })                
                 break;
         }
     } catch (err) {

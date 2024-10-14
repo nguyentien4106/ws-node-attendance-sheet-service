@@ -11,5 +11,6 @@ export const RequestTypes = {
     DeleteUser: "DeleteUser",
     ClearUser: "ClearUser",
     GetAllUsers: "GetAllUsers",
-    SyncData: "SyncData"
+    SyncData: "SyncData",
+    GetSheets: "GetSheets"
 }

@@ -6,6 +6,15 @@ export const getAllDevices = () => query('SELECT * FROM "Devices" ORDER BY "Devi
 
 export const disconnectAllDevices = () => query('UPDATE "Devices" SET "IsConnected" = false');
 
+export const getAllDevicesWithSheets = async () => {
+    const result = await query('SELECT * FROM "Devices" ORDER BY "Devices"."Id"')
+    const sheets = await query('SELECT * FROM "Sheets" ORDER BY "Sheets"."Id"')
+
+    const devices = result.rows.map(row => {
+        return Object.assign(row, { Sheets: sheets.rows.filter(item => item.DeviceId === row.Id)})
+    })
+    return Result.Success(devices)
+}
 export const setConnectStatus = (deviceIp, status) => query(`UPDATE "Devices" SET "IsConnected" = ${status ? "true" : "false"} WHERE "Ip" = '${deviceIp}'`);
 
 export const getSheetsByDevice = (deviceId) => query(`SELECT * FROM "Sheets" WHERE "Sheets"."DeviceId" = ${deviceId}`)

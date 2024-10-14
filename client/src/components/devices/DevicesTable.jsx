@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Space, Table, Tag, Popconfirm, Modal, Tooltip } from "antd";
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
@@ -113,7 +113,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
 
   const { setLoading } = useLoading();
   const submitUserFormRef = useRef();
-  
+
   return (
     <>
       <Modal
@@ -142,13 +142,38 @@ export default function DevicesTable({ sendJsonMessage, source }) {
         rowKey={"Id"}
         expandable={{
           expandedRowRender: (record) => (
-            <p
-              style={{
-                margin: 0,
-              }}
-            >
-              {record.Sheets}
-            </p>
+            // <Space direction="vertical">
+            // <Space>
+            //   <label>Sheet Name</label>
+            //   <label>Document Id</label>
+            // </Space>
+            // <Space direction="vertical">
+            //   {record.Sheets.map(sheet => (
+            //     <Space>
+            //       <p>{sheet.SheetName}</p>  
+            //       <p>{sheet.DocumentId}</p>  
+            //     </Space>
+            //   ))}
+            // </Space>
+            // </Space>
+            <table>
+              <thead>
+                <tr>
+                  <th>Sheet Name</th>
+                  <th>Document Id</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  record.Sheets.map(sheet => (
+                    <tr>
+                      <td>{sheet.SheetName}</td>
+                      <td>{sheet.DocumentId}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
           ),
           showExpandColumn: false,
           defaultExpandAllRows: true,

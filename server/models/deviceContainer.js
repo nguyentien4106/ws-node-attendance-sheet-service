@@ -14,8 +14,15 @@ import {
   initSheets,
   isSheetsValid,
 } from "../services/dataService.js";
-import { insertAttendances, insertNewAtt } from "../services/attendanceService.js";
-import { getAllUsers, insertNewUsers, removeUser } from "../services/userService.js";
+import {
+  insertAttendances,
+  insertNewAtt,
+} from "../services/attendanceService.js";
+import {
+  getAllUsers,
+  insertNewUsers,
+  removeUser,
+} from "../services/userService.js";
 import { handleRealTimeData } from "../helper/dataHelper.js";
 import { getResponse } from "./response.js";
 
@@ -109,7 +116,7 @@ export class DeviceContainer {
 
       const connect = async () => {
         success = await deviceSDK.createSocket();
-        console.log('device connect', deviceSDK)
+        console.log("device connect", deviceSDK);
         await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
           const insertResult = await handleRealTimeData(realTimeLog, device.Id);
           console.log("handle data result: ", insertResult);
@@ -210,15 +217,15 @@ export class DeviceContainer {
     };
     // is not being connected
     if (!deviceSDK.ztcp.socket) {
-      return await action()
+      return await action();
     }
 
     // is being connected
-    console.log(' ready to disconnected')
+    console.log(" ready to disconnected");
 
     const result = await deviceSDK.disconnect();
 
-    console.log('disconnected', result)
+    console.log("disconnected", result);
     if (result) {
       logger.info("Disconnect successfully!");
       return await action();
@@ -281,8 +288,8 @@ export class DeviceContainer {
 
       try {
         const users = await deviceSDK.getUsers();
-        const lastUid = Math.max(...users.data.map(item => +item.uid))
-        console.log(lastUid)
+        const lastUid = Math.max(...users.data.map((item) => +item.uid));
+        console.log(lastUid);
         const addDBResult = await insertNewUsers(
           [Object.assign(user, { cardno: 0, uid: lastUid + 1 })],
           deviceSDK.ip,
@@ -343,9 +350,9 @@ export class DeviceContainer {
       return Result.Fail(500, UNCONNECTED_ERR_MSG);
     }
     try {
-        await deviceSDK.deleteUser(+data.uid);
-        await removeUser(data.uid, data.deviceIp)
-        return Result.Success(data);
+      await deviceSDK.deleteUser(+data.uid);
+      await removeUser(data.uid, data.deviceIp);
+      return Result.Success(data);
     } catch (err) {
       console.error(err);
       return Result.Fail(500, err.message, data);
@@ -353,34 +360,40 @@ export class DeviceContainer {
   }
 
   async syncData(data, ws) {
-  //   console.log('syncData 1', data)
-  //   const delay = ms => new Promise(res => setTimeout(res, ms));
-  //   const atts = await 
-  //   await delay(10000)
-  //   console.log('finish')
-  //   ws.send(
-  //     getResponse({
-  //         type: "SyncData",
-  //         data: "Done 2",
-  //     })
-  // );
+    //   console.log('syncData 1', data)
+    //   const delay = ms => new Promise(res => setTimeout(res, ms));
+    //   const atts = await
+    //   await delay(10000)
+    //   console.log('finish')
+    //   ws.send(
+    //     getResponse({
+    //         type: "SyncData",
+    //         data: "Done 2",
+    //     })
+    // );
 
-  const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
+    const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
 
     if (!deviceSDK || !deviceSDK.ztcp.socket) {
       logger.info(`Device with IP = ${data.Ip} was not connected`);
       return Result.Fail(500, UNCONNECTED_ERR_MSG);
     }
     try {
-        const atts = await deviceSDK.getAttendances()
-        const users = await deviceSDK.getUsers();
+      const atts = await deviceSDK.getAttendances();
+      const users = await deviceSDK.getUsers();
 
-        await insertAttendances(atts.data, users.data)
-        return Result.Success(data);
+      await insertAttendances(atts.data, users.data);
+      ws.send(
+        getResponse({
+          type: "SyncData",
+          data: Result.Success(data),
+        })
+      );
+
+      return Result.Success(data);
     } catch (err) {
       console.error(err);
       return Result.Fail(500, err.message, data);
     }
   }
-  
 }
