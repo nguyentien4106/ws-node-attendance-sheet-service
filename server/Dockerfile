@@ -11,7 +11,7 @@ RUN npm install
 COPY . ./
 
 # Expose port (make sure this matches your WebSocket port)
-EXPOSE 3000
+EXPOSE 3002
 
 # Run the server
 CMD ["npm", "start"]

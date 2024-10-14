@@ -21,7 +21,7 @@ const insertDB = async (log) => {
 };
 
 const insertToGGSheet = async (rows, deviceId) => {
-    const sheetRows = rows.map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.VerifyDate])
+    const sheetRows = rows.map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, item.VerifyDate])
     try {
         const sheets = await getSheets(deviceId);
         const sheetServices = await initSheets(sheets.rows);

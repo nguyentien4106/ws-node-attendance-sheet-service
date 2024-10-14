@@ -22,26 +22,36 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d
     entrypoint: ["/docker-entrypoint-initdb.d/restore.sh"]  # Run the restore script
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Ti100600@
-      POSTGRES_DB: attdb
     restart: "no"
-
 
   server:
     build: ./server
+    image: nguyentien0620/server
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Ti100600@
       POSTGRES_DATABASE: attdb
       POSTGRES_PORT: 5432
       POSTGRES_HOST: postgres
+      SERVER_HOST: 3002
     depends_on:
       - postgres
       - db-restore
     ports:
-      - "3002:3000"
+      - "3002:3002"
     volumes:
       - ./server:/app
     command: "npm run start"  # Adjust based on your server start command
+    platform: linux/arm64/v8
+
+  client:
+    build: ./client
+    image: nguyentien0620/client
+    environment:
+      VITE_WS_URL: ws://127.0.0.1:3002
+    depends_on:
+      - postgres
+      - db-restore
+    ports:
+      - "3001:3001"
+    platform: linux/arm64/v8

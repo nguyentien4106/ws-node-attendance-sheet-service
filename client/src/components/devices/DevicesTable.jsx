@@ -50,7 +50,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
       render: (_, record) => (
         <Space size="middle">
           <Popconfirm
-            title={`${record.Name} - ${record.Ip}`}
+            title={`${record?.Name} - ${record?.Ip}`}
             description="Bạn có muốn xóa thiết bị này?"
             onConfirm={(e) => {
               handleDelete(record);
@@ -59,21 +59,21 @@ export default function DevicesTable({ sendJsonMessage, source }) {
             okText="Yes"
             cancelText="No"
           >
-            <Button danger type="primary" disabled={record.IsConnected}>
+            <Button danger type="primary" disabled={record?.IsConnected}>
               Delete
             </Button>
           </Popconfirm>
           <Button
             onClick={() => handleStatus(record)}
-            danger={record.IsConnected}
+            danger={record?.IsConnected}
             color="#1231da"
           >
-            {record.IsConnected ? "Ngắt kết nối" : "Kết nối"}
+            {record?.IsConnected ? "Ngắt kết nối" : "Kết nối"}
           </Button>
           <Tooltip title="Đồng bộ dữ liệu chấm công từ máy chấm công lên hệ thống." color="#108ee9">
             <Button
               onClick={() => handleSyncData(record)}
-              disabled={!record.IsConnected}
+              disabled={!record?.IsConnected}
             >
               Đồng bộ dữ liệu
             </Button>
