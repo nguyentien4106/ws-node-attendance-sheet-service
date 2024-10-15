@@ -3735,3 +3735,97 @@
 {"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-15T11:12:30.351Z"}
 {"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-15T11:12:30.354Z"}
 {"level":"info","message":"New Client connected","timestamp":"2024-10-15T11:12:33.474Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-15T13:50:28.853Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:50:35.109Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T13:50:50.961Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:50:50.975Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T13:50:58.750Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:50:58.761Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T13:55:41.986Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:55:42.014Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T13:55:42.666Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:55:42.677Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T13:56:41.917Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:57:06.740Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T13:57:30.765Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:57:30.767Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T13:57:32.578Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:57:32.579Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T13:57:49.153Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T13:57:49.167Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-15T14:01:57.841Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:02:00.346Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:02:01.164Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:02:01.167Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:02:03.953Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:02:03.960Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:02:23.920Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:02:23.930Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:02:27.906Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:02:27.920Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:03:09.504Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:03:09.979Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:07:06.834Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:07:06.836Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:07:12.037Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:07:12.039Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:20:30.384Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:20:30.402Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:20:32.472Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:20:32.474Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:20:38.369Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:20:38.371Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:20:56.022Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:20:56.037Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:21:09.914Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:21:09.915Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:22:05.906Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:22:05.933Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:22:14.196Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:22:14.210Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:22:14.911Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:22:14.922Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:22:24.823Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:22:24.840Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:22:25.289Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:22:25.305Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-15T14:24:06.672Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:24:56.212Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:25:03.498Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:25:17.431Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:25:17.531Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:25:20.404Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:25:20.418Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T14:25:24.038Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T14:25:24.050Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-15T15:26:48.293Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:27:52.647Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:28:11.192Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:28:11.211Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:28:11.499Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:28:11.528Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:28:11.895Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:28:11.903Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:28:42.411Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:28:42.425Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:35:36.635Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:35:36.642Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:35:49.225Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:35:49.234Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:37:57.886Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:37:57.901Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:37:59.095Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:37:59.115Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:38:00.052Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:38:00.067Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:38:10.974Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:38:10.999Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:39:19.062Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:39:19.091Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:39:22.549Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:39:22.562Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:39:26.116Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:39:26.133Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:41:26.996Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:41:27.020Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-15T17:26:07.630Z"}

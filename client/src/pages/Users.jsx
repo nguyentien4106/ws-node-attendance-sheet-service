@@ -35,11 +35,11 @@ export default function Users() {
                     value: "All",
                     isSelectOption: true,
                 });
-                setDevices(options);
+                setOptions(options)
+                setDevices(response.data);
             }
 
             if (response.type === RequestTypes.GetUsers) {
-                console.log(response.data)
                 setUsers(response.data);
             }
 
@@ -56,6 +56,13 @@ export default function Users() {
                 }
             }
 
+            if (response.type === RequestTypes.SyncUserData) {
+                if (response.data.isSuccess) {
+                    message.success("Đã tải dữ liệu User lên Sheet.");
+                } else {
+                    message.error(response.data.message);
+                }
+            }
         },
     });
 
@@ -70,6 +77,7 @@ export default function Users() {
     const [devices, setDevices] = useState([]);
     const [deviceSelected, setDeviceSelected] = useState("All");
     const [users, setUsers] = useState([]);
+    const [options, setOptions] = useState([{ label: "All", value: "All" }])
 
     useEffect(() => {
         if (!deviceSelected) {
@@ -97,7 +105,7 @@ export default function Users() {
                             width: 200,
                         }}
                         onChange={(deviceIp) => setDeviceSelected(deviceIp)}
-                        options={devices}
+                        options={options}
                         defaultValue={deviceSelected}
                     ></Select>
                     <Button

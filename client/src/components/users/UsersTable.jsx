@@ -82,7 +82,6 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
     ];
 
     const handleDelete = (record) => {
-        console.log(record)
         setLoading(true)
         sendJsonMessage({
             type: RequestTypes.DeleteUser,

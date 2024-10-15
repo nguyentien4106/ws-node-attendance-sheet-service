@@ -6,12 +6,12 @@ const manageZktecoDevice = async () => {
     try {
         // Create socket connection to the device
         await device.createSocket();
-        // console.log("clear data")
+        // //console.log("clear data")
 
         const atts = await device.getAttendances()
-        console.log('atts', atts)
+        //console.log('atts', atts)
         const users = await device.getUsers()
-        console.log('atts', users)
+        //console.log('atts', users)
 
         await device.disconnect();
     } catch (error) {

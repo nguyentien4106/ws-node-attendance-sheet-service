@@ -4,7 +4,7 @@ import { logger } from "../config/logger.js";
 const deviceContainer = new DeviceContainer();
 
 deviceContainer.initAll().then((res) => {
-  console.log("init All", res);
+  console.log("init All ", res);
 });
 
 export const onConnection = (ws) => {

@@ -49,11 +49,6 @@ export default function Attendances() {
     }, []);
 
     const submit = () => {
-        console.log({
-            deviceId: deviceId,
-            fromDate: dateRange[0].format(dateFormat),
-            toDate: dateRange[1].format(dateFormat),
-        })
         sendJsonMessage({
             type: RequestTypes.GetAttendances,
             data: {

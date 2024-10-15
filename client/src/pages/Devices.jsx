@@ -98,7 +98,6 @@ export default function Devices() {
             }
 
             if(response.type === "GetDevicesSheets"){
-                console.log('res', response)
                 setDevices(response.data.data);
 
             }

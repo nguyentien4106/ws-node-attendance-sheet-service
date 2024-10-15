@@ -28,10 +28,10 @@ const UserInformationForm = ({
     const [form] = Form.useForm();
     const { setLoading } = useLoading();
 
+    console.log(devices)
     const onFinish = (values) => {
         setLoading(true);
         setOpen(false);
-        console.log(values);
         sendJsonMessage({
             type: RequestTypes.AddUser,
             data: values,

@@ -54,15 +54,10 @@ export const initSheets = async (sheets) => {
             const doc = new GoogleSpreadsheet(sheet.DocumentId, serviceAccountAuth);
     
             await doc.loadInfo(); // loads document properties and worksheets
-            console.log('sheetsByTitle', doc.sheetsByTitle)
-            // const sheet = doc.sheetsByIndex[0]; // or use `doc.sheetsById[id]` or `doc.sheetsByTitle[title]`
             if(!(sheet.SheetName in doc.sheetsByTitle)){
                 const newSheet = await doc.addSheet({ title: sheet.SheetName })
-                newSheet.loadHeaderRow()
-                // newSheet.addRow(["", "", ""])
             }
             const sheetService = doc.sheetsByTitle[sheet.SheetName]
-            // console.log('sheet', sheetService)
             sheetServices.push(sheetService)
 
         } catch (err) {
@@ -75,8 +70,6 @@ export const initSheets = async (sheets) => {
 
 export const appendRow = async (sheetServices, rows) => {
     for(const sheet of sheetServices){
-        console.log('sheet', sheet)
         const success = await sheet.addRows(rows);
-        console.log('successs', success)
     }
 }

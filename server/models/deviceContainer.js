@@ -132,13 +132,12 @@ export class DeviceContainer {
 
             const connect = async () => {
                 success = await deviceSDK.createSocket();
-                console.log("device connect", deviceSDK);
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
                     const insertResult = await handleRealTimeData(
                         realTimeLog,
                         device.Id
                     );
-                    console.log("handle data result: ", insertResult);
+                    console.log("handle realtime data result: ", insertResult);
                 });
                 setConnectStatus(device.Ip, success);
 
@@ -188,7 +187,6 @@ export class DeviceContainer {
     async removeDevice(device) {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === device.Ip);
 
-        console.log("device", deviceSDK);
         if (!deviceSDK) {
             logger.info("Didn't find any device with IP = " + device.Ip);
             return Result.Fail(
@@ -210,7 +208,6 @@ export class DeviceContainer {
         const action = async () => {
             try {
                 const indexSDK = this.deviceSDKs.indexOf(deviceSDK);
-                console.log("item", indexSDK);
                 if (indexSDK > -1) {
                     this.deviceSDKs.splice(indexSDK, 1);
                 }
@@ -221,7 +218,8 @@ export class DeviceContainer {
                     ? Result.Success(device)
                     : Result.Fail(500, "Fail to remove", device);
             } catch (err) {
-                console.log(err);
+                console.log(err.message);
+                return Result.Fail(500, err.message, device)
             }
         };
         // is not being connected
@@ -259,7 +257,6 @@ export class DeviceContainer {
     }
 
     async disconnectAll() {
-        console.log("Disconnect All Devices");
         for (let deviceSDK of this.deviceSDKs) {
             console.log("disconnect " + deviceSDK.ip);
 
@@ -301,7 +298,7 @@ export class DeviceContainer {
                 const lastUid = Math.max(
                     ...users.data.map((item) => +item.uid)
                 );
-                console.log(lastUid);
+
                 const addDBResult = await insertNewUsers(
                     [Object.assign(user, { cardno: 0, uid: lastUid + 1 })],
                     deviceSDK.ip,
@@ -317,7 +314,7 @@ export class DeviceContainer {
 
                 result.push({ addDBResult: addDBResult.rowCount, res });
             } catch (err) {
-                console.log(err);
+                console.log(err.message);
                 return Result.Fail(500, err, user);
             }
         }
@@ -341,15 +338,13 @@ export class DeviceContainer {
         }
 
         try {
-            console.log("getAttendances", deviceSDK);
             const result = await deviceSDK.getAttendances((e) => {
-                console.log("e", e);
             });
             console.log(result);
 
             return Result.Success(result);
         } catch (err) {
-            console.log(err);
+            console.log(err.message);
             return Result.Fail(500, err, deviceIp);
         }
     }

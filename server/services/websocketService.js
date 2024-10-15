@@ -12,44 +12,35 @@ import { getAttendances } from "./attendanceService.js";
 import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
 import { appendRow, initSheets } from "./dataService.js";
 
-const c = new DeviceContainer();
-// c.addDevice()
-// c.removeDevice()
 const addDevice = (device, container) => {
     return container.addDevice(device);
 };
 
 const removeDevice = (device, container) => {
-    console.log("removeDevice", device);
     return container.removeDevice(device);
 };
 
 const connectDevice = (device, container) => {
-    console.log("connect", device);
 
     return container.connectDevice(device);
 };
 
 const disconnectDevice = (device, container) => {
-    console.log("disconnectDevice", device);
 
     return container.disconnectDevice(device);
 };
 
 const addUser = (user, container) => {
-    console.log("adduser", user);
 
     return container.addUser(user);
 };
 
 const deleteUser = (data, container) => {
-    console.log("deleteUser", data);
 
     return container.deleteUser(data);
 };
 
 const syncData = (data, container, ws) => {
-    console.log("syncData", data);
 
     return container.syncData(data, ws)
 } 
@@ -114,7 +105,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
             case RequestTypes.ConnectDevice:
                 connectDevice(request.data, deviceContainer)
                     .then((res) => {
-                        console.log("RequestTypes.ConnectDevice ", res);
                         ws.send(
                             getResponse({
                                 type: request.type,
@@ -128,7 +118,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
             case RequestTypes.DisconnectDevice:
                 disconnectDevice(request.data, deviceContainer)
                     .then((res) => {
-                        console.log("RequestTypes.DisconnectDevice ", res);
                         ws.send(
                             getResponse({
                                 type: request.type,

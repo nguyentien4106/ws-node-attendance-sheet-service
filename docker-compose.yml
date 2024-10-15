@@ -9,10 +9,12 @@ services:
       POSTGRES_DB: attdb
     ports:
       - "5432:5432"
+    platform: linux/arm64/v8
+    
 
   server:
     build: ./server
-    image: nguyentien0620/server
+    image: nguyentien0620/server-arm
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Ti100600@
@@ -27,15 +29,15 @@ services:
     volumes:
       - ./server:/app
     command: "npm run start"  # Adjust based on your server start command
-    # platform: linux/arm64/v8
+    platform: linux/arm64/v8
 
   client:
     build: ./client
-    image: nguyentien0620/client
+    image: nguyentien0620/client-arm
     environment:
       VITE_WS_URL: ws://127.0.0.1:3002
     depends_on:
       - postgres
     ports:
       - "3001:3001"
-    # platform: linux/arm64/v8
+    platform: linux/arm64/v8

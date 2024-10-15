@@ -30,7 +30,7 @@ const SyncForm = ({
     const { setLoading } = useLoading();
 
     const onFinish = (values) => {
-        setLoading(false)
+        setLoading(true)
         sendJsonMessage({
             type: RequestTypes.SyncUserData,
             data: {
@@ -38,6 +38,7 @@ const SyncForm = ({
                 users: users
             },
         });
+        setOpen(0)
     };
 
     const onReset = () => {
