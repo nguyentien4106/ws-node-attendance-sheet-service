@@ -7,22 +7,14 @@ services:
       POSTGRES_PASSWORD: Ti100600@
       POSTGRES_DB: attdb
     volumes:
-      - ./db:/docker-entrypoint-initdb.d  # Mount db folder with SQL backup file
+      - ./restore.sh:/docker-entrypoint-initdb.d/restore.sh  # Mount the init.sh script
+      - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql  # Mount the backup.sql file
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres --password Ti100600@"]
-      interval: 10s
-      retries: 5
-
-  db-restore:
-    image: postgres  # Use PostgreSQL image to run the restore script
-    depends_on:
-      - postgres
-    volumes:
-      - ./db:/docker-entrypoint-initdb.d
-    entrypoint: ["/docker-entrypoint-initdb.d/restore.sh"]  # Run the restore script
-    restart: "no"
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U postgres --password Ti100600@"]
+    #   interval: 10s
+    #   retries: 5
 
   server:
     build: ./server
@@ -36,13 +28,12 @@ services:
       SERVER_HOST: 3002
     depends_on:
       - postgres
-      - db-restore
     ports:
       - "3002:3002"
     volumes:
       - ./server:/app
     command: "npm run start"  # Adjust based on your server start command
-    platform: linux/arm64/v8
+    # platform: linux/arm64/v8
 
   client:
     build: ./client
@@ -51,7 +42,6 @@ services:
       VITE_WS_URL: ws://127.0.0.1:3002
     depends_on:
       - postgres
-      - db-restore
     ports:
       - "3001:3001"
-    platform: linux/arm64/v8
+    # platform: linux/arm64/v8
