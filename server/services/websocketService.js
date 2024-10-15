@@ -10,6 +10,7 @@ import { Result } from "../models/common.js";
 import { getAllUsers } from "./userService.js";
 import { getAttendances } from "./attendanceService.js";
 import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
+import { appendRow, initSheets } from "./dataService.js";
 
 const c = new DeviceContainer();
 // c.addDevice()
@@ -53,13 +54,39 @@ const syncData = (data, container, ws) => {
     return container.syncData(data, ws)
 } 
 
+/*
+
+{
+    "Id": 4,
+    "Name": "nguyenvantien4",
+    "Password": "123456",
+    "Role": 3,
+    "CardNo": "0",
+    "DisplayName": "Nguyễn Văn Tiến 4",
+    "DeviceIp": "192.168.1.201",
+    "UID": 1,
+    "UserId": "123459",
+    "DeviceName": "Cổng chính"
+}
+    */
+const syncUserData = async (data) => {
+    try{
+        const rows = data.users.map(item => [item.Id, item.Name, item.Password, item.CardNo, item.DisplayName, item.DeviceIp, item.UID, item.UserId, item.DeviceName])
+        const sheetServices = await initSheets([data.sheet])
+        await appendRow(sheetServices, rows);
+
+        return Result.Success(data)
+    }
+    catch(err) {
+        return Result.Fail(500, err.message, data)
+    }
+
+}
+
 export const handleMessage = (ws, message, deviceContainer) => {
     const request = JSON.parse(message);
     console.log("Received message:", request);
 
-    // if(request.type.endsWith("Device")){
-    //     handleDeviceRequest(request, deviceContainer)
-    // }
     try {
         switch (request.type) {
             case RequestTypes.AddDevice:
@@ -82,9 +109,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 });
-                break;
-
-            case RequestTypes.UpdateDevice:
                 break;
 
             case RequestTypes.ConnectDevice:
@@ -116,16 +140,15 @@ export const handleMessage = (ws, message, deviceContainer) => {
                 break;
 
             case RequestTypes.GetUsers:
-                deviceContainer.getUsers(request.data).then((users) => {
+                getAllUsers(request.data).then(res => {
                     ws.send(
                         getResponse({
                             type: request.type,
-                            data: users,
+                            data: res.rows,
                         })
                     );
-                }).catch(err => {
-                    console.log(err)
-                });
+                })
+                
                 break;
 
             case RequestTypes.GetDevices:
@@ -167,7 +190,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 })
-                // deviceContainer.get
                 break;
 
             case RequestTypes.DeleteUser:
@@ -206,6 +228,17 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 })                
+                break;
+                
+            case RequestTypes.SyncUserData:
+                syncUserData(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res,
+                        })
+                    );
+                })
                 break;
         }
     } catch (err) {

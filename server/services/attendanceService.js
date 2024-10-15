@@ -1,19 +1,5 @@
 import { query, queryFormat } from "../config/db.js";
 
-export const insertNewAtt = (obj) => query(`INSERT INTO "Attendances"(
-	"EmployeeId", "DeviceId", "VerifyDate", "DeviceName")
-	VALUES ($1, $2, $3, $4)`, obj)
-
-  /*
-      {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sat Oct 12 2024 16:50:35 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    */
 export const insertAttendances = (attendances, users) => {
   const getUser = (userId, uid) => {
     const result = users.filter(item => item.uid === uid && item.userId === userId)
@@ -37,7 +23,6 @@ export const insertAttendances = (attendances, users) => {
 export const insertAttendance = (log) => {
     return query(
         `
-
         WITH display_name as (
             SELECT "Users"."Name" as "Name", "Users"."DisplayName" as "UserName", "Devices"."Name" as "DeviceName", "Devices"."Id" as "DeviceId" 
             FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip" 

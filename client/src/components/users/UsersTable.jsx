@@ -2,10 +2,16 @@ import { Button, Space, Table, Popconfirm } from 'antd'
 import React from 'react'
 import { RequestTypes } from '../../constants/requestType';
 import { useLoading } from '../../context/LoadingContext';
+import { UserRoles } from '../../constants/userRoles';
 
 export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
     const columns = [
         {
+            title: "ID",
+            dataIndex: "Id",
+            key: "Id",
+            render: (text) => <a>{text}</a>,
+        },{
             title: "UID",
             dataIndex: "UID",
             key: "UID",
@@ -15,6 +21,18 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
             title: "Mã nhân viên",
             dataIndex: "UserId",
             key: "userId",
+        },
+        {
+            title: "Quyền",
+            dataIndex: "Role",
+            key: "Role",
+            render: (value) => {
+                const role = UserRoles.filter(item => item.value === value)
+                if(role.length){
+                    return <p>{role[0].text}</p>
+                }
+                return <p>{"Nguời dùng"}</p>
+            }
         },
         {
             title: "IP thiết bị",

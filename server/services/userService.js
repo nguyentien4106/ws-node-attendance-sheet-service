@@ -1,17 +1,37 @@
 import { query, queryFormat } from "../config/db.js";
 
 export const insertNewUsers = (users, deviceIp, displayName) => {
-	const values = users.map(item => [item.uid, item.name, item.password, item.role, item.cardno, displayName ?? item.name, item.userId, deviceIp])
-	
-    return queryFormat(`INSERT INTO public."Users"("UID", "Name", "Password", "Role", "CardNo", "DisplayName", "UserId", "DeviceIp")`, values)
-}
+    const values = users.map((item) => [
+        item.uid,
+        item.name,
+        item.password,
+        item.role,
+        item.cardno,
+        displayName ?? item.name,
+        item.userId,
+        deviceIp,
+    ]);
 
-export const getAllUsers = (deviceIp) => query(`SELECT "Users".*, "Devices"."Name" as "DeviceName" 
-FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
-WHERE "Users"."DeviceIp" = '${deviceIp}'
-ORDER BY "Users"."Id" DESC`)
+    return queryFormat(
+        `INSERT INTO public."Users"("UID", "Name", "Password", "Role", "CardNo", "DisplayName", "UserId", "DeviceIp")`,
+        values
+    );
+};
 
-export const getUID = (deviceIp) => query(`SELECT "UID" FROM public."Users" WHERE "DeviceIp" = '${deviceIp}' ORDER BY "UID" DESC LIMIT 1`)
+export const getAllUsers = (deviceIp) => {
+    const text = `SELECT "Users".*, "Devices"."Name" as "DeviceName" 
+        FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
+        ${deviceIp !== "All" ? `WHERE "Users"."DeviceIp" = '${deviceIp}'` : ""}
+        ORDER BY "Users"."Id" DESC`;
+        
+    return query(text);
+};
 
-export const removeUser = (uid, deviceIp) => query(`DELETE FROM public."Users"
-	WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}';`)
+export const getUID = (deviceIp) =>
+    query(
+        `SELECT "UID" FROM public."Users" WHERE "DeviceIp" = '${deviceIp}' ORDER BY "UID" DESC LIMIT 1`
+    );
+
+export const removeUser = (uid, deviceIp) =>
+    query(`DELETE FROM public."Users"
+	WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}';`);

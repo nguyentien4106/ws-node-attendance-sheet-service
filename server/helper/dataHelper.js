@@ -33,3 +33,7 @@ const insertToGGSheet = async (rows, deviceId) => {
         return Result.Fail(500, err.message, { sheetRows, deviceId });
     }
 };
+
+export const handleUsers = async (users) => {
+    
+}
