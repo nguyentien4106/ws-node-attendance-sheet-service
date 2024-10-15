@@ -1,20 +1,14 @@
 version: '3.8'
 services:
   postgres:
-    image: postgres
+    build: ./db
+    image: nguyentien0620/postgres-init
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Ti100600@
       POSTGRES_DB: attdb
-    volumes:
-      - ./restore.sh:/docker-entrypoint-initdb.d/restore.sh  # Mount the init.sh script
-      - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql  # Mount the backup.sql file
     ports:
       - "5432:5432"
-    # healthcheck:
-    #   test: ["CMD-SHELL", "pg_isready -U postgres --password Ti100600@"]
-    #   interval: 10s
-    #   retries: 5
 
   server:
     build: ./server
