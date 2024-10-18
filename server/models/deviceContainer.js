@@ -393,4 +393,27 @@ export class DeviceContainer {
             return Result.Fail(500, err.message, data);
         }
     }
+
+    async ping(wss){
+        for(const deviceSDK of this.deviceSDKs){
+            try{
+                const info = await deviceSDK.getPIN()
+                console.log('connected')
+            }
+            catch(err) {
+                console.log('disconnected')
+
+                await setConnectStatus(deviceSDK.ip, false);
+                wss.clients.forEach(function each(client) {
+                    client.send(getResponse({
+                        type: "Ping",
+                        data: {
+                            deviceIp: deviceSDK.ip,
+                            status: false
+                        }
+                    }));
+                 });
+            }
+        }
+    }
 }

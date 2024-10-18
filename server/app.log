@@ -3829,3 +3829,50 @@
 {"level":"info","message":"Client disconnected","timestamp":"2024-10-15T15:41:26.996Z"}
 {"level":"info","message":"New Client connected","timestamp":"2024-10-15T15:41:27.020Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-10-15T17:26:07.630Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T09:33:17.697Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T09:33:17.705Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T09:33:57.877Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-18T09:34:06.670Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T09:34:06.694Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T09:36:19.593Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T09:36:19.595Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T09:36:35.664Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-18T09:36:38.093Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T09:36:38.134Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T09:36:59.995Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T09:36:59.997Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T09:37:01.697Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-18T09:37:02.386Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T09:37:02.670Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T09:37:20.976Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T09:37:20.978Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T09:37:27.287Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:19:39.767Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:19:39.769Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T10:19:42.477Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:21:48.193Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:21:48.196Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:23:12.914Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:23:12.916Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T10:23:17.519Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T10:23:17.550Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:24:00.928Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:24:00.930Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T10:24:29.500Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T10:24:29.519Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:24:58.614Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:24:58.616Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:25:28.619Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:25:28.621Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:26:07.719Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:26:07.721Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:28:33.433Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:28:33.435Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:31:27.115Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:31:27.117Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-10-18T10:33:31.855Z"}
+{"level":"info","message":"Added successfully device 192.168.1.235 into container","timestamp":"2024-10-18T10:33:31.857Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T10:33:36.570Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T10:33:36.591Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-10-18T10:33:50.336Z"}
+{"level":"info","message":"New Client connected","timestamp":"2024-10-18T10:33:50.348Z"}
