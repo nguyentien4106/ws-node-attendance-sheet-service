@@ -9,14 +9,14 @@ export const insertAttendances = (attendances, users) => {
 	const values = attendances.map(item => {
     const user = getUser(item.user_id, item.sn)
     if(!user) {
-      return [-1, new Date(item.record_time).toLocaleString(), "DeviceName: " + item.ip, "UserName: " + item.user_id, item.user_id, "Name: " + item.user_id ]
+      return [-1, new Date(item.record_time).toLocaleString(), "DeviceName: " + item.ip, "UserName: " + item.user_id, item.user_id, "Name: " + item.user_id, true ]
     }
     else {
-      return [-1, new Date(item.record_time).toLocaleString(), "DeviceName: " + item.ip, user.name, user.userId, user.name ]
+      return [-1, new Date(item.record_time).toLocaleString(), "DeviceName: " + item.ip, user.name, user.userId, user.name, true]
     }
   })
   
-	return queryFormat(`INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name")`, values)
+	return queryFormat(`INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded")`, values)
 	
 }
 
@@ -30,9 +30,9 @@ export const insertAttendance = (log) => {
         )
  
         INSERT INTO public."Attendances"(
-            "UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name")
+            "UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name", "Uploaded")
 
-            SELECT '${log.userId}', "DeviceId", NOW(), "DeviceName", "UserName", "Name" from display_name RETURNING *
+            SELECT '${log.userId}', "DeviceId", NOW(), "DeviceName", "UserName", "Name", true from display_name RETURNING *
         `
     )
 }
@@ -52,6 +52,11 @@ export const getAttendances = (params) => {
         `);
 }
 
+export const setUploadStatus = (attId, status = false) => {
+  return query(`
+    UPDATE "Attendances" SET "Uploaded" = ${status} where "Id" = ${attId}
+  `)
+}
 
 /*atts {
   data: [

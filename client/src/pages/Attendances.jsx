@@ -3,7 +3,7 @@ import useWebSocket from "react-use-websocket";
 import { useLoading } from "../context/LoadingContext";
 import { RequestTypes } from "../constants/requestType";
 import AttendancesTable from "../components/attendances/AttendancesTable";
-import { Button, DatePicker, Select, Space } from 'antd';
+import { Button, DatePicker, message, Select, Space } from 'antd';
 import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
@@ -24,10 +24,22 @@ export default function Attendances() {
             if (response.type === RequestTypes.GetAttendances) {
                 setAttendances(response.data);
             }
+
             if (response.type === RequestTypes.GetDevices) {
                 const options = response.data.map(item => ({ label: item.Name, value: item.Id }))
                 options.unshift({ label: "All", value: "All", isSelectOption: true})
                 setDevices(options)
+            }
+
+            if (response.type === RequestTypes.SyncLogData) {
+                console.log(response)
+                const data = response.data
+                if(data.isSuccess){
+                    setAttendances(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { Uploaded: true } ) : item))
+                }
+                else {
+                    message.error(data.message)
+                }
             }
         },
     });

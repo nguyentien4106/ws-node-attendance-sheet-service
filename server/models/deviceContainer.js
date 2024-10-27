@@ -21,8 +21,9 @@ import {
 } from "../services/userService.js";
 import { handleRealTimeData } from "../helper/dataHelper.js";
 import { getResponse } from "./response.js";
+import { sendMail } from "../services/emailService.js";
 
-const TIME_OUT = 2200;
+const TIME_OUT = 5500;
 const IN_PORT = 2000;
 
 const UNCONNECTED_ERR_MSG = `Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này.`;
@@ -60,6 +61,7 @@ export class DeviceContainer {
                 TIME_OUT,
                 IN_PORT
             );
+            
             this.deviceSDKs.push(deviceSDK);
             logger.info(
                 `Added successfully device ${device.Ip} into container`
@@ -132,6 +134,8 @@ export class DeviceContainer {
 
             const connect = async () => {
                 success = await deviceSDK.createSocket();
+                const info = await deviceSDK.getPIN()
+                console.log(info)
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
                     const insertResult = await handleRealTimeData(
                         realTimeLog,
@@ -395,24 +399,54 @@ export class DeviceContainer {
     }
 
     async ping(wss){
-        for(const deviceSDK of this.deviceSDKs){
+        const devices = this.deviceSDKs.filter(device => device.connectionType)
+        for(const deviceSDK of devices){
             try{
                 const info = await deviceSDK.getPIN()
-                console.log('connected')
+                console.log("ping result", info)
+                const fd = await deviceSDK.freeData()
+                console.log(fd)
             }
             catch(err) {
-                console.log('disconnected')
-
                 await setConnectStatus(deviceSDK.ip, false);
-                wss.clients.forEach(function each(client) {
-                    client.send(getResponse({
-                        type: "Ping",
-                        data: {
-                            deviceIp: deviceSDK.ip,
-                            status: false
+                const result = await this.connectDevice({ Ip: deviceSDK.ip })
+                if(result.isSuccess){
+                    wss.clients.forEach(function each(client) {
+                        client.send(getResponse({
+                            type: "Ping",
+                            data: {
+                                deviceIp: deviceSDK.ip,
+                                status: true
+                            }
+                        }));
+                     });
+                }
+                else {
+                    sendMail({
+                        subject: "Device Disconnection Alert",
+                        device: {
+                            Name: "Thiết bị máy chấm công",
+                            Ip: deviceSDK.ip
                         }
-                    }));
-                 });
+                    })
+                    wss.clients.forEach(function each(client) {
+                        client.send(getResponse({
+                            type: "Ping",
+                            data: {
+                                deviceIp: deviceSDK.ip,
+                                status: false
+                            }
+                        }));
+                    });
+
+                    this.deviceSDKs = this.deviceSDKs.map(device => {
+                        if(device.ip === deviceSDK.ip){
+                            device.ztcp.socket = null
+                        }
+
+                        return device
+                    })
+                }
             }
         }
     }

@@ -11,6 +11,8 @@ import { getAllUsers } from "./userService.js";
 import { getAttendances } from "./attendanceService.js";
 import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
 import { appendRow, initSheets } from "./dataService.js";
+import { insertToGGSheet } from "../helper/dataHelper.js";
+import { getSettings, updateSettings } from "./settingsService.js";
 
 const addDevice = (device, container) => {
     return container.addDevice(device);
@@ -72,6 +74,29 @@ const syncUserData = async (data) => {
         return Result.Fail(500, err.message, data)
     }
 
+}
+
+const syncLogData = async (data) => {
+    console.log(data)
+
+    try{
+        const result = await insertToGGSheet([data], data.DeviceId)
+        return result.isSuccess ? Result.Success(data) : Result.Fail(500, result.message, data)
+    }
+    catch(err){
+        return Result.Fail(500, err.msg, data)
+    }
+}
+
+const updateEmail = async data => {
+    try{
+        const result = await updateSettings(data)
+
+        return result.rowCount ? Result.Success(data) : Result.Fail(500, "Không thể update settings", data)
+    }
+    catch(err) {
+        return Result.Fail(500, err.message, data)
+    }
 }
 
 export const handleMessage = (ws, message, deviceContainer) => {
@@ -229,6 +254,40 @@ export const handleMessage = (ws, message, deviceContainer) => {
                     );
                 })
                 break;
+
+            case RequestTypes.SyncLogData:
+                syncLogData(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res,
+                        })
+                    );
+                })
+                break;
+
+            case RequestTypes.UpdateEmail:
+                updateEmail(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res,
+                        })
+                    );
+                })
+                break;
+            
+            case RequestTypes.GetSettings:
+                getSettings().then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res.rowCount ? res.rows[0] : { Id: 0, Email: "" },
+                        })
+                    );
+                })
+                break;
+
         }
     } catch (err) {
         console.error(err);

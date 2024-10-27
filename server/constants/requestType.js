@@ -12,5 +12,8 @@ export const RequestTypes = {
     GetAllUsers: "GetAllUsers",
     SyncData: "SyncData",
     GetSheets: "GetSheets",
-    SyncUserData: "SyncUserData"
+    SyncUserData: "SyncUserData",
+    SyncLogData: "SyncLogData",
+    UpdateEmail: "UpdateEmail",
+    GetSettings: "GetSettings"
 }

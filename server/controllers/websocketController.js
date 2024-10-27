@@ -10,11 +10,8 @@ deviceContainer.initAll().then((res) => {
     console.log("init All ", res);
 });
 
-cron.schedule("*/5 * 6-21 * * *", () => {
-    console.log('set up job')
-    deviceContainer.ping(websocket.wss).then(res => {
-        console.log('ping result', res)
-    })
+cron.schedule("*/5 * * * * *", () => {
+    deviceContainer.ping(websocket.wss)
 });
 
 export const onConnection = (ws) => {

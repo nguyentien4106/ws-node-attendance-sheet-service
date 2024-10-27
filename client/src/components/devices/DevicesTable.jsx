@@ -142,20 +142,6 @@ export default function DevicesTable({ sendJsonMessage, source }) {
         rowKey={"Id"}
         expandable={{
           expandedRowRender: (record) => (
-            // <Space direction="vertical">
-            // <Space>
-            //   <label>Sheet Name</label>
-            //   <label>Document Id</label>
-            // </Space>
-            // <Space direction="vertical">
-            //   {record.Sheets.map(sheet => (
-            //     <Space>
-            //       <p>{sheet.SheetName}</p>  
-            //       <p>{sheet.DocumentId}</p>  
-            //     </Space>
-            //   ))}
-            // </Space>
-            // </Space>
             <table>
               <thead>
                 <tr>

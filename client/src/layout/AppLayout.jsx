@@ -48,6 +48,15 @@ const AppLayout = () => {
                 navigate("/Attendances")
             }
         },
+        {
+            key: 'Settings',
+            icon: <DesktopOutlined />,
+            label: 'Settings',
+            onClick: () => {
+                setTab(["Settings"])
+                navigate("/Settings")
+            }
+        },
     ];
 
     return (
