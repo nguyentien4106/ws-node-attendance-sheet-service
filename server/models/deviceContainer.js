@@ -13,6 +13,7 @@ import {
 } from "../services/dataService.js";
 import {
     insertAttendances,
+    syncAttendancesData,
 } from "../services/attendanceService.js";
 import {
     getAllUsers,
@@ -382,8 +383,8 @@ export class DeviceContainer {
         try {
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
-
-            await insertAttendances(atts.data, users.data);
+            await syncAttendancesData(atts.data, users.data)
+            // await insertAttendances(atts.data, users.data);
             ws.send(
                 getResponse({
                     type: "SyncData",
@@ -394,6 +395,12 @@ export class DeviceContainer {
             return Result.Success(data);
         } catch (err) {
             console.error(err);
+            ws.send(
+                getResponse({
+                    type: "SyncData",
+                    data: Result.Fail(500, err.message, data),
+                })
+            );
             return Result.Fail(500, err.message, data);
         }
     }
