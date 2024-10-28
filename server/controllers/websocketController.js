@@ -10,7 +10,7 @@ deviceContainer.initAll().then((res) => {
     console.log("init All ", res);
 });
 
-cron.schedule("*/5 * * * * *", () => {
+cron.schedule("*/30 * * * * *", () => {
     deviceContainer.ping(websocket.wss)
 });
 

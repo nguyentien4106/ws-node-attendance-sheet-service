@@ -1,10 +1,11 @@
-import { Button, Space, Table, Popconfirm } from "antd";
-import React from "react";
+import { Button, Space, Table, Popconfirm, Modal } from "antd";
+import React, { useState } from "react";
 import { RequestTypes } from "../../constants/requestType";
 import { Excel } from "antd-table-saveas-excel";
 import { FileExcelOutlined } from "@ant-design/icons";
 import { renderDateTimeString } from "../../helper/timeHelper";
 import { useLoading } from "../../context/LoadingContext";
+import AttendanceForm from "./AttendanceForm";
 
 export default function AttendancesTable({ attendances, sendJsonMessage }) {
   const deviceNameFilters = [
@@ -95,17 +96,24 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
           </Space>
         ),
     },
+    {
+      title: "Action",
+      key: "Action",
+      render: (record) => {
+        console.log(record)
+        return <Button onClick={() => setEditItem(record)}>Sửa</Button>
+      },
+    },
   ];
 
   const syncLog = (rc) => {
-    console.log(rc)
     setLoading(true)
     sendJsonMessage({
         type: RequestTypes.SyncLogData,
         data: rc
     })
   }
-
+  const [ editItem, setEditItem] = useState(null)
   const { setLoading } = useLoading()
 
   return (
@@ -139,6 +147,13 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
         pageSize: 100,
         pageSizeOptions: [50, 100, 500]
       }}></Table>
+
+      <Modal
+        open={editItem}
+        onCancel={() => setEditItem(null)}
+      >
+        <AttendanceForm attendance={editItem}></AttendanceForm>
+      </Modal>
     </>
   );
 }

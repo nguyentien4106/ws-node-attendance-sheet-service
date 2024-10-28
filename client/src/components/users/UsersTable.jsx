@@ -1,10 +1,10 @@
-import { Button, Space, Table, Popconfirm } from 'antd'
+import { Button, Space, Table, Popconfirm, Modal } from 'antd'
 import React from 'react'
 import { RequestTypes } from '../../constants/requestType';
 import { useLoading } from '../../context/LoadingContext';
 import { UserRoles } from '../../constants/userRoles';
 
-export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
+export default function UsersTable({ users, sendJsonMessage, deviceIp, setOpen }) {
     const columns = [
         {
             title: "ID",
@@ -95,7 +95,9 @@ export default function UsersTable({ users, sendJsonMessage, deviceIp }) {
     const { setLoading } = useLoading()
 
   return (
-    <Table rowKey={"Id"} dataSource={users} columns={columns} bordered rowHoverable pagination={{ pageSize: 100 }}>
-    </Table>
+    <>
+        <Table rowKey={"Id"} dataSource={users} columns={columns} bordered rowHoverable pagination={{ pageSize: 100 }}>
+        </Table>
+    </>
   )
 }

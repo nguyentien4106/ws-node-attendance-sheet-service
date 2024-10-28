@@ -383,8 +383,8 @@ export class DeviceContainer {
         try {
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
-            await syncAttendancesData(atts.data, users.data)
-            // await insertAttendances(atts.data, users.data);
+            const result = await syncAttendancesData(atts.data, users.data)
+            console.log(result.rows)
             ws.send(
                 getResponse({
                     type: "SyncData",

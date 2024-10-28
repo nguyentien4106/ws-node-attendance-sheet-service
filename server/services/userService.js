@@ -35,3 +35,7 @@ export const getUID = (deviceIp) =>
 export const removeUser = (uid, deviceIp) =>
     query(`DELETE FROM public."Users"
 	WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}';`);
+
+export const getUser = (uid, userId) => query(
+    `SELECT * FROM public."Users" WHERE "UID" = '${uid}' AND "UserId" = '${userId}'`
+);

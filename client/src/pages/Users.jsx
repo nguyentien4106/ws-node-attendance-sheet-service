@@ -12,6 +12,7 @@ const OPEN_TYPE = {
     Close: 0,
     AddUser: 1,
     SyncData: 2,
+    EditUser: 3
 };
 
 export default function Users() {
@@ -123,6 +124,7 @@ export default function Users() {
                 deviceIp={deviceSelected}
                 users={users}
                 sendJsonMessage={sendJsonMessage}
+                setOpen={setOpen}
             ></UsersTable>
             <Modal
                 onCancel={() => setOpen(OPEN_TYPE.Close)}

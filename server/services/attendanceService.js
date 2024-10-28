@@ -80,13 +80,18 @@ export const setUploadStatus = (attId, status = false) => {
 
 export const syncAttendancesData = async (attendances, users) => {
     const getUser = (userId, uid) => {
-        const result = users.filter(
+        return users.find(
             (item) => item.uid === uid && item.userId === userId
         );
-        return result.length ? result[0] : null;
     };
 
+    const dbUsers = await getAllUsers("All")
     const queryDevices = await getAllDevices()
+
+    const getDisplayName = (uid, userId, defaultName) => {
+        return dbUsers.rows.find(user => user.UID == uid && user.UserId == userId)?.DisplayName ?? defaultName
+    }
+
     const devices = queryDevices.rows
 
     const getDevice = (ip) => {
@@ -98,32 +103,20 @@ export const syncAttendancesData = async (attendances, users) => {
         const user = getUser(item.user_id, item.sn);
         const device = getDevice(item.ip)
 
-        if (!user) {
-            return [
-                device.Id, 
-                new Date(item.record_time).toLocaleString(),
-                device.Name,
-                "UserName: " + item.user_id,
-                item.user_id,
-                "Name: " + item.user_id,
-                true,
-            ];
-        } else {
-            return [
-                device.Id,
-                new Date(item.record_time).toLocaleString(),
-                device.Name,
-                user.name,
-                user.userId,
-                user.name,
-                true,
-            ];
-        }
+        return [
+            device.Id,
+            new Date(item.record_time).toLocaleString(),
+            device.Name,
+            user?.name ?? "User Deleted: " + item.user_id,
+            item.user_id,
+            user ? getDisplayName(item.sn, item.user_id, user.name) : "User Deleted: " + item.user_id,
+            true,
+        ];
     });
 
     return queryFormat(
         `
-        DELETE FROM "Attendances";
+        DELETE FROM public."Attendances";
         INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded")
         `,
         values
