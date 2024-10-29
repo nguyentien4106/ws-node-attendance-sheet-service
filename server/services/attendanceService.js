@@ -1,4 +1,5 @@
 import { query, queryFormat } from "../config/db.js";
+import { Result } from "../models/common.js";
 import { getAllDevices } from "./deviceService.js";
 import { getAllUsers } from "./userService.js";
 
@@ -79,29 +80,24 @@ export const setUploadStatus = (attId, status = false) => {
 };
 
 export const syncAttendancesData = async (attendances, users) => {
-    const getUser = (userId, uid) => {
-        return users.find(
-            (item) => item.uid === uid && item.userId === userId
+    const dbUsers = await getAllUsers("All");
+    const queryDevices = await getAllDevices();
+
+    const getUser = (userId, uid) => users.find((item) => item.uid === uid && item.userId === userId);
+    const getDisplayName = (uid, userId, defaultName) => {
+        return (
+            dbUsers.rows.find(
+                (user) => user.UID == uid && user.UserId == userId
+            )?.DisplayName ?? defaultName
         );
     };
 
-    const dbUsers = await getAllUsers("All")
-    const queryDevices = await getAllDevices()
-
-    const getDisplayName = (uid, userId, defaultName) => {
-        return dbUsers.rows.find(user => user.UID == uid && user.UserId == userId)?.DisplayName ?? defaultName
-    }
-
-    const devices = queryDevices.rows
-
-    const getDevice = (ip) => {
-        const device = devices.find(item => item.Ip == ip)
-        return device
-    }
+    const devices = queryDevices.rows;
+    const getDevice = (ip) => devices.find((item) => item.Ip == ip)
 
     const values = attendances.map((item) => {
         const user = getUser(item.user_id, item.sn);
-        const device = getDevice(item.ip)
+        const device = getDevice(item.ip);
 
         return [
             device.Id,
@@ -109,20 +105,39 @@ export const syncAttendancesData = async (attendances, users) => {
             device.Name,
             user?.name ?? "User Deleted: " + item.user_id,
             item.user_id,
-            user ? getDisplayName(item.sn, item.user_id, user.name) : "User Deleted: " + item.user_id,
+            user
+                ? getDisplayName(item.sn, item.user_id, user.name)
+                : "User Deleted: " + item.user_id,
             true,
         ];
     });
 
-    return queryFormat(
+    await queryFormat(
         `
-        DELETE FROM public."Attendances";
-        INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded")
+            DELETE FROM public."Attendances";
+            INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded")
         `,
         values
     );
+
+    return values
 };
 
+
+export const updateAttendance = async ({ logId, date }) => {
+    try {
+        const sql = `
+        UPDATE public."Attendances"
+        SET "VerifyDate"='${date}', "Uploaded"= false
+        WHERE "Id" = ${logId};
+    `;
+        const result = await query(sql);
+
+        return result.rowCount ? Result.Success({ logId, date }) : Result.Fail(500, "Đã xảy ra lỗi không mong muốn vui lòng thử lại", { logId, date })
+    } catch (err) {
+        return Result.Fail(500, err.message, { logId, date })
+    }
+};
 /*atts {
   data: [
     {

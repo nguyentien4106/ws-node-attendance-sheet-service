@@ -16,5 +16,7 @@ export const RequestTypes = {
     SyncUserData: "SyncUserData",
     SyncLogData: "SyncLogData",
     UpdateEmail: "UpdateEmail",
-    GetSettings: "GetSettings"
+    GetSettings: "GetSettings",
+    GetUsersByDeviceId: "GetUsersByDeviceId",
+    UpdateLog: "UpdateLog"
 }

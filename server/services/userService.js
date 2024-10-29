@@ -18,7 +18,7 @@ export const insertNewUsers = (users, deviceIp, displayName) => {
     );
 };
 
-export const getAllUsers = (deviceIp) => {
+export const getAllUsers = (deviceIp = "All") => {
     const text = `SELECT "Users".*, "Devices"."Name" as "DeviceName" 
         FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
         ${deviceIp !== "All" ? `WHERE "Users"."DeviceIp" = '${deviceIp}'` : ""}
@@ -26,6 +26,18 @@ export const getAllUsers = (deviceIp) => {
         
     return query(text);
 };
+
+export const getUsersByDeviceId = deviceId => {
+    if(!deviceId) return null
+    const text = `
+        SELECT "Users".*, "Devices"."Name" as "DeviceName" 
+        FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
+        WHERE "Devices"."Id" = ${deviceId}
+        ORDER BY "Users"."Id" DESC
+    `;
+        
+    return query(text);
+}
 
 export const getUID = (deviceIp) =>
     query(

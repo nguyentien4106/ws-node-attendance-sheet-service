@@ -9,6 +9,7 @@ import {
 import { Breadcrumb, Layout, Menu, message, theme } from "antd";
 import Devices from "../pages/Devices";
 import { Outlet, useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png"
 const { Header, Content, Footer, Sider } = Layout;
 
 
@@ -21,6 +22,7 @@ const AppLayout = () => {
     const [msg, contextHolder] = message.useMessage();
     const [tab, setTab] = useState([window.location.pathname.slice(1).trim() ?? "Devices"])
     const items = [
+        
         {
             key: 'Devices',
             icon: <TeamOutlined />,
@@ -72,6 +74,10 @@ const AppLayout = () => {
                 onCollapse={(value) => setCollapsed(value)}
             >
                 <div className="demo-logo-vertical" />
+                <img src={logo} height={70} width={210} className="pointer" style={{ cursor: "pointer" }} onClick={() => {
+                    setTab([""])
+                    navigate("/")
+                }}/>
                 <Menu
                     theme="dark"
                     selectedKeys={tab}

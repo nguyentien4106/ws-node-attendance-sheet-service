@@ -67,18 +67,20 @@ export default function Users() {
         },
     });
 
+    const { setLoading } = useLoading();
+    const [devices, setDevices] = useState([]);
+    const [deviceSelected, setDeviceSelected] = useState("All");
+    const [users, setUsers] = useState([]);
+    const [options, setOptions] = useState([{ label: "All", value: "All" }])
+    const [open, setOpen] = useState(OPEN_TYPE.Close);
+    const submitUserFormRef = useRef();
+
     useEffect(() => {
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.GetDevices,
         });
     }, []);
-
-    const { setLoading } = useLoading();
-    const [devices, setDevices] = useState([]);
-    const [deviceSelected, setDeviceSelected] = useState("All");
-    const [users, setUsers] = useState([]);
-    const [options, setOptions] = useState([{ label: "All", value: "All" }])
 
     useEffect(() => {
         if (!deviceSelected) {
@@ -91,9 +93,6 @@ export default function Users() {
             data: deviceSelected,
         });
     }, [deviceSelected]);
-
-    const [open, setOpen] = useState(OPEN_TYPE.Close);
-    const submitUserFormRef = useRef();
 
     return (
         <div>

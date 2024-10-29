@@ -18,22 +18,6 @@ const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
 
 function App() {
     const { loading } = useLoading()
-    // const { sendJsonMessage } = useWebSocket(WS_URL, {
-    //     onOpen: () => {
-    //         console.log("WebSocket connection established.");
-    //     },
-    //     onClose: () => {
-    //         console.log("on closed");
-    //     },
-    //     onMessage: (event) => {
-    //         const response = JSON.parse(event.data);
-    //         console.log(response)
-    //         if(response.type === "Ping"){
-    //             const data = response.data
-    //             message.error(`${data.deviceIp} đã mất kết nối. Vui lòng kiểm tra lại.`)
-    //         }
-    //     },
-    // });
     return (
         <>
             {

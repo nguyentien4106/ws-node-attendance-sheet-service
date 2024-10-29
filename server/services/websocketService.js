@@ -7,8 +7,8 @@ import { logger } from "../config/logger.js";
 import { RequestTypes } from "../constants/requestType.js";
 import { UserRoles } from "../constants/userRoles.js";
 import { Result } from "../models/common.js";
-import { getAllUsers } from "./userService.js";
-import { getAttendances } from "./attendanceService.js";
+import { getAllUsers, getUsersByDeviceId } from "./userService.js";
+import { getAttendances, updateAttendance } from "./attendanceService.js";
 import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
 import { appendRow, initSheets } from "./dataService.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
@@ -47,6 +47,7 @@ const syncData = (data, container, ws) => {
     return container.syncData(data, ws)
 } 
 
+
 /*
 
 {
@@ -65,8 +66,13 @@ const syncData = (data, container, ws) => {
 const syncUserData = async (data) => {
     try{
         const rows = data.users.map(item => [item.Id, item.Name, item.Password, item.CardNo, item.DisplayName, item.DeviceIp, item.UID, item.UserId, item.DeviceName])
-        const sheetServices = await initSheets([data.sheet])
-        await appendRow(sheetServices, rows);
+        const result = await initSheets([data.sheet])
+
+        if(!result.isSuccess){
+            return result
+        }
+
+        await appendRow(result.data, rows);
 
         return Result.Success(data)
     }
@@ -80,7 +86,9 @@ const syncLogData = async (data) => {
     console.log(data)
 
     try{
-        const result = await insertToGGSheet([data], data.DeviceId)
+        const sheetRows = [data].map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, item.VerifyDate])
+
+        const result = await insertToGGSheet(sheetRows, data.DeviceId)
         return result.isSuccess ? Result.Success(data) : Result.Fail(500, result.message, data)
     }
     catch(err){
@@ -287,7 +295,27 @@ export const handleMessage = (ws, message, deviceContainer) => {
                     );
                 })
                 break;
+            case RequestTypes.GetUsersByDeviceId: 
+                getUsersByDeviceId(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res.rows,
+                        })
+                    );
+                })
+                break;
 
+            case RequestTypes.UpdateLog: 
+                updateAttendance(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res,
+                        })
+                    );
+                })
+                break;
         }
     } catch (err) {
         console.error(err);

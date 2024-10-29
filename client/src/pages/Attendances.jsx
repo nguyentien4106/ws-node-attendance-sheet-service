@@ -5,10 +5,10 @@ import { RequestTypes } from "../constants/requestType";
 import AttendancesTable from "../components/attendances/AttendancesTable";
 import { Button, DatePicker, message, Select, Space } from 'antd';
 import dayjs from 'dayjs';
+import { DATE_FORMAT } from "../constants/common";
 
 const { RangePicker } = DatePicker;
 const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
-const dateFormat = 'YYYY-MM-DD';
 
 export default function Attendances() {
     const { sendJsonMessage } = useWebSocket(WS_URL, {
@@ -21,6 +21,7 @@ export default function Attendances() {
         onMessage: (event) => {
             const response = JSON.parse(event.data);
             setLoading(false);
+            const data = response.data
             if (response.type === RequestTypes.GetAttendances) {
                 setAttendances(response.data);
             }
@@ -32,10 +33,20 @@ export default function Attendances() {
             }
 
             if (response.type === RequestTypes.SyncLogData) {
-                console.log(response)
-                const data = response.data
                 if(data.isSuccess){
                     setAttendances(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { Uploaded: true } ) : item))
+                    message.success("Đồng bộ thành công.")
+                }
+                else {
+                    message.error(data.message)
+                }
+            }
+
+            if (response.type === RequestTypes.UpdateLog) {
+                console.log(data)
+                if(data.isSuccess){
+                    message.success("Update thành công.")
+                    setAttendances(prev => prev.map(item => item.Id === data.data.logId ? Object.assign(item, { VerifyDate: data.data.date, Uploaded: false }) : item))
                 }
                 else {
                     message.error(data.message)
@@ -65,8 +76,8 @@ export default function Attendances() {
             type: RequestTypes.GetAttendances,
             data: {
                 deviceId: deviceId,
-                fromDate: dateRange[0].format(dateFormat),
-                toDate: dateRange[1].format(dateFormat),
+                fromDate: dateRange[0].format(DATE_FORMAT),
+                toDate: dateRange[1].format(DATE_FORMAT),
             },
         });
     }
@@ -75,6 +86,7 @@ export default function Attendances() {
     const [attendances, setAttendances] = useState([]);
     const [dateRange, setDateRange] = useState([dayjs().add(-3, "M"), dayjs()])
     const [devices, setDevices] = useState([])
+    const [users, setUsers] = useState([])
     const [deviceId, setDeviceId] = useState("All")
 
     return (
@@ -84,7 +96,7 @@ export default function Attendances() {
                     <label>Date Range: </label>
                     <RangePicker
                         defaultValue={dateRange}
-                        format={dateFormat}
+                        format={DATE_FORMAT}
                         onChange={value => setDateRange(value)}
                     />
                 </Space>
@@ -98,6 +110,7 @@ export default function Attendances() {
             <AttendancesTable
                 attendances={attendances}
                 sendJsonMessage={sendJsonMessage}
+                devices={devices}
             ></AttendancesTable>
         </div>
     );

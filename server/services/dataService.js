@@ -35,7 +35,6 @@ export const initSheet = async (documentId, sheetName) => {
 
         await doc.loadInfo(); // loads document properties and worksheets
 
-        // const sheet = doc.sheetsByIndex[0]; // or use `doc.sheetsById[id]` or `doc.sheetsByTitle[title]`
         if(!(sheetName in doc.sheetsByTitle)){
             return Result.Success(await doc.addSheet({ title: sheetName }));
         }
@@ -56,16 +55,19 @@ export const initSheets = async (sheets) => {
             await doc.loadInfo(); // loads document properties and worksheets
             if(!(sheet.SheetName in doc.sheetsByTitle)){
                 const newSheet = await doc.addSheet({ title: sheet.SheetName })
+                newSheet.setHeaderRow(["ID", "ID Thiết bị", "Tên thiết bị", "User ID", "Tên trong máy", "Tên hiển thị", "Ngày giờ"], 1)
             }
             const sheetService = doc.sheetsByTitle[sheet.SheetName]
             sheetServices.push(sheetService)
 
         } catch (err) {
-            console.error(`sheet ${sheet.DocumentId} error:`, err)
+            console.error(`sheet ${sheet.DocumentId} error:`, err.message)
+
+            return Result.Fail(500, `Document ${sheet.DocumentId} lỗi: ${err.message}`)
         }
     }
 
-    return sheetServices;
+    return Result.Success(sheetServices);
 }
 
 export const appendRow = async (sheetServices, rows) => {

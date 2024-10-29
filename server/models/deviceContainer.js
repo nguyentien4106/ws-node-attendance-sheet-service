@@ -12,7 +12,6 @@ import {
     isSheetsValid,
 } from "../services/dataService.js";
 import {
-    insertAttendances,
     syncAttendancesData,
 } from "../services/attendanceService.js";
 import {
@@ -20,7 +19,7 @@ import {
     insertNewUsers,
     removeUser,
 } from "../services/userService.js";
-import { handleRealTimeData } from "../helper/dataHelper.js";
+import { handleRealTimeData, handleSyncDataToSheet } from "../helper/dataHelper.js";
 import { getResponse } from "./response.js";
 import { sendMail } from "../services/emailService.js";
 
@@ -383,8 +382,9 @@ export class DeviceContainer {
         try {
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
-            const result = await syncAttendancesData(atts.data, users.data)
-            console.log(result.rows)
+            const attendances = await syncAttendancesData(atts.data, users.data)
+            await handleSyncDataToSheet(attendances, data.Id)
+            
             ws.send(
                 getResponse({
                     type: "SyncData",

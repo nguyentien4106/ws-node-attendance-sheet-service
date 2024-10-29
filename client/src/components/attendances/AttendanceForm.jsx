@@ -1,81 +1,96 @@
-import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
-export default function AttendanceForm() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-  return (
-    <div>
-      {" "}
-      <Form
-        name="edit-attendance"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
-        style={{
-          maxWidth: 1000,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "Please input your username!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+import React, { useEffect } from "react";
+import { Button, Checkbox, DatePicker, Form, Input, Select } from "antd";
+import { RequestTypes } from "../../constants/requestType";
+import dayjs from "dayjs";
+import { useLoading } from "../../context/LoadingContext";
 
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
+export default function AttendanceForm({ attendance, sendJsonMessage, submitRef }) {
+    const [form] = Form.useForm();
+    const { setLoading } = useLoading()
 
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
+    const onFinish = (values) => {
+        setLoading(true)
+        sendJsonMessage({
+            type: RequestTypes.UpdateLog,
+            data: {
+                logId: values.Id,
+                date: dayjs(values.VerifyDate).format()
+            }
+        })
+    };
 
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
-  );
+    return (
+        <div>
+            <Form
+                name="edit-attendance"
+                form={form}
+                labelCol={{
+                    span: 5,
+                }}
+                wrapperCol={{
+                    span: 16,
+                }}
+                style={{
+                    maxWidth: 1000,
+                }}
+                initialValues={attendance}
+                onFinish={onFinish}
+                autoComplete="off"
+            >
+                <Form.Item
+                    label="Id"
+                    name="Id"
+                >
+                    <Input disabled/>
+                </Form.Item>
+
+                <Form.Item
+                    label="Trên thiết bị"
+                    name="DeviceName"
+                >
+                    <Input disabled />
+                </Form.Item>
+
+                <Form.Item
+                    label="Tên trong máy"
+                    name="UserName"
+                >
+                    <Input disabled/>
+                </Form.Item>
+
+                <Form.Item
+                    label="Tên hiển thị"
+                    name="Name"
+                >
+                    <Input disabled/>
+                </Form.Item>
+                <Form.Item
+                    label="Ngày giờ"
+                    name="VerifyDate"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your username!",
+                        },
+                    ]}
+                    getValueFromEvent={(onChange) => dayjs(onChange)}
+                    getValueProps={(i) => ({value: dayjs(i)})}
+                >
+                    <DatePicker showTime></DatePicker>
+                </Form.Item>
+                <Form.Item
+                    wrapperCol={{
+                        offset: 8,
+                        span: 16,
+                    }}
+
+                    hidden
+                >
+                    <Button type="primary" htmlType="submit" ref={submitRef}>
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
+    );
 }
