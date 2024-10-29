@@ -16,4 +16,4 @@ const pool = new Pool({
 
 export const query = (text, params) => pool.query(text, params);
 
-export const queryFormat = (text, values) => pool.query(format(`${text} VALUES %L`, values));
+export const queryFormat = (text, values) => pool.query(format(`${text} VALUES %L RETURNING *;`, values));

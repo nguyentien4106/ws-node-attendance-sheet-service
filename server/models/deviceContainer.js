@@ -22,6 +22,8 @@ import {
 import { handleRealTimeData, handleSyncDataToSheet } from "../helper/dataHelper.js";
 import { getResponse } from "./response.js";
 import { sendMail } from "../services/emailService.js";
+import dayjs from "dayjs";
+import { DATE_TIME_FORMAT } from "../constants/common.js";
 
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
@@ -382,7 +384,8 @@ export class DeviceContainer {
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
             const attendances = await syncAttendancesData(atts.data, users.data)
-            await handleSyncDataToSheet(attendances, data.Id)
+            const rowsData = attendances.map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, dayjs(item.VerifyDate).format(DATE_TIME_FORMAT)])
+            await handleSyncDataToSheet(rowsData, data.Id)
             
             ws.send(
                 getResponse({
@@ -404,14 +407,20 @@ export class DeviceContainer {
         }
     }
 
-    async ping(wss){
+    async ping(wss, counter){
         const devices = this.deviceSDKs.filter(device => device.connectionType)
         for(const deviceSDK of devices){
             try{
                 const info = await deviceSDK.getPIN()
-                console.log("ping result", info)
-                const fd = await deviceSDK.freeData()
-                console.log(fd)
+                if(counter.value === 50){
+                    const fd = await deviceSDK.freeData()
+                    counter.value = 0;
+                }
+                else {
+                    counter.value++;
+                }
+                console.log(counter)
+
             }
             catch(err) {
                 await setConnectStatus(deviceSDK.ip, false);

@@ -112,15 +112,17 @@ export const syncAttendancesData = async (attendances, users) => {
         ];
     });
 
-    await queryFormat(
+    await query('DELETE FROM public."Attendances";')
+    const result = await queryFormat(
         `
-            DELETE FROM public."Attendances";
             INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded")
         `,
         values
     );
 
-    return values
+    console.log('result', result.rowCount)
+
+    return result.rows
 };
 
 

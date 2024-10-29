@@ -47,20 +47,21 @@ export const insertToGGSheet = async (rows, deviceId) => {
 };
 
 export const handleSyncDataToSheet = async (rows, deviceId) => {
+    console.log('rows', rows)
     try {
         const sheets = await getSheets(deviceId);
-        const result = await initSheets(sheets.rows);
+        const sheetServices = await initSheets(sheets.rows);
 
-        if(!result.isSuccess){
-            return result
+        if(!sheetServices.isSuccess){
+            return sheetServices
         }
-        for(const sheet of result.data){
+        for(const sheet of sheetServices.data){
             console.log('clearing rows', sheet.title)
             await sheet.clearRows()
         } 
-        await appendRow(result.data, rows);
+        await appendRow(sheetServices.data, rows);
         for(const row of rows){
-            setUploadStatus(row.Id, true)
+            setUploadStatus(row[0], true)
         }
         return Result.Success({ rows, deviceId })
     } catch (err) {

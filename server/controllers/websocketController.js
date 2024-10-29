@@ -5,13 +5,14 @@ import cron from "node-cron";
 import { websocket } from "../config/websocket.js";
 
 const deviceContainer = new DeviceContainer();
+const counter = { value: 0 }
 
 deviceContainer.initAll().then((res) => {
     console.log("init All ", res);
 });
 
 cron.schedule("*/30 * * * * *", () => {
-    deviceContainer.ping(websocket.wss)
+    deviceContainer.ping(websocket.wss, counter)
 });
 
 export const onConnection = (ws) => {
