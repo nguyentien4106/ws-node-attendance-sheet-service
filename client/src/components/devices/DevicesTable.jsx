@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Space, Table, Tag, Popconfirm, Modal, Tooltip } from "antd";
+import { Button, Space, Table, Tag, Popconfirm, Modal, Tooltip, message } from "antd";
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
 import UserInformationForm from "../users/UserInformationForm";
@@ -84,6 +84,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
   ];
 
   const handleSyncData = (record) => {
+    message.info("Yêu cầu đồng bộ đã được gửi đi. Vui lòng chờ cho tới khi có thông báo mới.")
     sendJsonMessage({
         type: RequestTypes.SyncData,
         data: record,

@@ -13,6 +13,8 @@ import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
 import { appendRow, initSheets } from "./dataService.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
 import { getSettings, updateSettings } from "./settingsService.js";
+import dayjs from "dayjs";
+import { DATE_TIME_FORMAT } from "../constants/common.js";
 
 const addDevice = (device, container) => {
     return container.addDevice(device);
@@ -86,7 +88,7 @@ const syncLogData = async (data) => {
     console.log(data)
 
     try{
-        const sheetRows = [data].map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, item.VerifyDate])
+        const sheetRows = [data].map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, dayjs(item.VerifyDate).format(DATE_TIME_FORMAT)])
 
         const result = await insertToGGSheet(sheetRows, data.DeviceId)
         return result.isSuccess ? Result.Success(data) : Result.Fail(500, result.message, data)

@@ -5,6 +5,8 @@ import { Excel } from "antd-table-saveas-excel";
 import { renderDateTimeString } from "../../helper/timeHelper";
 import { useLoading } from "../../context/LoadingContext";
 import AttendanceForm from "./AttendanceForm";
+import dayjs from "dayjs";
+import { DATE_TIME_FORMAT } from "../../constants/common";
 
 export default function AttendancesTable({ attendances, sendJsonMessage }) {
     const deviceNameFilters = [
@@ -58,7 +60,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             key: "VerifyDate",
             sorter: (a, b) =>
                 Date.parse(a.VerifyDate) - Date.parse(b.VerifyDate),
-            render: (value) => renderDateTimeString(value),
+            render: (value) => dayjs(value).format(DATE_TIME_FORMAT),
         },
         {
             title: "Trạng thái đồng bộ",

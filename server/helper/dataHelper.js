@@ -37,7 +37,7 @@ export const insertToGGSheet = async (rows, deviceId) => {
 
         await appendRow(result.data, rows);
         for(const row of rows){
-            setUploadStatus(row.Id, true)
+            setUploadStatus(row[0], true)
         }
         return Result.Success({ rows, deviceId })
     } catch (err) {

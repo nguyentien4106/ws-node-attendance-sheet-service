@@ -183,7 +183,6 @@ export class DeviceContainer {
 
             return Result.Success(device);
         } catch (err) {
-            console.error(err.message);
             return Result.Fail(500, err, device);
         }
     }

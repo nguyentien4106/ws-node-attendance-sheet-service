@@ -59,7 +59,7 @@ export default function Devices() {
                 }
                 else {
                     const { syscall, code } = data.message.err.err
-                    message.error(`${syscall} ${code}! Please check the information again.`)
+                    message.error(`${syscall} ${code}! Đã có lỗi xảy ra vui lòng thử lại hoặc liên hệ quản trị để xử lý.`)
                 }
             }
 
