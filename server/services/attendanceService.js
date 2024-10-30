@@ -1,4 +1,5 @@
 import { query, queryFormat } from "../config/db.js";
+import { insertToGGSheet } from "../helper/dataHelper.js";
 import { Result } from "../models/common.js";
 import { getAllDevices } from "./deviceService.js";
 import { getAllUsers } from "./userService.js";
@@ -120,8 +121,6 @@ export const syncAttendancesData = async (attendances, users) => {
         values
     );
 
-    console.log('result', result.rowCount)
-
     return result.rows
 };
 
@@ -140,6 +139,24 @@ export const updateAttendance = async ({ logId, date }) => {
         return Result.Fail(500, err.message, { logId, date })
     }
 };
+
+export const deleteAttendance = async (log) => {
+    try {
+        const sql = `
+                        DELETE FROM public."Attendances"
+                        WHERE "Id" = ${log.Id};
+                    `;
+        const result = await query(sql);
+        if(result.rowCount){
+            await insertToGGSheet([[log.Id, "deleted"]], log.DeviceId)
+            return Result.Success(log)
+        }
+
+        return Result.Fail(500, "Đã xảy ra lỗi không mong muốn vui lòng thử lại", log)
+    } catch (err) {
+        return Result.Fail(500, err.message, log)
+    }
+}
 /*atts {
   data: [
     {

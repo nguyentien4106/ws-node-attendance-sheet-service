@@ -52,6 +52,10 @@ export default function Attendances() {
                     message.error(data.message)
                 }
             }
+
+            if (response.type === RequestTypes.DeleteLog) {
+                console.log(data)
+            }
         },
     });
 

@@ -91,9 +91,28 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
         {
             title: "Action",
             key: "Action",
-            render: (record) => {
-                return <Button onClick={() => setEditItem(record)}>Sửa</Button>;
-            },
+            render: (record) => (
+                <Space>
+                    <Button onClick={() => setEditItem(record)}>Sửa</Button>
+                    <Popconfirm
+                        title={`Record ID : ${record?.Id}`}
+                        description="Bạn có muốn xóa record này?"
+                        onConfirm={(e) => {
+                            handleDelete(record);
+                        }}
+                        onCancel={() => {}}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button
+                            danger
+                            type="primary"
+                        >
+                            Xoá
+                        </Button>
+                    </Popconfirm>
+                </Space>
+            ),
         },
     ];
 
@@ -104,6 +123,15 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             data: rc,
         });
     };
+
+    const handleDelete = (rc) => {
+        console.log(rc)
+        setLoading(true)
+        sendJsonMessage({
+            type: RequestTypes.DeleteLog,
+            data: rc
+        })
+    }
     const [editItem, setEditItem] = useState(null);
     const { setLoading } = useLoading();
     const submitRef = useRef();
@@ -150,12 +178,12 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                 onCancel={() => setEditItem(null)}
                 title={
                     <div className="d-flex justify-content-center">
-                        Thông tin record
+                        Thông tin chấm công
                     </div>
                 }
                 onOk={() => {
-                    submitRef.current.click()
-                    setEditItem(null)
+                    submitRef.current.click();
+                    setEditItem(null);
                 }}
             >
                 <AttendanceForm
