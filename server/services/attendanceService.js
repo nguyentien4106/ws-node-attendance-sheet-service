@@ -43,41 +43,43 @@ export const insertAttendances = (attendances, users) => {
     );
 };
 
-export const insertAttendance = (log) => {
+export const insertAttendance = (log, deviceId, uploaded = true) => {
     return query(
         `
         WITH display_name as (
             SELECT "Users"."Name" as "Name", "Users"."DisplayName" as "UserName", "Devices"."Name" as "DeviceName", "Devices"."Id" as "DeviceId" 
             FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip" 
-            WHERE "Users"."UserId" = '${log.userId}'
+            WHERE "Users"."UserId" = '${log.userId}' AND "Devices"."Id" = '${deviceId}'
         )
  
         INSERT INTO public."Attendances"(
             "UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name", "Uploaded")
 
-            SELECT '${log.userId}', "DeviceId", NOW(), "DeviceName", "UserName", "Name", true from display_name RETURNING *
+            SELECT '${log.userId}', "DeviceId", NOW(), "DeviceName", "UserName", "Name", ${uploaded} from display_name RETURNING *
         `
     );
 };
 
 export const getAttendances = (params) => {
     if (params.deviceId == "All") {
-        return query(`SELECT * FROM public."Attendances" 
-                WHERE "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
-                ORDER BY "Id" DESC 
-                `);
+        return query(`
+            SELECT * FROM public."Attendances" 
+            WHERE "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
+            ORDER BY "Id" DESC 
+        `);
     }
 
-    return query(`SELECT * FROM public."Attendances" 
+    return query(`
+        SELECT * FROM public."Attendances" 
         WHERE "DeviceId" = ${params.deviceId} and "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
         ORDER BY "Id" DESC 
-        `);
+    `);
 };
 
 export const setUploadStatus = (attId, status = false) => {
     return query(`
-    UPDATE "Attendances" SET "Uploaded" = ${status} where "Id" = ${attId}
-  `);
+        UPDATE "Attendances" SET "Uploaded" = ${status} where "Id" = ${attId}
+    `);
 };
 
 export const syncAttendancesData = async (attendances, users) => {
@@ -114,8 +116,7 @@ export const syncAttendancesData = async (attendances, users) => {
     });
 
     await query('DELETE FROM public."Attendances";')
-    const result = await queryFormat(
-        `
+    const result = await queryFormat(`
             INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded")
         `,
         values
@@ -128,10 +129,10 @@ export const syncAttendancesData = async (attendances, users) => {
 export const updateAttendance = async ({ logId, date }) => {
     try {
         const sql = `
-        UPDATE public."Attendances"
-        SET "VerifyDate"='${date}', "Uploaded"= false
-        WHERE "Id" = ${logId};
-    `;
+            UPDATE public."Attendances"
+            SET "VerifyDate"='${date}', "Uploaded"= false
+            WHERE "Id" = ${logId};
+        `;
         const result = await query(sql);
 
         return result.rowCount ? Result.Success({ logId, date }) : Result.Fail(500, "Đã xảy ra lỗi không mong muốn vui lòng thử lại", { logId, date })
@@ -143,9 +144,9 @@ export const updateAttendance = async ({ logId, date }) => {
 export const deleteAttendance = async (log) => {
     try {
         const sql = `
-                        DELETE FROM public."Attendances"
-                        WHERE "Id" = ${log.Id};
-                    `;
+            DELETE FROM public."Attendances"
+            WHERE "Id" = ${log.Id};
+        `;
         const result = await query(sql);
         if(result.rowCount){
             await insertToGGSheet([[log.Id, "deleted"]], log.DeviceId)

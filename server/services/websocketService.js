@@ -8,7 +8,7 @@ import { RequestTypes } from "../constants/requestType.js";
 import { UserRoles } from "../constants/userRoles.js";
 import { Result } from "../models/common.js";
 import { getAllUsers, getUsersByDeviceId } from "./userService.js";
-import { deleteAttendance, getAttendances, updateAttendance } from "./attendanceService.js";
+import { deleteAttendance, getAttendances, insertAttendance, updateAttendance } from "./attendanceService.js";
 import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
 import { appendRow, initSheets } from "./dataService.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
@@ -321,6 +321,17 @@ export const handleMessage = (ws, message, deviceContainer) => {
 
             case RequestTypes.DeleteLog: 
                 deleteAttendance(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res,
+                        })
+                    );
+                })
+                break;
+
+            case RequestTypes.AddLog: 
+                insertAttendance({ userId: request.data.UserId }, request.data.DeviceId, false).then(res => {
                     ws.send(
                         getResponse({
                             type: request.type,

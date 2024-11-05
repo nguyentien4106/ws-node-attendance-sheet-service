@@ -4,19 +4,45 @@ import { RequestTypes } from "../../constants/requestType";
 import dayjs from "dayjs";
 import { useLoading } from "../../context/LoadingContext";
 
-export default function AttendanceForm({ attendance, sendJsonMessage, submitRef }) {
+export default function AttendanceForm({
+    attendance,
+    sendJsonMessage,
+    submitRef,
+    devices,
+    users,
+}) {
     const [form] = Form.useForm();
-    const { setLoading } = useLoading()
-    console.log('attendance editting', attendance)
+    const { setLoading } = useLoading();
+    const isEdit = attendance;
+
     const onFinish = (values) => {
-        setLoading(true)
+        setLoading(true);
+        const params = isEdit
+            ? {
+                type: RequestTypes.UpdateLog,
+                data: {
+                    logId: values.Id,
+                    date: dayjs(values.VerifyDate).format(),
+                },
+              }
+            : {
+                type: RequestTypes.AddLog,
+                data: {
+                    DeviceId: values.DeviceName,
+                    UserId: values.UserName.trim()
+                }
+            };
+
+        console.log(params)
+        sendJsonMessage(params);
+    };
+
+    const onDeviceChange = (val) => {
+        setLoading(true);
         sendJsonMessage({
-            type: RequestTypes.UpdateLog,
-            data: {
-                logId: values.Id,
-                date: dayjs(values.VerifyDate).format()
-            }
-        })
+            type: RequestTypes.GetUsersByDeviceId,
+            data: val,
+        });
     };
 
     return (
@@ -25,7 +51,7 @@ export default function AttendanceForm({ attendance, sendJsonMessage, submitRef 
                 name="edit-attendance"
                 form={form}
                 labelCol={{
-                    span: 5,
+                    span: 6,
                 }}
                 wrapperCol={{
                     span: 16,
@@ -37,53 +63,67 @@ export default function AttendanceForm({ attendance, sendJsonMessage, submitRef 
                 onFinish={onFinish}
                 autoComplete="off"
             >
-                <Form.Item
-                    label="Id"
-                    name="Id"
-                >
-                    <Input disabled/>
+                <Form.Item label="Id" name="Id">
+                    <Input disabled />
                 </Form.Item>
 
                 <Form.Item
                     label="Trên thiết bị"
                     name="DeviceName"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Vui lòng chọn thiết bị",
+                        },
+                    ]}
                 >
-                    <Input disabled />
+                    <Select
+                        disabled={isEdit}
+                        onChange={onDeviceChange}
+                        options={devices?.slice(1)}
+                    ></Select>
                 </Form.Item>
 
                 <Form.Item
                     label="Tên trong máy"
                     name="UserName"
-                >
-                    <Input disabled/>
-                </Form.Item>
-
-                <Form.Item
-                    label="Tên hiển thị"
-                    name="Name"
-                >
-                    <Input disabled/>
-                </Form.Item>
-                <Form.Item
-                    label="Ngày giờ"
-                    name="VerifyDate"
                     rules={[
                         {
                             required: true,
-                            message: "Please input your username!",
+                            message: "Vui lòng chọn người chấm công",
                         },
                     ]}
+                >
+                    <Select options={users} disabled={isEdit}></Select>
+                </Form.Item>
+
+                {isEdit && (
+                    <Form.Item
+                        label="Tên hiển thị"
+                        name="Name"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng chọn thiết bị",
+                            },
+                        ]}
+                    >
+                        <Input disabled={isEdit} />
+                    </Form.Item>
+                )}
+                <Form.Item
+                    label="Ngày giờ"
+                    name="VerifyDate"
                     getValueFromEvent={(onChange) => dayjs(onChange)}
-                    getValueProps={(i) => ({value: dayjs(i)})}
+                    getValueProps={(i) => ({ value: dayjs(i) })}
                 >
                     <DatePicker showTime></DatePicker>
                 </Form.Item>
                 <Form.Item
                     wrapperCol={{
-                        offset: 8,
+                        offset: 9,
                         span: 16,
                     }}
-
                     hidden
                 >
                     <Button type="primary" htmlType="submit" ref={submitRef}>

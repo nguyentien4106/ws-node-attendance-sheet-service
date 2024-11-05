@@ -19,5 +19,6 @@ export const RequestTypes = {
     GetSettings: "GetSettings",
     GetUsersByDeviceId: "GetUsersByDeviceId",
     UpdateLog: "UpdateLog",
-    DeleteLog: "DeleteLog"
+    DeleteLog: "DeleteLog",
+    AddLog: "AddLog"
 }

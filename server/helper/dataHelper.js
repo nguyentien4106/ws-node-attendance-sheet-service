@@ -5,7 +5,7 @@ import { getSheets } from "../services/sheetService.js";
 
 export const handleRealTimeData = async (log, deviceId) => {
     try{
-        const dbRow = await insertDB(log)
+        const dbRow = await insertDB(log, deviceId)
         const sheetRows = dbRow.map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, item.VerifyDate])
 
         const sheetRow =  await insertToGGSheet(sheetRows, deviceId);
@@ -21,8 +21,8 @@ export const handleRealTimeData = async (log, deviceId) => {
     }
 };
 
-const insertDB = async (log) => {
-    const result = await insertAttendance(log)
+const insertDB = async (log, deviceId) => {
+    const result = await insertAttendance(log, deviceId)
     return result.rows
 };
 
