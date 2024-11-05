@@ -7,7 +7,7 @@ import { useLoading } from "../../context/LoadingContext";
 export default function AttendanceForm({ attendance, sendJsonMessage, submitRef }) {
     const [form] = Form.useForm();
     const { setLoading } = useLoading()
-
+    console.log('attendance editting', attendance)
     const onFinish = (values) => {
         setLoading(true)
         sendJsonMessage({

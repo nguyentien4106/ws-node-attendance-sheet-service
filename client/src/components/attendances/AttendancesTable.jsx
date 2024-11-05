@@ -1,5 +1,5 @@
 import { Button, Space, Table, Popconfirm, Modal } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RequestTypes } from "../../constants/requestType";
 import { Excel } from "antd-table-saveas-excel";
 import { renderDateTimeString } from "../../helper/timeHelper";
@@ -104,10 +104,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button
-                            danger
-                            type="primary"
-                        >
+                        <Button danger type="primary">
                             Xoá
                         </Button>
                     </Popconfirm>
@@ -117,6 +114,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
     ];
 
     const syncLog = (rc) => {
+        console.log("rc", rc);
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.SyncLogData,
@@ -125,17 +123,20 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
     };
 
     const handleDelete = (rc) => {
-        console.log(rc)
-        setLoading(true)
+        console.log(rc);
+        setLoading(true);
         sendJsonMessage({
             type: RequestTypes.DeleteLog,
-            data: rc
-        })
-    }
+            data: rc,
+        });
+    };
     const [editItem, setEditItem] = useState(null);
     const { setLoading } = useLoading();
     const submitRef = useRef();
 
+    useEffect(() => {
+        console.log("edit item", editItem);
+    }, [editItem]);
     return (
         <>
             <div
@@ -173,25 +174,27 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                 }}
             ></Table>
 
-            <Modal
-                open={editItem}
-                onCancel={() => setEditItem(null)}
-                title={
-                    <div className="d-flex justify-content-center">
-                        Thông tin chấm công
-                    </div>
-                }
-                onOk={() => {
-                    submitRef.current.click();
-                    setEditItem(null);
-                }}
-            >
-                <AttendanceForm
-                    attendance={editItem}
-                    sendJsonMessage={sendJsonMessage}
-                    submitRef={submitRef}
-                ></AttendanceForm>
-            </Modal>
+            {editItem && (
+                <Modal
+                    open={editItem}
+                    onCancel={() => setEditItem(null)}
+                    title={
+                        <div className="d-flex justify-content-center">
+                            Thông tin chấm công
+                        </div>
+                    }
+                    onOk={() => {
+                        submitRef.current.click();
+                        setEditItem(null);
+                    }}
+                >
+                    <AttendanceForm
+                        attendance={editItem}
+                        sendJsonMessage={sendJsonMessage}
+                        submitRef={submitRef}
+                    ></AttendanceForm>
+                </Modal>
+            )}
         </>
     );
 }

@@ -1,15 +1,16 @@
 version: '3.8'
 services:
   postgres:
-    build: ./db
-    image: nguyentien0620/postgres-init
+    image: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Ti100600@
       POSTGRES_DB: attdb
     ports:
       - "5432:5432"
-    platform: linux/arm64/v8
+    volumes:
+      - ./test.sql:/docker-entrypoint-initdb.d/test.sql
+    # platform: linux/arm64/v8
     
 
   server:
@@ -29,7 +30,7 @@ services:
     volumes:
       - ./server:/app
     command: "npm run start"  # Adjust based on your server start command
-    platform: linux/arm64/v8
+    # platform: linux/arm64/v8
 
   client:
     build: ./client
@@ -40,4 +41,4 @@ services:
       - postgres
     ports:
       - "3001:3001"
-    platform: linux/arm64/v8
+    # platform: linux/arm64/v8
