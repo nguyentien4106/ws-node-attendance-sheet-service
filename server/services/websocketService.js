@@ -335,7 +335,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
                     ws.send(
                         getResponse({
                             type: request.type,
-                            data: res,
+                            data: res.rowCount ? Result.Success(res.rows) : Result.Fail(500, "Thêm không thành công! Vui lòng thử lại"),
                         })
                     );
                 })

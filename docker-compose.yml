@@ -9,8 +9,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./test.sql:/docker-entrypoint-initdb.d/test.sql
-    # platform: linux/arm64/v8
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    platform: linux/arm64/v8
     
 
   server:
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./server:/app
     command: "npm run start"  # Adjust based on your server start command
-    # platform: linux/arm64/v8
+    platform: linux/arm64/v8
 
   client:
     build: ./client
@@ -41,4 +41,4 @@ services:
       - postgres
     ports:
       - "3001:3001"
-    # platform: linux/arm64/v8
+    platform: linux/arm64/v8

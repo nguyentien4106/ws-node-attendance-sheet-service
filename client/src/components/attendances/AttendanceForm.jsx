@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Checkbox, DatePicker, Form, Input, Select } from "antd";
+import { Button, Checkbox, DatePicker, Form, Input, Modal, Select } from "antd";
 import { RequestTypes } from "../../constants/requestType";
 import dayjs from "dayjs";
 import { useLoading } from "../../context/LoadingContext";
@@ -10,6 +10,7 @@ export default function AttendanceForm({
     submitRef,
     devices,
     users,
+    setOpen
 }) {
     const [form] = Form.useForm();
     const { setLoading } = useLoading();
@@ -33,7 +34,6 @@ export default function AttendanceForm({
                 }
             };
 
-        console.log(params)
         sendJsonMessage(params);
     };
 

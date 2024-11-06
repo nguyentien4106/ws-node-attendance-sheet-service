@@ -88,6 +88,17 @@ export default function Attendances() {
             if (response.type === RequestTypes.GetUsersByDeviceId) {
                 setUsers(data.map(user => ({ label: `${user.DisplayName} - (${user.Name}) `, value: user.UserId })))
             }
+
+            if(response.type === RequestTypes.AddLog){
+                console.log(data)
+                if(data.isSuccess){
+                    message.success("Thêm dữ liệu thành công.")
+                    setAttendances(prev => [...prev, data.data[0]])
+                }
+                else {
+                    message.error(data.message)
+                }
+            }
         },
     });
 
@@ -161,7 +172,10 @@ export default function Attendances() {
                 <Modal
                     open={open}
                     onCancel={() => setOpen(false)}
-                    onOk={() => submitRef.current.click()}
+                    onOk={() => {
+                        setOpen(false)
+                        submitRef.current.click()
+                    }}
                 >
                     <AttendanceForm
                         devices={devices}

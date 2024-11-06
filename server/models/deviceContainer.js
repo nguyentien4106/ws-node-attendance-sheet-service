@@ -374,8 +374,8 @@ export class DeviceContainer {
                     return atts.data;
                 }
 
-                const fromDate = dayjs(data.data.fromDate);
-                const toDate = dayjs(data.data.toDate);
+                const fromDate = dayjs(data.fromDate);
+                const toDate = dayjs(data.toDate);
 
                 return atts.data.filter((att) => {
                     const record_time = dayjs(att.record_time);
@@ -401,12 +401,13 @@ export class DeviceContainer {
                 item.Name,
                 dayjs(item.VerifyDate).format(DATE_TIME_FORMAT),
             ]);
-            await handleSyncDataToSheet(rowsData, data.Id, isDeleteAll);
+            console.log('rows data', rowsData)
+            const result = await handleSyncDataToSheet(rowsData, data.Id, isDeleteAll);
 
             ws.send(
                 getResponse({
                     type: "SyncData",
-                    data: Result.Success(data),
+                    data: result,
                 })
             );
         } catch (err) {
