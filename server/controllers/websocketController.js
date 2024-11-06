@@ -17,8 +17,6 @@ cron.schedule("*/30 * * * * *", () => {
 
 export const onConnection = (ws) => {
     try {
-        logger.info("New Client connected");
-
         ws.on("message", (message) => {
             handleMessage(ws, message, deviceContainer);
         });

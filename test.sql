@@ -185,17 +185,17 @@ ALTER TABLE public."__EFMigrationsHistory" OWNER TO postgres;
 -- Data for Name: Attendances; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Attendances" ("Id", "DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded") FROM stdin;
-112	1	2024-10-30 02:07:02+00	Cổng chính	nguyentien	1234567	Nguyễn Tiến	t
-97	1	2024-10-31 00:00:08+00	Cổng chính	nguyentien	12345	Nguyễn Tiến	t
-99	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
-98	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien	123456	Nguyễn Tiến	t
-108	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
-107	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
-106	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
-104	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
-105	1	2024-10-10 03:03:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
-\.
+-- COPY public."Attendances" ("Id", "DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded") FROM stdin;
+-- 112	1	2024-10-30 02:07:02+00	Cổng chính	nguyentien	1234567	Nguyễn Tiến	t
+-- 97	1	2024-10-31 00:00:08+00	Cổng chính	nguyentien	12345	Nguyễn Tiến	t
+-- 99	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+-- 98	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien	123456	Nguyễn Tiến	t
+-- 108	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+-- 107	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+-- 106	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+-- 104	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+-- 105	1	2024-10-10 03:03:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+-- \.
 
 
 --

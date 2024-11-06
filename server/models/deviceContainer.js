@@ -27,9 +27,9 @@ import { DATE_TIME_FORMAT } from "../constants/common.js";
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
 
-const UNCONNECTED_ERR_MSG = `Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này.`;
+const UNCONNECTED_ERR_MSG = `Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. `;
 const UNEXPECTED_ERR_MSG =
-    "Đã xảy ra lỗi không mong muốn. Vui lòng reset thiết bị và thử lại hoặc liên hệ quản trị.";
+    "Đã xảy ra lỗi không mong muốn. Vui lòng reset thiết bị và thử lại hoặc liên hệ quản trị. ";
 export class DeviceContainer {
     constructor(devices = []) {
         this.deviceSDKs = devices;
@@ -70,10 +70,7 @@ export class DeviceContainer {
             return Result.Success(device);
         }
 
-        logger.info(
-            `Add failed device ${device.Ip} into container because of duplication`
-        );
-        return Result.Fail(500, "Device was existed in container", device);
+        return Result.Fail(500, "Device was existed in container " + device.Ip, device);
     }
 
     async addDevice(device) {
@@ -189,12 +186,10 @@ export class DeviceContainer {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === device.Ip);
 
         if (!deviceSDK) {
-            logger.info(UNCONNECTED_ERR_MSG + device.Ip);
-            return Result.Fail(500, UNCONNECTED_ERR_MSG, device);
+            return Result.Fail(500, UNCONNECTED_ERR_MSG + device.Ip, device);
         }
 
         if (deviceSDK.isBusy) {
-            logger.info("Device is being busy, please try later this action!");
             return Result.Fail(
                 500,
                 "Device is being busy, please try later this action!",
@@ -228,7 +223,6 @@ export class DeviceContainer {
         const result = await deviceSDK.disconnect();
 
         if (result) {
-            logger.info("Disconnect successfully!");
             return await action();
         }
 
@@ -239,13 +233,11 @@ export class DeviceContainer {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === deviceIp);
 
         if (!deviceSDK) {
-            logger.info(`Some errors occur. Please reset and try again`);
-            return Result.Fail(500, UNEXPECTED_ERR_MSG);
+            return Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp);
         }
 
         if (!deviceSDK.ztcp.socket) {
-            logger.info(`Device with IP = ${deviceIp} was not connected`);
-            return Result.Fail(500, UNCONNECTED_ERR_MSG);
+            return Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp);
         }
 
         const result = await getAllUsers(deviceIp);
@@ -283,11 +275,11 @@ export class DeviceContainer {
             );
 
             if (!deviceSDK) {
-                return Result.Fail(500, UNEXPECTED_ERR_MSG, user);
+                return Result.Fail(500, UNEXPECTED_ERR_MSG + deviceIp, user);
             }
 
             if (!deviceSDK.connectionType) {
-                return Result.Fail(500, UNCONNECTED_ERR_MSG, user);
+                return Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp, user);
             }
 
             try {
@@ -323,11 +315,11 @@ export class DeviceContainer {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === deviceIp);
 
         if (!deviceSDK) {
-            return Result.Fail(500, UNEXPECTED_ERR_MSG, deviceIp);
+            return Result.Fail(500, UNEXPECTED_ERR_MSG + deviceIp, deviceIp);
         }
 
         if (!deviceSDK.connectionType) {
-            return Result.Fail(500, UNCONNECTED_ERR_MSG, deviceIp);
+            return Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp, deviceIp);
         }
 
         try {
@@ -347,8 +339,7 @@ export class DeviceContainer {
         );
 
         if (!deviceSDK || !deviceSDK.ztcp.socket) {
-            logger.info(`Device with IP = ${data.deviceIp} was not connected`);
-            return Result.Fail(500, UNCONNECTED_ERR_MSG);
+            return Result.Fail(500, UNCONNECTED_ERR_MSG + data.deviceIp);
         }
         try {
             await deviceSDK.deleteUser(+data.uid);
@@ -365,17 +356,17 @@ export class DeviceContainer {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
 
         if (!deviceSDK || !deviceSDK.ztcp.socket) {
-            logger.info(UNCONNECTED_ERR_MSG + data.Ip);
             ws.send(
                 getResponse({
                     type: "SyncData",
-                    data: Result.Fail(500, UNCONNECTED_ERR_MSG),
+                    data: Result.Fail(500, UNCONNECTED_ERR_MSG + data.Ip),
                 })
             );
-            return Result.Fail(500, UNCONNECTED_ERR_MSG);
+
+            return
         }
         try {
-            const isDeleteAll = data.data.type == "All";
+            const isDeleteAll = data.type == "All";
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
             const getAttendanceData = () => {
@@ -418,8 +409,6 @@ export class DeviceContainer {
                     data: Result.Success(data),
                 })
             );
-
-            return Result.Success(data);
         } catch (err) {
             console.error(err);
             ws.send(
@@ -428,7 +417,6 @@ export class DeviceContainer {
                     data: Result.Fail(500, err.message, data),
                 })
             );
-            return Result.Fail(500, err.message, data);
         }
     }
 
@@ -463,7 +451,7 @@ export class DeviceContainer {
                     });
                 } else {
                     sendMail({
-                        subject: "Device Disconnection Alert",
+                        subject: "Cảnh báo mất kết nối máy chấm công.",
                         device: {
                             Name: "Thiết bị máy chấm công",
                             Ip: deviceSDK.ip,
