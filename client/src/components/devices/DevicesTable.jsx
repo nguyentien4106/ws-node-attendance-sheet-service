@@ -121,7 +121,10 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                     >
                         <Button
                             // disabled={!record?.IsConnected}
-                            onClick={() => setOpen(OPEN_TYPES.SYNC_DATA_FORM)}
+                            onClick={() => {
+                                setOpen(OPEN_TYPES.SYNC_DATA_FORM)
+                                setDevice(record)
+                            }}
                         >
                             Đồng bộ dữ liệu theo thời gian
                         </Button>
@@ -138,6 +141,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
         sendJsonMessage({
             type: RequestTypes.SyncData,
             data: {
+                Ip: record.Ip,
                 type: "All",
                 value: record
             },
@@ -166,6 +170,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
     const { setLoading } = useLoading();
     const defaultRange = [dayjs().add(-1, 'day'), dayjs()]
     const [range, setRange] = useState(defaultRange)
+    const [device, setDevice] = useState(null)
     const submitUserFormRef = useRef();
 
     return (
@@ -180,18 +185,19 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                 }
                 open={open}
                 onOk={() => {
+                    setLoading(true)
+
                     if (open === OPEN_TYPES.USER_FORM) {
                         submitUserFormRef.current.click();
                         return;
                     }
 
                     if (open === OPEN_TYPES.SYNC_DATA_FORM) {
-                        console.log("a");
                         setOpen(OPEN_TYPES.CLOSE)
-                        setLoading(true)
                         sendJsonMessage({
                             type: RequestTypes.SyncData,
                             data: {
+                                Ip: device.Ip,
                                 type: "ByTime",
                                 fromDate: range[0].format(DATE_TIME_FORMAT),
                                 toDate: range[1].format(DATE_TIME_FORMAT)

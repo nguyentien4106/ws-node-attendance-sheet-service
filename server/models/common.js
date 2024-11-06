@@ -1,3 +1,5 @@
+import { logger } from "../config/logger.js";
+
 export class Result {
     constructor(code = 200, message = "", data){
         this.code = code;
@@ -13,6 +15,7 @@ export class Result {
     }
 
     static Fail(err = 500, msg = "", data = null){
+        logger.error(msg)
         return new Result(err, msg, data)
     }
     

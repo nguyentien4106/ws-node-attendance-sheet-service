@@ -8,18 +8,17 @@ import {
 } from "../services/deviceService.js";
 import { Result } from "./common.js";
 import Zkteco from "zkteco-js";
-import {
-    isSheetsValid,
-} from "../services/dataService.js";
-import {
-    syncAttendancesData,
-} from "../services/attendanceService.js";
+import { isSheetsValid } from "../services/dataService.js";
+import { syncAttendancesData } from "../services/attendanceService.js";
 import {
     getAllUsers,
     insertNewUsers,
     removeUser,
 } from "../services/userService.js";
-import { handleRealTimeData, handleSyncDataToSheet } from "../helper/dataHelper.js";
+import {
+    handleRealTimeData,
+    handleSyncDataToSheet,
+} from "../helper/dataHelper.js";
 import { getResponse } from "./response.js";
 import { sendMail } from "../services/emailService.js";
 import dayjs from "dayjs";
@@ -63,7 +62,7 @@ export class DeviceContainer {
                 TIME_OUT,
                 IN_PORT
             );
-            
+
             this.deviceSDKs.push(deviceSDK);
             logger.info(
                 `Added successfully device ${device.Ip} into container`
@@ -83,7 +82,6 @@ export class DeviceContainer {
                 (item) => item.ip === device.Ip
             );
             if (existed) {
-                logger.error("Device with this IP is existed in the system.");
                 return new Result(
                     200,
                     "Thiết bị đã có trong hệ thống.",
@@ -107,7 +105,7 @@ export class DeviceContainer {
             if (success) {
                 const users = await deviceSDK.getUsers();
                 const result = await insertNewUsers(users.data, deviceSDK.ip);
-                
+
                 await deviceSDK.disconnect();
             }
 
@@ -121,8 +119,6 @@ export class DeviceContainer {
                       device
                   );
         } catch (err) {
-            logger.error(err.message);
-
             return Result.Fail(500, err.message, device);
         }
     }
@@ -136,8 +132,8 @@ export class DeviceContainer {
 
             const connect = async () => {
                 success = await deviceSDK.createSocket();
-                const info = await deviceSDK.getPIN()
-                console.log(info)
+                const info = await deviceSDK.getPIN();
+                console.log(info);
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
                     const insertResult = await handleRealTimeData(
                         realTimeLog,
@@ -193,12 +189,8 @@ export class DeviceContainer {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === device.Ip);
 
         if (!deviceSDK) {
-            logger.info("Didn't find any device with IP = " + device.Ip);
-            return Result.Fail(
-                500,
-                "Didn't find any device with IP = " + device.Ip,
-                device
-            );
+            logger.info(UNCONNECTED_ERR_MSG + device.Ip);
+            return Result.Fail(500, UNCONNECTED_ERR_MSG, device);
         }
 
         if (deviceSDK.isBusy) {
@@ -224,7 +216,7 @@ export class DeviceContainer {
                     : Result.Fail(500, "Fail to remove", device);
             } catch (err) {
                 console.log(err.message);
-                return Result.Fail(500, err.message, device)
+                return Result.Fail(500, err.message, device);
             }
         };
         // is not being connected
@@ -331,11 +323,7 @@ export class DeviceContainer {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === deviceIp);
 
         if (!deviceSDK) {
-            return Result.Fail(
-                500,
-                "Some errors occur that make service is not existed in system. Please reset and try again.",
-                deviceIp
-            );
+            return Result.Fail(500, UNEXPECTED_ERR_MSG, deviceIp);
         }
 
         if (!deviceSDK.connectionType) {
@@ -343,8 +331,7 @@ export class DeviceContainer {
         }
 
         try {
-            const result = await deviceSDK.getAttendances((e) => {
-            });
+            const result = await deviceSDK.getAttendances((e) => {});
             console.log(result);
 
             return Result.Success(result);
@@ -374,34 +361,57 @@ export class DeviceContainer {
     }
 
     async syncData(data, ws) {
-        console.log(data)
+        console.log(data);
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
 
         if (!deviceSDK || !deviceSDK.ztcp.socket) {
-            logger.info(`Device with IP = ${data.Ip} was not connected`);
+            logger.info(UNCONNECTED_ERR_MSG + data.Ip);
+            ws.send(
+                getResponse({
+                    type: "SyncData",
+                    data: Result.Fail(500, UNCONNECTED_ERR_MSG),
+                })
+            );
             return Result.Fail(500, UNCONNECTED_ERR_MSG);
         }
         try {
-            const isDeleteAll = data.data.type == 'All'
+            const isDeleteAll = data.data.type == "All";
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
             const getAttendanceData = () => {
-                if(isDeleteAll) {
-                    return atts.data
+                if (isDeleteAll) {
+                    return atts.data;
                 }
 
-                const fromDate = dayjs(data.data.fromDate)
-                const toDate = dayjs(data.data.toDate)
+                const fromDate = dayjs(data.data.fromDate);
+                const toDate = dayjs(data.data.toDate);
 
-                return atts.data.filter(att => {
-                    const record_time = dayjs(att.record_time)
-                    return record_time.isBefore(toDate) && record_time.isAfter(fromDate)
-                })
-            }
-            const attendances = await syncAttendancesData(getAttendanceData() , users.data, isDeleteAll)
-            const rowsData = attendances.map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, dayjs(item.VerifyDate).format(DATE_TIME_FORMAT)])
-            await handleSyncDataToSheet(rowsData, data.Id, isDeleteAll)
-            
+                return atts.data.filter((att) => {
+                    const record_time = dayjs(att.record_time);
+                    return (
+                        record_time.isBefore(toDate) &&
+                        record_time.isAfter(fromDate)
+                    );
+                });
+            };
+
+            const attendances = await syncAttendancesData(
+                getAttendanceData(),
+                users.data,
+                isDeleteAll
+            );
+
+            const rowsData = attendances.map((item) => [
+                item.Id,
+                item.DeviceId,
+                item.DeviceName,
+                item.UserId,
+                item.UserName,
+                item.Name,
+                dayjs(item.VerifyDate).format(DATE_TIME_FORMAT),
+            ]);
+            await handleSyncDataToSheet(rowsData, data.Id, isDeleteAll);
+
             ws.send(
                 getResponse({
                     type: "SyncData",
@@ -422,60 +432,62 @@ export class DeviceContainer {
         }
     }
 
-    async ping(wss, counter){
-        const devices = this.deviceSDKs.filter(device => device.connectionType)
-        for(const deviceSDK of devices){
-            try{
-                const info = await deviceSDK.getPIN()
-                if(counter.value === 50){
-                    const fd = await deviceSDK.freeData()
+    async ping(wss, counter) {
+        const devices = this.deviceSDKs.filter(
+            (device) => device.connectionType
+        );
+        for (const deviceSDK of devices) {
+            try {
+                const info = await deviceSDK.getPIN();
+                if (counter.value === 50) {
+                    const fd = await deviceSDK.freeData();
                     counter.value = 0;
-                }
-                else {
+                } else {
                     counter.value++;
                 }
-                console.log(counter)
-
-            }
-            catch(err) {
+                console.log(counter);
+            } catch (err) {
                 await setConnectStatus(deviceSDK.ip, false);
-                const result = await this.connectDevice({ Ip: deviceSDK.ip })
-                if(result.isSuccess){
+                const result = await this.connectDevice({ Ip: deviceSDK.ip });
+                if (result.isSuccess) {
                     wss.clients.forEach(function each(client) {
-                        client.send(getResponse({
-                            type: "Ping",
-                            data: {
-                                deviceIp: deviceSDK.ip,
-                                status: true
-                            }
-                        }));
-                     });
-                }
-                else {
+                        client.send(
+                            getResponse({
+                                type: "Ping",
+                                data: {
+                                    deviceIp: deviceSDK.ip,
+                                    status: true,
+                                },
+                            })
+                        );
+                    });
+                } else {
                     sendMail({
                         subject: "Device Disconnection Alert",
                         device: {
                             Name: "Thiết bị máy chấm công",
-                            Ip: deviceSDK.ip
-                        }
-                    })
+                            Ip: deviceSDK.ip,
+                        },
+                    });
                     wss.clients.forEach(function each(client) {
-                        client.send(getResponse({
-                            type: "Ping",
-                            data: {
-                                deviceIp: deviceSDK.ip,
-                                status: false
-                            }
-                        }));
+                        client.send(
+                            getResponse({
+                                type: "Ping",
+                                data: {
+                                    deviceIp: deviceSDK.ip,
+                                    status: false,
+                                },
+                            })
+                        );
                     });
 
-                    this.deviceSDKs = this.deviceSDKs.map(device => {
-                        if(device.ip === deviceSDK.ip){
-                            device.ztcp.socket = null
+                    this.deviceSDKs = this.deviceSDKs.map((device) => {
+                        if (device.ip === deviceSDK.ip) {
+                            device.ztcp.socket = null;
                         }
 
-                        return device
-                    })
+                        return device;
+                    });
                 }
             }
         }
