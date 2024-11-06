@@ -82,7 +82,7 @@ export const setUploadStatus = (attId, status = false) => {
     `);
 };
 
-export const syncAttendancesData = async (attendances, users) => {
+export const syncAttendancesData = async (attendances, users, isDeleteAll = true) => {
     const dbUsers = await getAllUsers("All");
     const queryDevices = await getAllDevices();
 
@@ -115,7 +115,10 @@ export const syncAttendancesData = async (attendances, users) => {
         ];
     });
 
-    await query('DELETE FROM public."Attendances";')
+    if(isDeleteAll){
+        await query('DELETE FROM public."Attendances";')
+    }
+    
     const result = await queryFormat(`
             INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded")
         `,

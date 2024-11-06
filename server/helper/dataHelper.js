@@ -46,8 +46,7 @@ export const insertToGGSheet = async (rows, deviceId) => {
     }
 };
 
-export const handleSyncDataToSheet = async (rows, deviceId) => {
-    console.log('rows', rows)
+export const handleSyncDataToSheet = async (rows, deviceId, isDeleteAll = true) => {
     try {
         const sheets = await getSheets(deviceId);
         const sheetServices = await initSheets(sheets.rows);
@@ -55,10 +54,14 @@ export const handleSyncDataToSheet = async (rows, deviceId) => {
         if(!sheetServices.isSuccess){
             return sheetServices
         }
-        for(const sheet of sheetServices.data){
-            console.log('clearing rows', sheet.title)
-            await sheet.clearRows()
-        } 
+        
+        if(isDeleteAll){
+            for(const sheet of sheetServices.data){
+                console.log('clearing rows', sheet.title)
+                await sheet.clearRows()
+            } 
+        }
+
         await appendRow(sheetServices.data, rows);
         for(const row of rows){
             setUploadStatus(row[0], true)

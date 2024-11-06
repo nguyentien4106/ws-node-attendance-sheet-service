@@ -21,14 +21,12 @@ const tailLayout = {
 const UserInformationForm = ({
     submitRef,
     sendJsonMessage,
-    device,
     setOpen,
     devices,
 }) => {
     const [form] = Form.useForm();
     const { setLoading } = useLoading();
 
-    console.log(devices)
     const onFinish = (values) => {
         setLoading(true);
         setOpen(false);

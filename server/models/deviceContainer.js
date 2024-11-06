@@ -374,6 +374,7 @@ export class DeviceContainer {
     }
 
     async syncData(data, ws) {
+        console.log(data)
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
 
         if (!deviceSDK || !deviceSDK.ztcp.socket) {
@@ -381,11 +382,25 @@ export class DeviceContainer {
             return Result.Fail(500, UNCONNECTED_ERR_MSG);
         }
         try {
+            const isDeleteAll = data.data.type == 'All'
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
-            const attendances = await syncAttendancesData(atts.data, users.data)
+            const getAttendanceData = () => {
+                if(isDeleteAll) {
+                    return atts.data
+                }
+
+                const fromDate = dayjs(data.data.fromDate)
+                const toDate = dayjs(data.data.toDate)
+
+                return atts.data.filter(att => {
+                    const record_time = dayjs(att.record_time)
+                    return record_time.isBefore(toDate) && record_time.isAfter(fromDate)
+                })
+            }
+            const attendances = await syncAttendancesData(getAttendanceData() , users.data, isDeleteAll)
             const rowsData = attendances.map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, dayjs(item.VerifyDate).format(DATE_TIME_FORMAT)])
-            await handleSyncDataToSheet(rowsData, data.Id)
+            await handleSyncDataToSheet(rowsData, data.Id, isDeleteAll)
             
             ws.send(
                 getResponse({
