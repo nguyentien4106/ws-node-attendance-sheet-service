@@ -5182,3 +5182,135 @@
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-07T04:49:17.699Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-07T04:49:18.760Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-07T04:49:19.903Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T12:55:19.567Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T12:55:19.570Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:55:32.137Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:55:34.304Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:55:41.495Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:55:49.101Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:55:49.623Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:56:07.548Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:56:25.730Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:58:46.671Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:58:47.683Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:58:48.866Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:58:50.615Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:58:52.515Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:59:01.635Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T12:59:06.299Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:09:39.141Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:09:39.841Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:09:43.335Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:09:52.738Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:10:11.449Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:10:40.134Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:10:50.688Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:11:09.655Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:11:11.293Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:12:23.241Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:12:24.168Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:12:27.124Z"}
+{"level":"error","message":{"command":"[TCP] undefined","err":{},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:16:05.883Z"}
+{"level":"error","message":"Device: 192.168.1.201 lost connection at 2024-11-07 8:16:05 PM","timestamp":"2024-11-07T13:16:05.884Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:16:08.843Z"}
+{"level":"error","message":{"command":"[TCP] undefined","err":{},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:16:15.948Z"}
+{"level":"error","message":"Document 1J_ksu0COMPtBoddnHp-r4qvAriS3Ddg3hsTo3-OUnXo lỗi: read ECONNRESET","timestamp":"2024-11-07T13:16:25.188Z"}
+{"level":"error","message":"Can not init sheet to push error. 192.168.1.201 -- 2024-11-07 8:16:25 PM","timestamp":"2024-11-07T13:16:25.188Z"}
+{"level":"error","message":{"command":"[TCP] undefined","err":{},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:16:36.221Z"}
+{"level":"error","message":"Device: 192.168.1.201 lost connection at 2024-11-07 8:16:36 PM","timestamp":"2024-11-07T13:16:36.223Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T13:16:48.299Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T13:16:48.303Z"}
+{"level":"error","message":{"command":"[TCP] undefined","err":{},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:17:01.523Z"}
+{"level":"error","message":{"command":"TCP CONNECT","err":{"command":"TCP CONNECT","err":{},"ip":"192.168.1.201"},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:17:09.961Z"}
+{"level":"error","message":"Device: 192.168.1.201 lost connection at 2024-11-07 8:17:09 PM","timestamp":"2024-11-07T13:17:09.965Z"}
+{"level":"error","message":{"command":"[TCP] undefined","err":{},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:17:36.310Z"}
+{"level":"error","message":"Device: 192.168.1.201 lost connection at 2024-11-07 8:17:36 PM","timestamp":"2024-11-07T13:17:36.311Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:17:42.034Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:17:42.333Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:17:50.610Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:17:52.168Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:17:57.284Z"}
+{"level":"error","message":"","timestamp":"2024-11-07T13:18:09.472Z"}
+{"level":"error","message":{"command":"TCP CONNECT","err":{"command":"TCP CONNECT","err":{},"ip":"192.168.1.201"},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:18:10.504Z"}
+{"level":"error","message":"Device: 192.168.1.201 lost connection at 2024-11-07 8:18:10 PM","timestamp":"2024-11-07T13:18:10.506Z"}
+{"level":"error","message":{"command":"[TCP] undefined","err":{},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:18:35.862Z"}
+{"level":"error","message":"Device: 192.168.1.201 lost connection at 2024-11-07 8:18:35 PM","timestamp":"2024-11-07T13:18:35.863Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T13:19:43.955Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T13:19:43.958Z"}
+{"level":"error","message":{"command":"TCP CONNECT","err":{"command":"TCP CONNECT","err":{},"ip":"192.168.1.201"},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:19:48.748Z"}
+{"level":"error","message":{"command":"TCP CONNECT","err":{"command":"TCP CONNECT","err":{},"ip":"192.168.1.201"},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:20:04.488Z"}
+{"level":"error","message":{"command":"TCP CONNECT","err":{"command":"TCP CONNECT","err":{},"ip":"192.168.1.201"},"ip":"192.168.1.201"},"timestamp":"2024-11-07T13:21:40.693Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:32:15.019Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:32:16.836Z"}
+{"level":"error","message":"syntax error at or near \"RETURNING\"","timestamp":"2024-11-07T13:32:30.969Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:32:48.759Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:33:12.662Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T13:50:59.062Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T13:50:59.231Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:52:41.561Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T13:53:23.758Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T13:53:23.763Z"}
+{"level":"error","message":"syntax error at or near \"RETURNING\"","timestamp":"2024-11-07T13:53:36.408Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T13:54:57.962Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T14:43:21.493Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T14:43:21.497Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:43:24.453Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.201","timestamp":"2024-11-07T14:43:27.173Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:44:43.248Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:44:52.403Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T14:45:21.586Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T14:45:21.590Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:45:42.702Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T14:46:12.273Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T14:46:12.278Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:46:14.997Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:46:34.139Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:49:39.419Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:49:47.391Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:49:51.350Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:49:53.379Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T14:51:30.551Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T14:51:30.556Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:52:23.842Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:52:27.917Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-07T14:54:39.459Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-07T14:54:39.462Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:56:22.161Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:56:23.088Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:56:24.095Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:56:24.836Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:56:25.416Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:56:26.001Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:08.468Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:11.453Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:14.069Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:16.170Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:22.807Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:26.169Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:30.004Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:49.066Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:57:52.606Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:59:13.685Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T14:59:28.470Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:03:45.664Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:11:02.299Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:11:42.049Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:11:45.958Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:11:56.951Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:12:18.945Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:12:55.763Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:14:44.412Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:15:38.769Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:15:39.345Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:18:45.267Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:18:46.061Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:18:47.089Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:19:42.499Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:19:45.716Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:19:46.671Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:20:09.464Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:20:11.845Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:20:27.299Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:20:30.924Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T15:36:43.647Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-07T16:15:48.853Z"}

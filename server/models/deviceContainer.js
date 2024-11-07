@@ -376,6 +376,7 @@ export class DeviceContainer {
             const isDeleteAll = data.type == "All";
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
+            console.log('users', users)
             const getAttendanceData = () => {
                 if (isDeleteAll) {
                     return atts.data;
@@ -439,7 +440,7 @@ export class DeviceContainer {
         for (const deviceSDK of devices) {
             try {
                 const info = await deviceSDK.getPIN();
-                if (counter.value === 50) {
+                if (counter.value === 20) {
                     const fd = await deviceSDK.freeData();
                     counter.value = 0;
                 } else {
@@ -485,6 +486,7 @@ export class DeviceContainer {
                     this.deviceSDKs = this.deviceSDKs.map((device) => {
                         if (device.ip === deviceSDK.ip) {
                             device.ztcp.socket = null;
+                            device.connectionType = null
                         }
 
                         return device;

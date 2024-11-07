@@ -6,43 +6,44 @@ import { getSheets } from "./services/sheetService.js";
 import { appendRow, initSheets } from "./services/dataService.js";
 import { DATE_TIME_FORMAT } from "./constants/common.js";
 
-// const device = new Zkteco(
-//     '192.168.1.201',
-//     4370,
-//     5000,
-//     5000
-// );
+const device = new Zkteco(
+    '192.168.1.201',
+    4370,
+    5000,
+    5000
+);
 
-// const success = await device.createSocket();
-//             if (success) {
-//                 const attendances = await device.getAttendances();
-//                 console.log(attendances)
+const success = await device.createSocket();
+            if (success) {
+                const attendances = await device.getUsers();
+                await device.freeData();
+                console.log(attendances)
 
-//                 await device.disconnect()
-//             }
+                await device.disconnect()
+            }
 // console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isBefore(dayjs('2024-11-05 4:34:47 PM')))
 // console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isAfter(dayjs('2024-10-12 4:50:35 PM')))
 
-const sendErrorToSheet = async () => {
-    const sheets = await getSheets();
-    const result = await initSheets(
-        sheets.rows.map((item) => ({
-            SheetName: "Error",
-            DocumentId: item.DocumentId,
-        })),
-        ["IP", "Lỗi", "Ngày giờ"]
-    );
+// const sendErrorToSheet = async () => {
+//     const sheets = await getSheets();
+//     const result = await initSheets(
+//         sheets.rows.map((item) => ({
+//             SheetName: "Error",
+//             DocumentId: item.DocumentId,
+//         })),
+//         ["IP", "Lỗi", "Ngày giờ"]
+//     );
 
-    if (result.isSuccess) {
-        await appendRow(result.data, [
-            ['ip', "Mất kết nối", dayjs().format(DATE_TIME_FORMAT)],
-        ]);
-    } else {
-        logger.error("Can not init sheet to push error");
-    }
-};
+//     if (result.isSuccess) {
+//         await appendRow(result.data, [
+//             ['ip', "Mất kết nối", dayjs().format(DATE_TIME_FORMAT)],
+//         ]);
+//     } else {
+//         logger.error("Can not init sheet to push error");
+//     }
+// };
 
-sendErrorToSheet().then(res => console.log(res))
+// sendErrorToSheet().then(res => console.log(res))
             /*{
   data: [
     {
@@ -238,5 +239,13 @@ sendErrorToSheet().then(res => console.log(res))
       ip: '192.168.1.201'
     }
   ]
-}
-PS C:\Users\NguyenTien\Desktop\ws-node-attendance-sheet-service\server>  */
+
+  }
+
+- hiển thị giờ đúng foramt 24h
+- check lại ngôn ngữ
+- đồng bộ từ sheet xuống.
+- edit nhân viên
+  PS C:\Users\NguyenTien\Desktop\ws-node-attendance-sheet-service\server>  */
+
+

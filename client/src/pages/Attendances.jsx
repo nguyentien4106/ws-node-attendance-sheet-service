@@ -91,7 +91,11 @@ export default function Attendances() {
             if(response.type === RequestTypes.AddLog){
                 if(data.isSuccess){
                     message.success("Thêm dữ liệu thành công.")
-                    setAttendances(prev => [...prev, data.data[0]])
+                    console.log(data.data)
+                    setAttendances(prev => {
+                        prev.unshift(data.data[0])
+                        return prev
+                    })
                 }
                 else {
                     message.error(data.message)
