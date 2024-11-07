@@ -23,7 +23,6 @@ export default function Attendances() {
             const response = JSON.parse(event.data);
             setLoading(false);
             const data = response.data;
-            console.log(data)
             if (response.type === RequestTypes.GetAttendances) {
                 setAttendances(response.data);
             }
@@ -90,7 +89,6 @@ export default function Attendances() {
             }
 
             if(response.type === RequestTypes.AddLog){
-                console.log(data)
                 if(data.isSuccess){
                     message.success("Thêm dữ liệu thành công.")
                     setAttendances(prev => [...prev, data.data[0]])

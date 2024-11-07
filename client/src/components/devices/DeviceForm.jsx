@@ -28,7 +28,6 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
                 Sheets: [{ SheetName: "Sheet1", DocumentId: "" }],
             }}
             onFinish={addDevice}
-            onFinishFailed={(values) => console.log(values)}
             autoComplete="off"
         >
             <Form.Item

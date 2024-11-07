@@ -57,7 +57,6 @@ export const handleSyncDataToSheet = async (rows, deviceId, isDeleteAll = true) 
         
         if(isDeleteAll){
             for(const sheet of sheetServices.data){
-                console.log('clearing rows', sheet.title)
                 await sheet.clearRows()
             } 
         }

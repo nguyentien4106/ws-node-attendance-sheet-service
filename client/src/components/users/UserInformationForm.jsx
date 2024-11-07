@@ -136,7 +136,6 @@ const UserInformationForm = ({
                         width: "100%",
                     }}
                     placeholder="Please select"
-                    onChange={(val) => console.log(val)}
                     options={devices?.map((device) => ({
                         label: device.Name,
                         value: device.Ip,

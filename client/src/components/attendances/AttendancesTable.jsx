@@ -114,7 +114,6 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
     ];
 
     const syncLog = (rc) => {
-        console.log("rc", rc);
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.SyncLogData,
@@ -123,7 +122,6 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
     };
 
     const handleDelete = (rc) => {
-        console.log(rc);
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.DeleteLog,
@@ -134,9 +132,6 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
     const { setLoading } = useLoading();
     const submitRef = useRef();
 
-    useEffect(() => {
-        console.log("edit item", editItem);
-    }, [editItem]);
     return (
         <>
             <div

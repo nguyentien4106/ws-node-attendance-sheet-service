@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { insertAttendance } from "./services/attendanceService.js";
 
 import Zkteco from "zkteco-js";
+import { getSheets } from "./services/sheetService.js";
 
 // const device = new Zkteco(
 //     '192.168.1.201',
@@ -17,8 +18,12 @@ import Zkteco from "zkteco-js";
 
 //                 await device.disconnect()
 //             }
-console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isBefore(dayjs('2024-11-05 4:34:47 PM')))
-console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isAfter(dayjs('2024-10-12 4:50:35 PM')))
+// console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isBefore(dayjs('2024-11-05 4:34:47 PM')))
+// console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isAfter(dayjs('2024-10-12 4:50:35 PM')))
+
+getSheets().then(res => {
+    console.log(res.rows)
+})
             /*{
   data: [
     {

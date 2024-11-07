@@ -9,6 +9,7 @@ const counter = { value: 0 }
 
 deviceContainer.initAll().then((res) => {
     console.log(`Initialize containers ${res ? "successfully" : "failed"}`);
+    logger.info(`Initialize containers ${res ? "successfully" : "failed"}`)
 });
 
 const cronTask = cron.schedule("*/30 * * * * *", () => {

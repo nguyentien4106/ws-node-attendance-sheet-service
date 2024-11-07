@@ -8,7 +8,11 @@ import {
 } from "../services/deviceService.js";
 import { Result } from "./common.js";
 import Zkteco from "zkteco-js";
-import { isSheetsValid } from "../services/dataService.js";
+import {
+    appendRow,
+    initSheets,
+    isSheetsValid,
+} from "../services/dataService.js";
 import { syncAttendancesData } from "../services/attendanceService.js";
 import {
     getAllUsers,
@@ -23,6 +27,7 @@ import { getResponse } from "./response.js";
 import { sendMail } from "../services/emailService.js";
 import dayjs from "dayjs";
 import { DATE_TIME_FORMAT } from "../constants/common.js";
+import { getSheets } from "../services/sheetService.js";
 
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
@@ -70,7 +75,11 @@ export class DeviceContainer {
             return Result.Success(device);
         }
 
-        return Result.Fail(500, "Device was existed in container " + device.Ip, device);
+        return Result.Fail(
+            500,
+            "Device was existed in container " + device.Ip,
+            device
+        );
     }
 
     async addDevice(device) {
@@ -130,7 +139,6 @@ export class DeviceContainer {
             const connect = async () => {
                 success = await deviceSDK.createSocket();
                 const info = await deviceSDK.getPIN();
-                console.log(info);
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
                     const insertResult = await handleRealTimeData(
                         realTimeLog,
@@ -352,7 +360,6 @@ export class DeviceContainer {
     }
 
     async syncData(data, ws) {
-        console.log(data);
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
 
         if (!deviceSDK || !deviceSDK.ztcp.socket) {
@@ -363,7 +370,7 @@ export class DeviceContainer {
                 })
             );
 
-            return
+            return;
         }
         try {
             const isDeleteAll = data.type == "All";
@@ -401,8 +408,12 @@ export class DeviceContainer {
                 item.Name,
                 dayjs(item.VerifyDate).format(DATE_TIME_FORMAT),
             ]);
-            console.log('rows data', rowsData)
-            const result = await handleSyncDataToSheet(rowsData, data.Id, isDeleteAll);
+
+            const result = await handleSyncDataToSheet(
+                rowsData,
+                data.Id,
+                isDeleteAll
+            );
 
             ws.send(
                 getResponse({
@@ -434,7 +445,7 @@ export class DeviceContainer {
                 } else {
                     counter.value++;
                 }
-                console.log(counter);
+
             } catch (err) {
                 await setConnectStatus(deviceSDK.ip, false);
                 const result = await this.connectDevice({ Ip: deviceSDK.ip });
@@ -458,6 +469,7 @@ export class DeviceContainer {
                             Ip: deviceSDK.ip,
                         },
                     });
+
                     wss.clients.forEach(function each(client) {
                         client.send(
                             getResponse({
@@ -477,6 +489,26 @@ export class DeviceContainer {
 
                         return device;
                     });
+
+                    const sendErrorToSheet = async () => {
+                        const sheets = await getSheets();
+                        const result = await initSheets(
+                            sheets.rows.map((item) => ({
+                                SheetName: "Error",
+                                DocumentId: item.DocumentId,
+                            }))
+                        );
+
+                        if (result.isSuccess) {
+                            await appendRow(result.data, [
+                                [deviceSDK.ip, "Lỗi mất kết nối"],
+                            ]);
+                        } else {
+                            logger.error("Can not init sheet to push error");
+                        }
+                    };
+
+                    await sendErrorToSheet()
                 }
             }
         }

@@ -85,7 +85,6 @@ const syncUserData = async (data) => {
 }
 
 const syncLogData = async (data) => {
-    console.log(data)
 
     try{
         const sheetRows = [data].map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, dayjs(item.VerifyDate).format(DATE_TIME_FORMAT)])
