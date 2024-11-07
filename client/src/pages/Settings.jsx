@@ -19,7 +19,6 @@ export default function Settings() {
         onMessage: (event) => {
             const response = JSON.parse(event.data);
             setLoading(false);
-            console.log(response)
 
             if(response.type === RequestTypes.GetSettings){
                 setEmail(response.data.Email)

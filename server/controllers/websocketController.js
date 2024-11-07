@@ -8,10 +8,10 @@ const deviceContainer = new DeviceContainer();
 const counter = { value: 0 }
 
 deviceContainer.initAll().then((res) => {
-    console.log("init All ", res);
+    console.log(`Initialize containers ${res ? "successfully" : "failed"}`);
 });
 
-cron.schedule("*/30 * * * * *", () => {
+const cronTask = cron.schedule("*/30 * * * * *", () => {
     deviceContainer.ping(websocket.wss, counter)
 });
 
@@ -26,6 +26,7 @@ export const onConnection = (ws) => {
         });
     } catch (err) {
         console.log("unhandled exception", err);
+        logger.error(`Unhandled exception: ${err.message}`)
         deviceContainer.disconnectAll().then((res) => {
             console.log("disconnected all devices in unhandled exception");
         });

@@ -185,17 +185,17 @@ ALTER TABLE public."__EFMigrationsHistory" OWNER TO postgres;
 -- Data for Name: Attendances; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
--- COPY public."Attendances" ("Id", "DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded") FROM stdin;
--- 112	1	2024-10-30 02:07:02+00	Cổng chính	nguyentien	1234567	Nguyễn Tiến	t
--- 97	1	2024-10-31 00:00:08+00	Cổng chính	nguyentien	12345	Nguyễn Tiến	t
--- 99	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
--- 98	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien	123456	Nguyễn Tiến	t
--- 108	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
--- 107	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
--- 106	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
--- 104	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
--- 105	1	2024-10-10 03:03:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
--- \.
+COPY public."Attendances" ("Id", "DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded") FROM stdin;
+112	1	2024-10-30 02:07:02+00	Cổng chính	nguyentien	1234567	Nguyễn Tiến	t
+97	1	2024-10-31 00:00:08+00	Cổng chính	nguyentien	12345	Nguyễn Tiến	t
+99	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+98	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien	123456	Nguyễn Tiến	t
+108	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+107	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+106	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+104	1	2024-10-10 00:00:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+105	1	2024-10-10 03:03:00+00	Cổng chính	nguyentien 1	123456	Nguyễn Tiến 1	t
+\.
 
 
 --
@@ -204,10 +204,10 @@ ALTER TABLE public."__EFMigrationsHistory" OWNER TO postgres;
 -- Data for Name: Devices; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Devices" ("Id", "Ip", "Port", "CommKey", "IsConnected", "Name") FROM stdin;
-1	192.168.1.201	4370	0	f	Cổng chính
-2	192.168.1.235	4370	0	f	Cổng phụ
-\.
+-- COPY public."Devices" ("Id", "Ip", "Port", "CommKey", "IsConnected", "Name") FROM stdin;
+-- 1	192.168.1.201	4370	0	f	Cổng chính
+-- 2	192.168.1.235	4370	0	f	Cổng phụ
+-- \.
 
 
 --
@@ -216,8 +216,8 @@ COPY public."Devices" ("Id", "Ip", "Port", "CommKey", "IsConnected", "Name") FRO
 -- Data for Name: Settings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Settings" ("Id", "Email") FROM stdin;
-\.
+-- COPY public."Settings" ("Id", "Email") FROM stdin;
+-- \.
 
 
 --
@@ -226,10 +226,10 @@ COPY public."Settings" ("Id", "Email") FROM stdin;
 -- Data for Name: Sheets; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Sheets" ("Id", "DeviceId", "SheetName", "DocumentId") FROM stdin;
-2	1	Sheet1	1xdgwVu8Cbg19EYvwg8bwhrW0d-Q9ZNFv9AahfuhNpFE
-1	1	Sheet1	1J_ksu0COMPtBoddnHp-r4qvAriS3Ddg3hsTo3-OUnXo
-\.
+-- COPY public."Sheets" ("Id", "DeviceId", "SheetName", "DocumentId") FROM stdin;
+-- 2	1	Sheet1	1xdgwVu8Cbg19EYvwg8bwhrW0d-Q9ZNFv9AahfuhNpFE
+-- 1	1	Sheet1	1J_ksu0COMPtBoddnHp-r4qvAriS3Ddg3hsTo3-OUnXo
+-- \.
 
 
 --
@@ -238,12 +238,12 @@ COPY public."Sheets" ("Id", "DeviceId", "SheetName", "DocumentId") FROM stdin;
 -- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Users" ("Id", "Name", "Password", "Role", "CardNo", "DisplayName", "DeviceIp", "UID", "UserId") FROM stdin;
-1	nguyenvantien	123456	0	0	Nguyễn Văn Tiến	192.168.1.201	1	123456
-2	nguyenvantien1	123456	1	0	Nguyễn Văn Tiến 1	192.168.1.235	1	123457\n
-3	nguyenvantien3	123456	2	0	Nguyễn Văn Tiến 3	192.168.1.201	1	123458
-4	nguyenvantien4	123456	3	0	Nguyễn Văn Tiến 4	192.168.1.201	1	123459
-\.
+-- COPY public."Users" ("Id", "Name", "Password", "Role", "CardNo", "DisplayName", "DeviceIp", "UID", "UserId") FROM stdin;
+-- 1	nguyenvantien	123456	0	0	Nguyễn Văn Tiến	192.168.1.201	1	123456
+-- 2	nguyenvantien1	123456	1	0	Nguyễn Văn Tiến 1	192.168.1.235	1	123457\n
+-- 3	nguyenvantien3	123456	2	0	Nguyễn Văn Tiến 3	192.168.1.201	1	123458
+-- 4	nguyenvantien4	123456	3	0	Nguyễn Văn Tiến 4	192.168.1.201	1	123459
+-- \.
 
 
 --
@@ -252,8 +252,8 @@ COPY public."Users" ("Id", "Name", "Password", "Role", "CardNo", "DisplayName", 
 -- Data for Name: __EFMigrationsHistory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin;
-\.
+-- COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin;
+-- \.
 
 
 --
