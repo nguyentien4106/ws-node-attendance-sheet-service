@@ -3,6 +3,8 @@ import { insertAttendance } from "./services/attendanceService.js";
 
 import Zkteco from "zkteco-js";
 import { getSheets } from "./services/sheetService.js";
+import { appendRow, initSheets } from "./services/dataService.js";
+import { DATE_TIME_FORMAT } from "./constants/common.js";
 
 // const device = new Zkteco(
 //     '192.168.1.201',
@@ -21,9 +23,26 @@ import { getSheets } from "./services/sheetService.js";
 // console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isBefore(dayjs('2024-11-05 4:34:47 PM')))
 // console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isAfter(dayjs('2024-10-12 4:50:35 PM')))
 
-getSheets().then(res => {
-    console.log(res.rows)
-})
+const sendErrorToSheet = async () => {
+    const sheets = await getSheets();
+    const result = await initSheets(
+        sheets.rows.map((item) => ({
+            SheetName: "Error",
+            DocumentId: item.DocumentId,
+        })),
+        ["IP", "Lỗi", "Ngày giờ"]
+    );
+
+    if (result.isSuccess) {
+        await appendRow(result.data, [
+            ['ip', "Mất kết nối", dayjs().format(DATE_TIME_FORMAT)],
+        ]);
+    } else {
+        logger.error("Can not init sheet to push error");
+    }
+};
+
+sendErrorToSheet().then(res => console.log(res))
             /*{
   data: [
     {

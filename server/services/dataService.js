@@ -1,6 +1,7 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 import { Result } from '../models/common.js';
+import { HEADER_ROW } from '../constants/common.js';
 
 // Initialize auth - see https://theoephraim.github.io/node-google-spreadsheet/#/guides/authentication
 const serviceAccountAuth = new JWT({
@@ -46,7 +47,7 @@ export const initSheet = async (documentId, sheetName) => {
     }
 };
 
-export const initSheets = async (sheets) => {
+export const initSheets = async (sheets, headers) => {
     const sheetServices = []
     for(const sheet of sheets){
         try {
@@ -55,9 +56,10 @@ export const initSheets = async (sheets) => {
             await doc.loadInfo(); // loads document properties and worksheets
             if(!(sheet.SheetName in doc.sheetsByTitle)){
                 const newSheet = await doc.addSheet({ title: sheet.SheetName })
-                newSheet.setHeaderRow(["ID", "ID Thiết bị", "Tên thiết bị", "User ID", "Tên trong máy", "Tên hiển thị", "Ngày giờ"], 1)
+                newSheet.setHeaderRow(headers ?? HEADER_ROW, 1)
             }
             const sheetService = doc.sheetsByTitle[sheet.SheetName]
+            sheetService.setHeaderRow(headers ?? HEADER_ROW, 1)
             sheetServices.push(sheetService)
 
         } catch (err) {

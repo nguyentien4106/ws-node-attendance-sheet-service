@@ -490,21 +490,24 @@ export class DeviceContainer {
                         return device;
                     });
 
+                    logger.error(`Device: ${deviceSDK.ip} lost connection at ${dayjs().format(DATE_TIME_FORMAT)}`);
+
                     const sendErrorToSheet = async () => {
                         const sheets = await getSheets();
                         const result = await initSheets(
                             sheets.rows.map((item) => ({
                                 SheetName: "Error",
                                 DocumentId: item.DocumentId,
-                            }))
+                            })),
+                            ["IP", "Lỗi", "Ngày giờ"]
                         );
 
                         if (result.isSuccess) {
                             await appendRow(result.data, [
-                                [deviceSDK.ip, "Lỗi mất kết nối"],
+                                [deviceSDK.ip, "Mất kết nối", dayjs().format(DATE_TIME_FORMAT)],
                             ]);
                         } else {
-                            logger.error("Can not init sheet to push error");
+                            logger.error(`Can not init sheet to push error. ${deviceSDK.ip} -- ${dayjs().format(DATE_TIME_FORMAT)}`);
                         }
                     };
 
