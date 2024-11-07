@@ -7,7 +7,7 @@ How to run this code:
 How to config Sheet:
 init this appscript 
 
-`
+```
 function removeDuplicatesAndSort() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const data = sheet.getDataRange().getValues();
@@ -52,7 +52,7 @@ function removeDuplicatesAndSort() {
        .sort({ column: 1, ascending: true });
 }
 
-`
+```
 
 config this code trigger on change by spreadsheet
 
