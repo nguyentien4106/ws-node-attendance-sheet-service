@@ -7,14 +7,15 @@ import { logger } from "../config/logger.js";
 import { RequestTypes } from "../constants/requestType.js";
 import { UserRoles } from "../constants/userRoles.js";
 import { Result } from "../models/common.js";
-import { getAllUsers, getUsersByDeviceId } from "./userService.js";
+import { editUserDisplayName, getAllUsers, getUsersByDeviceId } from "./userService.js";
 import { deleteAttendance, getAttendances, insertAttendance, updateAttendance } from "./attendanceService.js";
 import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
-import { appendRow, initSheets } from "./dataService.js";
+import { appendRow, initSheets, syncDataFromSheet } from "./dataService.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
 import { getSettings, updateSettings } from "./settingsService.js";
 import dayjs from "dayjs";
 import { DATE_TIME_FORMAT } from "../constants/common.js";
+import { getSheets } from "./sheetService.js";
 
 const addDevice = (device, container) => {
     return container.addDevice(device);
@@ -335,6 +336,39 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         getResponse({
                             type: request.type,
                             data: res.rowCount ? Result.Success(res.rows) : Result.Fail(500, "Thêm không thành công! Vui lòng thử lại"),
+                        })
+                    );
+                })
+                break;
+
+            case RequestTypes.GetSheets: 
+                getSheets().then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: Result.Success(res.rows),
+                        })
+                    );
+                })
+                break;
+
+            case RequestTypes.SyncDataFromSheet: 
+                syncDataFromSheet(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: Result.Success(res.rows),
+                        })
+                    );
+                })
+                break;
+
+            case RequestTypes.EditUser: 
+                editUserDisplayName(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res.rowCount ? Result.Success(res.rows[0]) : Result.Fail(500, "Không thể cập nhật thông tin người dùng. Xin thử lại!"),
                         })
                     );
                 })

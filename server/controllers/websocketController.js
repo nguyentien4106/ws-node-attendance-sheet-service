@@ -19,7 +19,9 @@ const cronTask = cron.schedule("*/30 * * * * *", () => {
 export const onConnection = (ws) => {
     try {
         ws.on("message", (message) => {
+            cronTask.stop()
             handleMessage(ws, message, deviceContainer);
+            cronTask.start()
         });
 
         ws.on("close", () => {

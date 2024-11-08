@@ -3,7 +3,7 @@ import { insertAttendance } from "./services/attendanceService.js";
 
 import Zkteco from "zkteco-js";
 import { getSheets } from "./services/sheetService.js";
-import { appendRow, initSheets } from "./services/dataService.js";
+import { appendRow, initSheets, syncDataFromSheet } from "./services/dataService.js";
 import { DATE_TIME_FORMAT } from "./constants/common.js";
 
 const device = new Zkteco(
@@ -44,6 +44,16 @@ const success = await device.createSocket();
 // };
 
 // sendErrorToSheet().then(res => console.log(res))
+// sendErrorToSheet().then(res => console.log(res))
+
+syncDataFromSheet({ DocumentId: '1J_ksu0COMPtBoddnHp-r4qvAriS3Ddg3hsTo3-OUnXo', SheetName: 'Sheet1' }).then(res=> {
+    console.log(res)
+})
+// sendErrorToSheet().then(res => console.log(res))
+
+syncDataFromSheet({ DocumentId: '1J_ksu0COMPtBoddnHp-r4qvAriS3Ddg3hsTo3-OUnXo', SheetName: 'Sheet1' }).then(res=> {
+    console.log(res)
+})
             /*{
   data: [
     {

@@ -109,6 +109,7 @@ export class DeviceContainer {
 
             const success = await deviceSDK.createSocket();
             if (success) {
+                await deviceSDK.freeData()
                 const users = await deviceSDK.getUsers();
                 const result = await insertNewUsers(users.data, deviceSDK.ip);
 
@@ -255,8 +256,6 @@ export class DeviceContainer {
 
     async disconnectAll() {
         for (let deviceSDK of this.deviceSDKs) {
-            console.log("disconnect " + deviceSDK.ip);
-
             if (!deviceSDK.connectionType) {
                 continue;
             }
@@ -283,11 +282,13 @@ export class DeviceContainer {
             );
 
             if (!deviceSDK) {
-                return Result.Fail(500, UNEXPECTED_ERR_MSG + deviceIp, user);
+                result.push(Result.Fail(500, UNEXPECTED_ERR_MSG + deviceIp, deviceIp));
+                continue
             }
 
             if (!deviceSDK.connectionType) {
-                return Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp, user);
+                result.push(Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp, deviceIp))
+                continue
             }
 
             try {
@@ -309,10 +310,11 @@ export class DeviceContainer {
                     user.role
                 );
 
-                result.push({ addDBResult: addDBResult.rowCount, res });
+                result.push(Result.Success({ addDBResult: addDBResult.rowCount, res }, `Thiết bị: ${deviceIp}: Thêm thành công user`));
             } catch (err) {
                 console.log(err.message);
-                return Result.Fail(500, err, user);
+                result.push(Result.Fail(500, err, user))
+                continue;
             }
         }
 
@@ -374,6 +376,7 @@ export class DeviceContainer {
         }
         try {
             const isDeleteAll = data.type == "All";
+            await deviceSDK.freeData()
             const atts = await deviceSDK.getAttendances();
             const users = await deviceSDK.getUsers();
             console.log('users', users)

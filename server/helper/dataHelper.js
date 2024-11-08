@@ -48,7 +48,7 @@ export const insertToGGSheet = async (rows, deviceId) => {
 
 export const handleSyncDataToSheet = async (rows, deviceId, isDeleteAll = true) => {
     try {
-        const sheets = await getSheets(deviceId);
+        const sheets = await getSheets();
         const sheetServices = await initSheets(sheets.rows);
 
         if(!sheetServices.isSuccess){

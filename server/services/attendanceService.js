@@ -119,6 +119,10 @@ export const syncAttendancesData = async (attendances, users, isDeleteAll = true
         await query('DELETE FROM public."Attendances";')
     }
     
+    if(values?.length == 0){
+        return []
+    }
+    
     const result = await queryFormat(`
             INSERT INTO public."Attendances"("DeviceId", "VerifyDate", "DeviceName", "UserName", "UserId", "Name", "Uploaded")
         `,
@@ -128,6 +132,25 @@ export const syncAttendancesData = async (attendances, users, isDeleteAll = true
     return result.rows
 };
 
+export const insertRawAttendances = async (values, isDeleteAll = true) => {
+
+    if(isDeleteAll){
+        await query('DELETE FROM public."Attendances";')
+    }
+
+    if(values?.length === 0) {
+        return []
+    }
+
+    const result = await queryFormat(
+        `
+            INSERT INTO public."Attendances"("DeviceId", "DeviceName", "UserId", "Name", "UserName", "VerifyDate", "Uploaded")
+        `,
+        values
+    );
+
+    return result.rows
+}
 
 export const updateAttendance = async ({ logId, date }) => {
     try {

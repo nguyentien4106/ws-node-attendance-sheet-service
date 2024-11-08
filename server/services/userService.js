@@ -51,3 +51,14 @@ export const removeUser = (uid, deviceIp) =>
 export const getUser = (uid, userId) => query(
     `SELECT * FROM public."Users" WHERE "UID" = '${uid}' AND "UserId" = '${userId}'`
 );
+
+export const editUserDisplayName = async (data) => {
+    const sql = `
+        UPDATE public."Users"
+        SET "DisplayName"= '${data.DisplayName}'
+        WHERE "Id" = ${data.Id}
+        RETURNING *;
+    `
+
+    return query(sql)
+}

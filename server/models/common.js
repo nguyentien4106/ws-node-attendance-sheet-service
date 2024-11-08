@@ -10,8 +10,8 @@ export class Result {
 
     // isSuccess = this.code === 200
 
-    static Success(data = null){
-        return new Result(200, "", data)
+    static Success(data = null, message= ""){
+        return new Result(200, message, data)
     }
 
     static Fail(err = 500, msg = "", data = null){

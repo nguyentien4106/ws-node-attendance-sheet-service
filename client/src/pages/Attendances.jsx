@@ -7,9 +7,16 @@ import { Button, DatePicker, message, Modal, Select, Space } from "antd";
 import dayjs from "dayjs";
 import { DATE_FORMAT } from "../constants/common";
 import AttendanceForm from "../components/attendances/AttendanceForm";
+import SheetSyncForm from "../components/attendances/SheetSyncForm";
 
 const { RangePicker } = DatePicker;
 const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
+
+const OPEN_TYPES = {
+    CLOSE: 0,
+    ADD: 1,
+    SYNC: 2,
+};
 
 export default function Attendances() {
     const { sendJsonMessage } = useWebSocket(WS_URL, {
@@ -85,7 +92,12 @@ export default function Attendances() {
             }
 
             if (response.type === RequestTypes.GetUsersByDeviceId) {
-                setUsers(data.map(user => ({ label: `${user.DisplayName} - (${user.Name}) `, value: user.UserId })))
+                setUsers(
+                    data.map((user) => ({
+                        label: `${user.DisplayName} - (${user.Name}) `,
+                        value: user.UserId,
+                    }))
+                );
             }
 
             if(response.type === RequestTypes.AddLog){
@@ -97,9 +109,11 @@ export default function Attendances() {
                         return prev
                     })
                 }
-                else {
-                    message.error(data.message)
-                }
+            }
+
+
+            if(response.type === RequestTypes.GetSheets){
+                setSheets(data.data)
             }
         },
     });
@@ -117,6 +131,10 @@ export default function Attendances() {
 
         sendJsonMessage({
             type: RequestTypes.GetDevices,
+        });
+
+        sendJsonMessage({
+            type: RequestTypes.GetSheets,
         });
     }, []);
 
@@ -137,14 +155,15 @@ export default function Attendances() {
     const [devices, setDevices] = useState([]);
     const [users, setUsers] = useState([]);
     const [deviceId, setDeviceId] = useState("All");
-    const [open, setOpen] = useState(false);
-    const submitRef = useRef()
+    const [open, setOpen] = useState(OPEN_TYPES.CLOSE);
+    const [sheets, setSheets] = useState([])
+    const submitRef = useRef();
 
     return (
         <div>
             <Space size={30}>
                 <Space>
-                    <label>Date Range: </label>
+                    <label>Khoảng: </label>
                     <RangePicker
                         defaultValue={dateRange}
                         format={DATE_FORMAT}
@@ -163,30 +182,42 @@ export default function Attendances() {
                 <Button onClick={() => submit()} type="primary">
                     Submit
                 </Button>
-                <Button onClick={() => setOpen(true)}>Thêm thủ công</Button>
+                <Button onClick={() => setOpen(OPEN_TYPES.ADD)}>
+                    Thêm thủ công
+                </Button>
+                <Button onClick={() => setOpen(OPEN_TYPES.SYNC)}>
+                    Đồng bộ từ sheet
+                </Button>
             </Space>
             <AttendancesTable
                 attendances={attendances}
                 sendJsonMessage={sendJsonMessage}
                 devices={devices}
             ></AttendancesTable>
-            {open && (
-                <Modal
-                    open={open}
-                    onCancel={() => setOpen(false)}
-                    onOk={() => {
-                        setOpen(false)
-                        submitRef.current.click()
-                    }}
-                >
+            <Modal
+                open={open}
+                onCancel={() => setOpen(OPEN_TYPES.CLOSE)}
+                onOk={() => {
+                    setOpen(OPEN_TYPES.CLOSE);
+                    submitRef.current.click();
+                }}
+            >
+                {open === OPEN_TYPES.ADD ? (
                     <AttendanceForm
                         devices={devices}
                         users={users}
                         sendJsonMessage={sendJsonMessage}
                         submitRef={submitRef}
                     ></AttendanceForm>
-                </Modal>
-            )}
+                ) : (
+                    <SheetSyncForm
+                        sendJsonMessage={sendJsonMessage}
+                        submitRef={submitRef}
+                        sheets={sheets}
+                    >
+                    </SheetSyncForm>
+                )}
+            </Modal>
         </div>
     );
 }

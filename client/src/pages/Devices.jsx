@@ -129,7 +129,7 @@ export default function Devices() {
     return (
         <div>
             <div className="d-flex justify-content-between mb-3">
-                <h3>Devices</h3>
+                <h3>Thiết bị</h3>
                 <Button onClick={() => setOpen(true)} type="primary">Thêm thiết bị</Button>
             </div>
             <DevicesTable source={devices} sendJsonMessage={sendJsonMessage} />

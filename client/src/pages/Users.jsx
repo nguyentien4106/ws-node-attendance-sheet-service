@@ -12,7 +12,7 @@ const OPEN_TYPE = {
     Close: 0,
     AddUser: 1,
     SyncData: 2,
-    EditUser: 3
+    EditUser: 3,
 };
 
 export default function Users() {
@@ -36,7 +36,7 @@ export default function Users() {
                     value: "All",
                     isSelectOption: true,
                 });
-                setOptions(options)
+                setOptions(options);
                 setDevices(response.data);
             }
 
@@ -64,6 +64,47 @@ export default function Users() {
                     message.error(response.data.message);
                 }
             }
+
+            if (response.type === RequestTypes.AddUser) {
+                const successes = response.data.data.filter(
+                    (item) => item.isSuccess
+                );
+                const failed = response.data.data.filter(
+                    (item) => !item.isSuccess
+                );
+
+                if (successes.length) {
+                    message.success(
+                        <Space direction="vertical">
+                            {successes.map((item) => (
+                                <p key={item.message}>{item.message}</p>
+                            ))}
+                        </Space>,
+                        10000
+                    );
+                }
+                if (failed.length) {
+                    message.error(
+                        <Space direction="vertical">
+                            {failed.map((item) => (
+                                <p key={item.message}>{item.message}</p>
+                            ))}
+                        </Space>,
+                        10000
+                    );
+                }
+            }
+
+            if (response.type === RequestTypes.EditUser) {
+                console.log(response.data)
+                if(response.data.isSuccess){
+                    message.success("Cập nhật thông tin người dùng thành công.")
+                    setUsers(prev => prev.map(item => item.Id === response.data.data.Id ? response.data.data : item))
+                }
+                else {
+                    message.error(response.data.message)
+                }
+            }
         },
     });
 
@@ -71,7 +112,7 @@ export default function Users() {
     const [devices, setDevices] = useState([]);
     const [deviceSelected, setDeviceSelected] = useState("All");
     const [users, setUsers] = useState([]);
-    const [options, setOptions] = useState([{ label: "All", value: "All" }])
+    const [options, setOptions] = useState([{ label: "All", value: "All" }]);
     const [open, setOpen] = useState(OPEN_TYPE.Close);
     const submitUserFormRef = useRef();
 
@@ -97,7 +138,7 @@ export default function Users() {
     return (
         <div>
             <div className="d-flex justify-content-between">
-                <h2>Users</h2>
+                <h2>Người dùng</h2>
                 <Space>
                     <h6>Thiết bị : </h6>
                     <Select
@@ -131,7 +172,9 @@ export default function Users() {
                 onOk={() => submitUserFormRef.current.click()}
                 title={
                     <div className="d-flex justify-content-center mb-3">
-                        {OPEN_TYPE.AddUser ? "Thông tin User" : "Thông tin Sheet"}
+                        {OPEN_TYPE.AddUser
+                            ? "Thông tin User"
+                            : "Thông tin Sheet"}
                     </div>
                 }
             >

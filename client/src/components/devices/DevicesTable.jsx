@@ -64,7 +64,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                 ),
         },
         {
-            title: "Action",
+            title: "Hành động",
             key: "action",
             render: (_, record) => (
                 <Space size="middle">
@@ -83,7 +83,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                             type="primary"
                             disabled={record?.IsConnected}
                         >
-                            Delete
+                            Xoá
                         </Button>
                     </Popconfirm>
                     <Button

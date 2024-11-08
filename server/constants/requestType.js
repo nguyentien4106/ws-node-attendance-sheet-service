@@ -19,5 +19,7 @@ export const RequestTypes = {
     GetUsersByDeviceId: "GetUsersByDeviceId",
     UpdateLog: "UpdateLog",
     DeleteLog: "DeleteLog",
-    AddLog: "AddLog"
+    AddLog: "AddLog",
+    SyncDataFromSheet: "SyncDataFromSheet",
+    EditUser: "EditUser"
 }

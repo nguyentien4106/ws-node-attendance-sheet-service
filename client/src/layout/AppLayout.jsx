@@ -28,7 +28,7 @@ const AppLayout = () => {
         {
             key: 'Devices',
             icon: <TeamOutlined />,
-            label: 'Devices',
+            label: 'Thiết bị',
             onClick: () => {
                 setTab(["Devices"])
                 navigate("/Devices")
@@ -37,7 +37,7 @@ const AppLayout = () => {
         {
             key: 'Users',
             icon: <DesktopOutlined />,
-            label: 'Users',
+            label: 'Người dùng',
             onClick: () => {
                 setTab(["Users"])
                 navigate("/Users")
@@ -46,7 +46,7 @@ const AppLayout = () => {
         {
             key: 'Attendances',
             icon: <DesktopOutlined />,
-            label: 'Attendances',
+            label: 'Dữ liệu chấm công',
             onClick: () => {
                 setTab(["Attendances"])
                 navigate("/Attendances")
@@ -55,7 +55,7 @@ const AppLayout = () => {
         {
             key: 'Settings',
             icon: <DesktopOutlined />,
-            label: 'Settings',
+            label: 'Cài đặt',
             onClick: () => {
                 setTab(["Settings"])
                 navigate("/Settings")
@@ -118,7 +118,7 @@ const AppLayout = () => {
                         textAlign: "center",
                     }}
                 >
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                    SANA POS ©{new Date().getFullYear()} Created by ePower Team
                 </Footer>
             </Layout>
         </Layout>
