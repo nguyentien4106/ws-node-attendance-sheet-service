@@ -1,15 +1,11 @@
 // const { RequestTypes } = require("../models/RequestTypes");
 // const { DeviceContainer } = require("../models/deviceContainer");
-import { DeviceContainer } from "../models/deviceContainer.js";
 import { getResponse } from "../models/response.js";
 import * as DeviceService from "./deviceService.js";
-import { logger } from "../config/logger.js";
 import { RequestTypes } from "../constants/requestType.js";
-import { UserRoles } from "../constants/userRoles.js";
 import { Result } from "../models/common.js";
 import { editUserDisplayName, getAllUsers, getUsersByDeviceId } from "./userService.js";
 import { deleteAttendance, getAttendances, insertAttendance, updateAttendance } from "./attendanceService.js";
-import { handleDeviceRequest } from "../helper/handlers/handleDeviceRequest.js";
 import { appendRow, initSheets, syncDataFromSheet } from "./dataService.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
 import { getSettings, updateSettings } from "./settingsService.js";

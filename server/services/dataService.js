@@ -68,7 +68,7 @@ export const initSheets = async (sheets, headers) => {
         } catch (err) {
             console.error(`sheet ${sheet.DocumentId} error:`, err.message)
 
-            return Result.Fail(500, `Document ${sheet.DocumentId} lỗi: ${err.message}`)
+            Result.Fail(500, `Document ${sheet.DocumentId} lỗi: ${err.message}`)
         }
     }
 
