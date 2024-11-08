@@ -1,7 +1,7 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 import { Result } from '../models/common.js';
-import { DATE_TIME_FORMAT, HEADER_ROW } from '../constants/common.js';
+import { DATE_FORMAT, HEADER_ROW } from '../constants/common.js';
 import { insertRawAttendances } from './attendanceService.js';
 import { handleSyncDataToSheet } from '../helper/dataHelper.js';
 import dayjs from 'dayjs';
@@ -91,7 +91,7 @@ export const syncDataFromSheet = async (sheet) => {
     }
     const service = doc.sheetsByTitle[sheet.SheetName]
     const rows = await service.getRows()
-    const data = rows.map(row => [+row.get(HEADER_ROW[1]), row.get(HEADER_ROW[2]), row.get(HEADER_ROW[3]), row.get(HEADER_ROW[4]), row.get(HEADER_ROW[5]), row.get(HEADER_ROW[6]), true])
+    const data = rows.map(row => [+row.get(HEADER_ROW[1]), row.get(HEADER_ROW[2]), row.get(HEADER_ROW[3]), row.get(HEADER_ROW[4]), row.get(HEADER_ROW[5]), `${row.get(HEADER_ROW[6])} ${row.get(HEADER_ROW[7])}`, true])
     const attendances = await insertRawAttendances(data)
 
     const rowsData = attendances.map((item) => [
@@ -101,7 +101,7 @@ export const syncDataFromSheet = async (sheet) => {
         item.UserId,
         item.UserName,
         item.Name,
-        dayjs(item.VerifyDate).format(DATE_TIME_FORMAT),
+        dayjs(item.VerifyDate).format(DATE_FORMAT),
     ]);
 
     const result = await handleSyncDataToSheet(

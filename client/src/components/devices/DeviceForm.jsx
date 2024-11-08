@@ -25,7 +25,7 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
             initialValues={{
                 Ip: "192.168.1.201",
                 Port: 4370,
-                Sheets: [{ SheetName: "Sheet1", DocumentId: "" }],
+                Sheets: [{ SheetName: "DATA CHẤM CÔNG", DocumentId: "" }],
             }}
             onFinish={addDevice}
             autoComplete="off"
@@ -36,7 +36,7 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
                 rules={[
                     {
                         required: true,
-                        message: "Please input your IP!",
+                        message: "Vui lòng nhập IP",
                     },
                 ]}
             >
@@ -62,7 +62,7 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
                 rules={[
                     {
                         required: true,
-                        message: "Please input your Port!",
+                        message: "Vui lòng nhập Port!",
                     },
                 ]}
             >
@@ -73,13 +73,13 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
                 {(fields, { add, remove }) => (
                     <div className="d-flex flex-column justify-content-center">
                         {fields.map((field, idx) => (
-                            <Form.Item label="Sheet">
+                            <Form.Item label="Sheet" key={`${field} - ${idx}`}>
                                 <Space key={`${field.key} ${idx}`}>
                                     <Form.Item
                                         noStyle
                                         name={[field.name, "SheetName"]}
                                     >
-                                        <Input placeholder="Sheet1" />
+                                        <Input placeholder="DATA CHẤM CÔNG" />
                                     </Form.Item>
                                     <Form.Item
                                         noStyle
@@ -88,7 +88,7 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
                                             {
                                                 required: true,
                                                 message:
-                                                    "Please input your Document Id!",
+                                                    "Vui lòng nhập Document Id",
                                             },
                                         ]}
                                     >
@@ -99,7 +99,7 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
                                             if (fields.length > 1) {
                                                 remove(field.name);
                                             } else {
-                                                msg.error("errro");
+                                                msg.error("error");
                                             }
                                         }}
                                     />

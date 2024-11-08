@@ -26,7 +26,7 @@ import {
 import { getResponse } from "./response.js";
 import { sendMail } from "../services/emailService.js";
 import dayjs from "dayjs";
-import { DATE_TIME_FORMAT } from "../constants/common.js";
+import { DATE_FORMAT } from "../constants/common.js";
 import { getSheets } from "../services/sheetService.js";
 
 const TIME_OUT = 5500;
@@ -410,7 +410,7 @@ export class DeviceContainer {
                 item.UserId,
                 item.UserName,
                 item.Name,
-                dayjs(item.VerifyDate).format(DATE_TIME_FORMAT),
+                dayjs(item.VerifyDate).format(DATE_FORMAT),
             ]);
 
             const result = await handleSyncDataToSheet(
@@ -495,7 +495,7 @@ export class DeviceContainer {
                         return device;
                     });
 
-                    logger.error(`Device: ${deviceSDK.ip} lost connection at ${dayjs().format(DATE_TIME_FORMAT)}`);
+                    logger.error(`Device: ${deviceSDK.ip} lost connection at ${dayjs().format(DATE_FORMAT)}`);
 
                     const sendErrorToSheet = async () => {
                         const sheets = await getSheets();
@@ -509,10 +509,10 @@ export class DeviceContainer {
 
                         if (result.isSuccess) {
                             await appendRow(result.data, [
-                                [deviceSDK.ip, "Mất kết nối", dayjs().format(DATE_TIME_FORMAT)],
+                                [deviceSDK.ip, "Mất kết nối", dayjs().format(DATE_FORMAT)],
                             ]);
                         } else {
-                            logger.error(`Can not init sheet to push error. ${deviceSDK.ip} -- ${dayjs().format(DATE_TIME_FORMAT)}`);
+                            logger.error(`Can not init sheet to push error. ${deviceSDK.ip} -- ${dayjs().format(DATE_FORMAT)}`);
                         }
                     };
 

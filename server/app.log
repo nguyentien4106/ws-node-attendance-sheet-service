@@ -5363,3 +5363,13 @@
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-08T09:48:48.180Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-08T09:49:16.666Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-08T09:49:55.598Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-11-08T10:41:18.091Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-08T10:41:18.094Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-08T10:41:18.094Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-08T10:42:03.897Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-08T10:42:15.085Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-08T10:42:16.613Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-08T10:43:55.321Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-08T10:44:34.736Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-08T10:44:58.343Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-08T10:54:00.129Z"}

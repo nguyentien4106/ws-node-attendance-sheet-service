@@ -13,7 +13,7 @@ import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
 import UserInformationForm from "../users/UserInformationForm";
 import dayjs from "dayjs";
-import { DATE_FORMAT, DATE_TIME_FORMAT } from "../../constants/common";
+import { DATE_FORMAT } from "../../constants/common";
 
 const { RangePicker } = DatePicker;
 
@@ -199,8 +199,8 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                             data: {
                                 Ip: device.Ip,
                                 type: "ByTime",
-                                fromDate: range[0].format(DATE_TIME_FORMAT),
-                                toDate: range[1].format(DATE_TIME_FORMAT)
+                                fromDate: range[0].format(DATE_FORMAT),
+                                toDate: range[1].format(DATE_FORMAT)
                             },
                         })
                         return;
