@@ -1,5 +1,3 @@
-// const { RequestTypes } = require("../models/RequestTypes");
-// const { DeviceContainer } = require("../models/deviceContainer");
 import { getResponse } from "../models/response.js";
 import * as DeviceService from "./deviceService.js";
 import { RequestTypes } from "../constants/requestType.js";
@@ -46,22 +44,6 @@ const syncData = (data, container, ws) => {
     return container.syncData(data, ws)
 } 
 
-
-/*
-
-{
-    "Id": 4,
-    "Name": "nguyenvantien4",
-    "Password": "123456",
-    "Role": 3,
-    "CardNo": "0",
-    "DisplayName": "Nguyễn Văn Tiến 4",
-    "DeviceIp": "192.168.1.201",
-    "UID": 1,
-    "UserId": "123459",
-    "DeviceName": "Cổng chính"
-}
-    */
 const syncUserData = async (data) => {
     try{
         const rows = data.users.map(item => [item.Id, item.Name, item.Password, item.CardNo, item.DisplayName, item.DeviceIp, item.UID, item.UserId, item.DeviceName])
@@ -365,6 +347,17 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         getResponse({
                             type: request.type,
                             data: res.rowCount ? Result.Success(res.rows[0]) : Result.Fail(500, "Không thể cập nhật thông tin người dùng. Xin thử lại!"),
+                        })
+                    );
+                })
+                break;
+            
+            case RequestTypes.SyncTime: 
+                deviceContainer.syncTime().then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: Result.Success(res),
                         })
                     );
                 })

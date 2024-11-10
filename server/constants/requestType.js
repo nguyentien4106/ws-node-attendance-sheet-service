@@ -21,5 +21,6 @@ export const RequestTypes = {
     DeleteLog: "DeleteLog",
     AddLog: "AddLog",
     SyncDataFromSheet: "SyncDataFromSheet",
-    EditUser: "EditUser"
+    EditUser: "EditUser",
+    SyncTime: "SyncTime"
 }

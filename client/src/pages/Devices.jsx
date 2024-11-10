@@ -111,7 +111,6 @@ export default function Devices() {
             if(response.type === "Ping"){
                 const data = response.data
                 const devicesDisconnected = devices.filter(item => !item.IsConnected).map(item => item.Ip)
-                console.log(devicesDisconnected)
                 if(!devicesDisconnected.includes(data.deviceIp)){
                     if(data.status){
                         message.info(`${data.deviceIp} đã được kết nói lại`)

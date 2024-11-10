@@ -13,7 +13,7 @@ import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
 import UserInformationForm from "../users/UserInformationForm";
 import dayjs from "dayjs";
-import { DATE_FORMAT } from "../../constants/common";
+import { DATE_FORMAT, TIME_FORMAT } from "../../constants/common";
 
 const { RangePicker } = DatePicker;
 
@@ -108,7 +108,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                             cancelText="No"
                         >
                             <Button 
-                                // disabled={!record?.IsConnected}
+                                disabled={!record?.IsConnected}
                             >
                                 Đồng bộ toàn bộ dữ liệu
                             </Button>
@@ -120,7 +120,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                         color="#108ee9"
                     >
                         <Button
-                            // disabled={!record?.IsConnected}
+                            disabled={!record?.IsConnected}
                             onClick={() => {
                                 setOpen(OPEN_TYPES.SYNC_DATA_FORM)
                                 setDevice(record)
@@ -138,6 +138,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
         message.info(
             "Yêu cầu đồng bộ đã được gửi đi. Vui lòng chờ cho tới khi có thông báo mới."
         );
+        setLoading(true)
         sendJsonMessage({
             type: RequestTypes.SyncData,
             data: {
@@ -199,8 +200,8 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                             data: {
                                 Ip: device.Ip,
                                 type: "ByTime",
-                                fromDate: range[0].format(DATE_FORMAT),
-                                toDate: range[1].format(DATE_FORMAT)
+                                fromDate: range[0].format(DATE_FORMAT + " " + TIME_FORMAT),
+                                toDate: range[1].format(DATE_FORMAT + " " + TIME_FORMAT)
                             },
                         })
                         return;
@@ -222,8 +223,13 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                         <RangePicker
                             defaultValue={defaultRange}
                             showTime
+                            
                             maxDate={dayjs()}
-                            onChange={(val) => setRange(val)}
+                            onChange={(val) => {
+                                console.log("val", val)
+                                setRange(val)
+                            }}
+                            
                         ></RangePicker>
                     </Space>
                 )}

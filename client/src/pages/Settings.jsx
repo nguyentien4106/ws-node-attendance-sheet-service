@@ -37,6 +37,18 @@ export default function Settings() {
                     message.error("Cập nhật thất bại. " + response.data.message)
                 }
             }
+
+            if(response.type === RequestTypes.SyncTime){
+                console.log(response.data)
+                const successes = response.data.data.filter(item => item.isSuccess)
+                const failed = response.data.data.filter(item => !item.isSuccess)
+                if(successes.length){
+                    message.success(`Cập nhật thành công thiết bị: ${successes.map(item => item.data).join(", ")}`)
+                }
+                if(failed.length) {
+                    message.error("Cập nhật thất bại thiết bị: " + failed.map(item => item.data).join(", "))
+                }
+            }
         },
     });
 
@@ -52,8 +64,15 @@ export default function Settings() {
             type: RequestTypes.UpdateEmail,
             data: email
         })
+
     }
 
+    const syncTime = () => {
+        setLoading(true)
+        sendJsonMessage({
+            type: RequestTypes.SyncTime
+        })
+    }
     return (
         <div className='d-flex justify-content-start flex-column'>
             <Space style={{ width: "70%" }}>
@@ -69,6 +88,13 @@ export default function Settings() {
                     message.success("Cài đặt IP máy chủ thành công.")
                 }}>Cập nhật</Button>
             </Space>
+            <Space style={{ width: "70%", marginTop: 20}}>
+                <label>Thời gian trên máy: </label>
+                <Button onClick={() => {
+                    syncTime()
+                }}>Đồng bộ thời gian</Button>
+            </Space>
+            
         </div>
     )
 }

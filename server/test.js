@@ -6,242 +6,25 @@ import { getSheets } from "./services/sheetService.js";
 import { appendRow, initSheets, syncDataFromSheet } from "./services/dataService.js";
 import { DATE_FORMAT } from "./constants/common.js";
 
+const manageZktecoDevice = async () => {
+  const device = new Zkteco("192.168.1.201", 4370, 5200, 5000);
 
-// console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isBefore(dayjs('2024-11-05 4:34:47 PM')))
-// console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').isAfter(dayjs('2024-10-12 4:50:35 PM')))
+  try {
+      // Create socket connection to the device
+      await device.createSocket();
 
-// const sendErrorToSheet = async () => {
-//     const sheets = await getSheets();
-//     const result = await initSheets(
-//         sheets.rows.map((item) => ({
-//             SheetName: "Error",
-//             DocumentId: item.DocumentId,
-//         })),
-//         ["IP", "Lỗi", "Ngày giờ"]
-//     );
+      // Retrieve and log all attendance records
+      const time = await device.clearAttendanceLog();
+      console.log(time)
+      await device.setTime(new Date())
+      const time1 = await device.getTime();
+      console.log(time1)
 
-//     if (result.isSuccess) {
-//         await appendRow(result.data, [
-//             ['ip', "Mất kết nối", dayjs().format(DATE_FORMAT)],
-//         ]);
-//     } else {
-//         logger.error("Can not init sheet to push error");
-//     }
-// };
-
-// sendErrorToSheet().then(res => console.log(res))
-// sendErrorToSheet().then(res => console.log(res))
-
-// syncDataFromSheet({ DocumentId: '1J_ksu0COMPtBoddnHp-r4qvAriS3Ddg3hsTo3-OUnXo', SheetName: 'Sheet1' }).then(res=> {
-//     console.log(res)
-// })
-// sendErrorToSheet().then(res => console.log(res))
-
-
-            /*{
-  data: [
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sat Oct 12 2024 16:50:35 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sat Oct 12 2024 16:53:34 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sat Oct 12 2024 17:25:15 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sat Oct 12 2024 18:09:37 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sun Oct 13 2024 20:00:17 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sun Oct 13 2024 20:07:40 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sun Oct 13 2024 20:10:36 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sun Oct 13 2024 20:12:01 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sun Oct 13 2024 20:12:07 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sun Oct 13 2024 20:12:08 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Mon Oct 14 2024 00:05:47 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Tue Oct 15 2024 00:25:55 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Tue Oct 15 2024 00:32:28 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sun Oct 27 2024 17:22:24 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sun Oct 27 2024 17:22:26 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sun Oct 27 2024 17:29:14 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sun Oct 27 2024 17:30:33 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sun Oct 27 2024 17:30:34 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sun Oct 27 2024 17:33:32 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sat Jan 01 2000 00:03:27 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sat Jan 01 2000 00:03:55 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sat Jan 01 2000 00:06:40 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 4,
-      user_id: '123456',
-      record_time: 'Sat Jan 01 2000 00:10:20 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    }
-  ]
-
+      // Manually disconnect after using real-time logs
+      await device.disconnect();
+  } catch (error) {
+      console.error("Error:", error);
   }
+};
 
-- hiển thị giờ đúng foramt 24h
-- check lại ngôn ngữ
-- đồng bộ từ sheet xuống.
-- edit nhân viên
-  PS C:\Users\NguyenTien\Desktop\ws-node-attendance-sheet-service\server>  
-*/
-
-
-console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').format("YYYY-MM-DD HH:mm:ss"))
+manageZktecoDevice();

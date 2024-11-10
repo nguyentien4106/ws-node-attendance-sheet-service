@@ -8,7 +8,10 @@ import { DATE_FORMAT, TIME_FORMAT } from "../constants/common.js";
 export const handleRealTimeData = async (log, deviceId) => {
     try{
         const dbRow = await insertDB(log, deviceId)
-        const sheetRows = dbRow.map(item => [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, dayjs(item.VerifyDate).format(DATE_FORMAT), dayjs(item.VerifyDate).format(TIME_FORMAT)])
+        const sheetRows = dbRow.map(item => {
+            const time = dayjs(item.VerifyDate)
+            return [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.Name, item.UserName, time.format(DATE_FORMAT), time.format(TIME_FORMAT)]
+        })
 
         const sheetRow =  await insertToGGSheet(sheetRows, deviceId);
         if(!sheetRow.isSuccess){

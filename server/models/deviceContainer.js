@@ -377,7 +377,7 @@ export class DeviceContainer {
         }
         try {
             const isDeleteAll = data.type == "All";
-            await deviceSDK.freeData()
+            // await deviceSDK.freeData()
             const atts = await deviceSDK.getAttendances();
             const users = (await getAllUsers(data.Ip)).rows;
             console.log('atts', atts.data)
@@ -388,15 +388,19 @@ export class DeviceContainer {
 
                 const fromDate = dayjs(data.fromDate);
                 const toDate = dayjs(data.toDate);
-
+                console.log('fromDate', fromDate.format("YYYY MM DD H:mm:ss"))
+                console.log('toDate', toDate.format("YYYY MM DD H:mm:ss"))
                 return atts.data.filter((att) => {
                     const record_time = dayjs(att.record_time);
+                    console.log(record_time.format("YYYY MM DD H:mm:ss"))
                     return (
                         record_time.isBefore(toDate) &&
                         record_time.isAfter(fromDate)
                     );
                 });
             };
+
+            console.log('data select', getAttendanceData())
 
             const attendances = await syncAttendancesData(
                 getAttendanceData(),
@@ -436,6 +440,23 @@ export class DeviceContainer {
                 })
             );
         }
+    }
+
+    async syncTime() {
+        const devices = this.deviceSDKs.filter(
+            (device) => device.connectionType
+        );
+        const result = []
+        for(const device of devices){
+            try{
+                await device.setTime(new Date())
+                result.push(Result.Success(device.ip))
+            }
+            catch(err) {
+                result.push(Result.Fail(500, ``, device.ip))
+            }
+        }
+        return result
     }
 
     async ping(wss, counter) {
