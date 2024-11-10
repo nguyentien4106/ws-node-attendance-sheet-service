@@ -380,7 +380,6 @@ export class DeviceContainer {
             // await deviceSDK.freeData()
             const atts = await deviceSDK.getAttendances();
             const users = (await getAllUsers(data.Ip)).rows;
-            console.log('atts', atts.data)
             const getAttendanceData = () => {
                 if (isDeleteAll) {
                     return atts.data;
@@ -388,19 +387,14 @@ export class DeviceContainer {
 
                 const fromDate = dayjs(data.fromDate);
                 const toDate = dayjs(data.toDate);
-                console.log('fromDate', fromDate.format("YYYY MM DD H:mm:ss"))
-                console.log('toDate', toDate.format("YYYY MM DD H:mm:ss"))
                 return atts.data.filter((att) => {
                     const record_time = dayjs(att.record_time);
-                    console.log(record_time.format("YYYY MM DD H:mm:ss"))
                     return (
                         record_time.isBefore(toDate) &&
                         record_time.isAfter(fromDate)
                     );
                 });
             };
-
-            console.log('data select', getAttendanceData())
 
             const attendances = await syncAttendancesData(
                 getAttendanceData(),
@@ -466,7 +460,7 @@ export class DeviceContainer {
         for (const deviceSDK of devices) {
             try {
                 const info = await deviceSDK.getPIN();
-                if (counter.value === 20) {
+                if (counter.value === 10) {
                     const fd = await deviceSDK.freeData();
                     counter.value = 0;
                 } else {

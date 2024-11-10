@@ -10,6 +10,7 @@ export const handleRealTimeData = async (log, deviceId) => {
         const dbRow = await insertDB(log, deviceId)
         const sheetRows = dbRow.map(item => {
             const time = dayjs(item.VerifyDate)
+            console.log(time.format("YYYY MM DD H:mm:ss"))
             return [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.Name, item.UserName, time.format(DATE_FORMAT), time.format(TIME_FORMAT)]
         })
 

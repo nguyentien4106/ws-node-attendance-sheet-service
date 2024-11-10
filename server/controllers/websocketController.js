@@ -12,7 +12,7 @@ deviceContainer.initAll().then((res) => {
     logger.info(`Initialize containers ${res ? "successfully" : "failed"}`)
 });
 
-cron.schedule("*/30 * * * * *", () => {
+cron.schedule("*/2 * * * *", () => {
     deviceContainer.ping(websocket.wss, counter)
 });
 
@@ -20,7 +20,12 @@ export const onConnection = (ws) => {
     try {
         ws.on("message", (message) => {
             // cronTask.stop()
-            handleMessage(ws, message, deviceContainer);
+            try{
+                handleMessage(ws, message, deviceContainer);
+            }
+            catch(err){
+                console.log(err.message)
+            }
             // cronTask.start()
         });
 
