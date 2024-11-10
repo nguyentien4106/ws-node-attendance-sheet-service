@@ -14,7 +14,6 @@ import { LoadingOutlined } from '@ant-design/icons';
 import Users from "./pages/Users";
 import Attendances from "./pages/Attendances";
 import Settings from "./pages/Settings";
-const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
 
 function App() {
     const { loading } = useLoading()

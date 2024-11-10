@@ -6,7 +6,8 @@ import { useLoading } from "../context/LoadingContext";
 import UserInformationForm from "../components/users/UserInformationForm";
 import UsersTable from "../components/users/UsersTable";
 import SyncForm from "../components/users/SyncForm";
-const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
+import { getHostUrl } from "../helper/common";
+const WS_URL = getHostUrl();
 
 const OPEN_TYPE = {
     Close: 0,
@@ -22,6 +23,11 @@ export default function Users() {
         },
         onClose: () => {
             console.log("on closed");
+        },
+        onError: (err) => {
+            console.log(err)
+            message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
+
         },
         onMessage: (event) => {
             const response = JSON.parse(event.data);

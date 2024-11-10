@@ -9,10 +9,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
     platform: linux/arm64/v8
     
-
   server:
     build: ./server
     image: nguyentien0620/server-arm
@@ -29,14 +28,13 @@ services:
       - "3002:3002"
     volumes:
       - ./server:/app
-    command: "npm run start"  # Adjust based on your server start command
     platform: linux/arm64/v8
 
   client:
     build: ./client
     image: nguyentien0620/client-arm
     environment:
-      VITE_WS_URL: ws://127.0.0.1:3002
+      VITE_WS_URL: ws://192.168.1.51:3002
     depends_on:
       - postgres
     ports:

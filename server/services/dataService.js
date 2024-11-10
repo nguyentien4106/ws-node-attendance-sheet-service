@@ -1,7 +1,7 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 import { Result } from '../models/common.js';
-import { DATE_FORMAT, HEADER_ROW } from '../constants/common.js';
+import { DATE_FORMAT, HEADER_ROW, TIME_FORMAT } from '../constants/common.js';
 import { insertRawAttendances } from './attendanceService.js';
 import { handleSyncDataToSheet } from '../helper/dataHelper.js';
 import dayjs from 'dayjs';
@@ -102,6 +102,7 @@ export const syncDataFromSheet = async (sheet) => {
         item.UserName,
         item.Name,
         dayjs(item.VerifyDate).format(DATE_FORMAT),
+        dayjs(item.VerifyDate).format(TIME_FORMAT),
     ]);
 
     const result = await handleSyncDataToSheet(

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { query, queryFormat } from "../config/db.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
 import { Result } from "../models/common.js";
@@ -83,17 +84,9 @@ export const setUploadStatus = (attId, status = false) => {
 };
 
 export const syncAttendancesData = async (attendances, users, isDeleteAll = true) => {
-    const dbUsers = await getAllUsers("All");
     const queryDevices = await getAllDevices();
 
-    const getUser = (userId, uid) => users.find((item) => item.uid === uid && item.userId === userId);
-    const getDisplayName = (uid, userId, defaultName) => {
-        return (
-            dbUsers.rows.find(
-                (user) => user.UID == uid && user.UserId == userId
-            )?.DisplayName ?? defaultName
-        );
-    };
+    const getUser = (userId, uid) => users.find((item) => item.UID === uid && item.UserId === userId);
 
     const devices = queryDevices.rows;
     const getDevice = (ip) => devices.find((item) => item.Ip == ip)
@@ -101,15 +94,15 @@ export const syncAttendancesData = async (attendances, users, isDeleteAll = true
     const values = attendances.map((item) => {
         const user = getUser(item.user_id, item.sn);
         const device = getDevice(item.ip);
-
+        console.log(dayjs(item.record_time).format("YYYY-MM-DD HH:mm:ss"))
         return [
             device.Id,
-            new Date(item.record_time).toLocaleString(),
+            dayjs(item.record_time).format("YYYY-MM-DD HH:mm:ss") + "+07",
             device.Name,
-            user?.name ?? "User Deleted: " + item.user_id,
+            user?.Name ?? "User Deleted: " + item.user_id,
             item.user_id,
             user
-                ? getDisplayName(item.sn, item.user_id, user.name)
+                ? user.DisplayName
                 : "User Deleted: " + item.user_id,
             true,
         ];

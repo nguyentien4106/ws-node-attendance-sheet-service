@@ -16,8 +16,9 @@ import { useLoading } from "../context/LoadingContext";
 import { CloseOutlined } from "@ant-design/icons";
 import { notification } from "antd";
 import DeviceForm from "../components/devices/DeviceForm";
+import { getHostUrl } from "../helper/common";
 
-const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
+const WS_URL = getHostUrl();
 
 export default function Devices() {
     const [devices, setDevices] = useState([]);
@@ -31,6 +32,11 @@ export default function Devices() {
         },
         onClose: () => {
             console.log("on closed");
+        },
+        onError: (err) => {
+            console.log(err)
+            message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
+
         },
         onMessage: (event) => {
             const response = JSON.parse(event.data);

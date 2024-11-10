@@ -1,7 +1,7 @@
 # Dockerfile in ./client directory
 
 # Step 1: Build the Vite app
-FROM node:18 AS build
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Step 2: Use Node.js to serve the built app
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /app
 

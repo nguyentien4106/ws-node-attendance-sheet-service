@@ -8,9 +8,10 @@ import dayjs from "dayjs";
 import { DATE_FORMAT } from "../constants/common";
 import AttendanceForm from "../components/attendances/AttendanceForm";
 import SheetSyncForm from "../components/attendances/SheetSyncForm";
+import { getHostUrl } from "../helper/common";
 
 const { RangePicker } = DatePicker;
-const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://127.0.0.1:3000";
+const WS_URL = getHostUrl();
 
 const OPEN_TYPES = {
     CLOSE: 0,
@@ -25,6 +26,11 @@ export default function Attendances() {
         },
         onClose: () => {
             console.log("on closed");
+        },
+        onError: (err) => {
+            console.log(err)
+            message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
+
         },
         onMessage: (event) => {
             const response = JSON.parse(event.data);

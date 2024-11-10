@@ -16,6 +16,7 @@ import {
 import { syncAttendancesData } from "../services/attendanceService.js";
 import {
     getAllUsers,
+    getUsersByDeviceId,
     insertNewUsers,
     removeUser,
 } from "../services/userService.js";
@@ -26,7 +27,7 @@ import {
 import { getResponse } from "./response.js";
 import { sendMail } from "../services/emailService.js";
 import dayjs from "dayjs";
-import { DATE_FORMAT } from "../constants/common.js";
+import { DATE_FORMAT, TIME_FORMAT } from "../constants/common.js";
 import { getSheets } from "../services/sheetService.js";
 
 const TIME_OUT = 5500;
@@ -378,8 +379,8 @@ export class DeviceContainer {
             const isDeleteAll = data.type == "All";
             await deviceSDK.freeData()
             const atts = await deviceSDK.getAttendances();
-            const users = await deviceSDK.getUsers();
-            console.log('users', users)
+            const users = (await getAllUsers(data.Ip)).rows;
+            console.log('atts', atts.data)
             const getAttendanceData = () => {
                 if (isDeleteAll) {
                     return atts.data;
@@ -399,7 +400,7 @@ export class DeviceContainer {
 
             const attendances = await syncAttendancesData(
                 getAttendanceData(),
-                users.data,
+                users,
                 isDeleteAll
             );
 
@@ -411,6 +412,7 @@ export class DeviceContainer {
                 item.UserName,
                 item.Name,
                 dayjs(item.VerifyDate).format(DATE_FORMAT),
+                dayjs(item.VerifyDate).format(TIME_FORMAT)
             ]);
 
             const result = await handleSyncDataToSheet(

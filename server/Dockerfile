@@ -1,17 +1,20 @@
-# Dockerfile in ./server directory
-FROM node:18
+# Use an official Node.js runtime as a parent image
+FROM node:18-alpine
 
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-# Copy package.json and install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
+# Copy the package.json and package-lock.json files to install dependencies
+COPY package*.json ./
 
-# Copy the application code
-COPY . ./
+# Install dependencies
+RUN npm install --production
 
-# Expose port (make sure this matches your WebSocket port)
+# Copy the rest of the application code to the container
+COPY . .
+
+# Expose the port your app runs on (change as needed)
 EXPOSE 3002
 
-# Run the server
+# Start the Node.js app
 CMD ["npm", "start"]

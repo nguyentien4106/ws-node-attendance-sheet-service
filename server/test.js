@@ -37,9 +37,7 @@ import { DATE_FORMAT } from "./constants/common.js";
 // })
 // sendErrorToSheet().then(res => console.log(res))
 
-syncDataFromSheet({ DocumentId: '1J_ksu0COMPtBoddnHp-r4qvAriS3Ddg3hsTo3-OUnXo', SheetName: 'Sheet1' }).then(res=> {
-    console.log(res)
-})
+
             /*{
   data: [
     {
@@ -242,6 +240,8 @@ syncDataFromSheet({ DocumentId: '1J_ksu0COMPtBoddnHp-r4qvAriS3Ddg3hsTo3-OUnXo', 
 - check lại ngôn ngữ
 - đồng bộ từ sheet xuống.
 - edit nhân viên
-  PS C:\Users\NguyenTien\Desktop\ws-node-attendance-sheet-service\server>  */
+  PS C:\Users\NguyenTien\Desktop\ws-node-attendance-sheet-service\server>  
+*/
 
 
+console.log(dayjs('Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)').format("YYYY-MM-DD HH:mm:ss"))
