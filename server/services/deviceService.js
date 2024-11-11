@@ -4,6 +4,8 @@ import { Result } from "../models/common.js";
 
 export const getAllDevices = () => query('SELECT * FROM "Devices" ORDER BY "Devices"."Id"')
 
+export const getDeviceByIp = ip => query(`SELECT * FROM "Devices" WHERE "Ip" = '${ip}'`)
+
 export const disconnectAllDevices = () => query('UPDATE "Devices" SET "IsConnected" = false');
 
 export const getAllDevicesWithSheets = async () => {

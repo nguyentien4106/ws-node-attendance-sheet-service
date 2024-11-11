@@ -48,7 +48,7 @@ export const insertAttendance = (log, deviceId, uploaded = true) => {
     return query(
         `
         WITH display_name as (
-            SELECT "Users"."Name" as "Name", "Users"."DisplayName" as "UserName", "Devices"."Name" as "DeviceName", "Devices"."Id" as "DeviceId" 
+            SELECT "Users"."Name" as "UserName", "Users"."DisplayName" as "Name", "Devices"."Name" as "DeviceName", "Devices"."Id" as "DeviceId" 
             FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip" 
             WHERE "Users"."UserId" = '${log.userId}' AND "Devices"."Id" = '${deviceId}'
         )
@@ -56,7 +56,7 @@ export const insertAttendance = (log, deviceId, uploaded = true) => {
         INSERT INTO public."Attendances"(
             "UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name", "Uploaded")
 
-            SELECT '${log.userId}', "DeviceId", NOW(), "DeviceName", "UserName", "Name", ${uploaded} from display_name RETURNING *
+            SELECT '${log.userId}', "DeviceId", NOW() AT TIME ZONE 'GMT-7', "DeviceName", "UserName", "Name", ${uploaded} from display_name RETURNING *
         `
     );
 };
@@ -97,7 +97,7 @@ export const syncAttendancesData = async (attendances, users, isDeleteAll = true
         console.log(dayjs(item.record_time).format("YYYY-MM-DD HH:mm:ss"))
         return [
             device.Id,
-            dayjs(item.record_time).format("YYYY-MM-DD HH:mm:ss") + "+07",
+            dayjs(item.record_time).format("YYYY-MM-DD HH:mm:ss"),
             device.Name,
             user?.Name ?? "User Deleted: " + item.user_id,
             item.user_id,

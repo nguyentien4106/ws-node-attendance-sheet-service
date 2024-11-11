@@ -226,7 +226,6 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                             
                             maxDate={dayjs()}
                             onChange={(val) => {
-                                console.log("val", val)
                                 setRange(val)
                             }}
                             

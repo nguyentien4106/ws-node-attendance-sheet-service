@@ -1,12 +1,11 @@
 import { Button, Space, Table, Popconfirm, Modal } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { RequestTypes } from "../../constants/requestType";
 import { Excel } from "antd-table-saveas-excel";
-import { renderDateTimeString } from "../../helper/timeHelper";
 import { useLoading } from "../../context/LoadingContext";
 import AttendanceForm from "./AttendanceForm";
 import dayjs from "dayjs";
-import { DATE_FORMAT, TIME_FORMAT } from "../../constants/common";
+import { DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
 
 export default function AttendancesTable({ attendances, sendJsonMessage }) {
     const deviceNameFilters = [
@@ -55,18 +54,20 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             key: "Name",
         },
         {
-            title: "Ngày",
+            title: "Ngày (DD/MM/YYYY)",
             dataIndex: "VerifyDate",
             key: "Date",
             sorter: (a, b) =>
                 Date.parse(a.VerifyDate) - Date.parse(b.VerifyDate),
-            render: (value) => dayjs(value).format(DATE_FORMAT),
+            render: (value) => dayjs(value).format(DATE_SHOW_FORMAT),
         },
         {
             title: "Giờ",
             dataIndex: "VerifyDate",
             key: "Time",
-            render: (value) => dayjs(value).format(TIME_FORMAT),
+            render: (value) => {
+                return dayjs(value).format(TIME_FORMAT)
+            },
         },
         {
             title: "Trạng thái đồng bộ",

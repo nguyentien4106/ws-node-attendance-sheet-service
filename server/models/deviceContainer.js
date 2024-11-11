@@ -3,6 +3,7 @@ import { logger } from "../config/logger.js";
 import {
     deleteDevice,
     getAllDevices,
+    getDeviceByIp,
     insertNewDevice,
     setConnectStatus,
 } from "../services/deviceService.js";
@@ -413,6 +414,8 @@ export class DeviceContainer {
                 dayjs(item.VerifyDate).format(TIME_FORMAT)
             ]);
 
+            console.log(rowsData)
+
             const result = await handleSyncDataToSheet(
                 rowsData,
                 data.Id,
@@ -457,6 +460,7 @@ export class DeviceContainer {
         const devices = this.deviceSDKs.filter(
             (device) => device.connectionType
         );
+
         for (const deviceSDK of devices) {
             try {
                 const info = await deviceSDK.getPIN();
@@ -466,75 +470,62 @@ export class DeviceContainer {
                 } else {
                     counter.value++;
                 }
-
+                console.log('ping', counter)
             } catch (err) {
                 await setConnectStatus(deviceSDK.ip, false);
-                const result = await this.connectDevice({ Ip: deviceSDK.ip });
-                if (result.isSuccess) {
-                    wss.clients.forEach(function each(client) {
-                        client.send(
-                            getResponse({
-                                type: "Ping",
-                                data: {
-                                    deviceIp: deviceSDK.ip,
-                                    status: true,
-                                },
-                            })
-                        );
-                    });
-                } else {
-                    sendMail({
-                        subject: "Cảnh báo mất kết nối máy chấm công.",
-                        device: {
-                            Name: "Thiết bị máy chấm công",
-                            Ip: deviceSDK.ip,
-                        },
-                    });
+                const query = (await getDeviceByIp(deviceSDK.ip))
+                const deviceName = query.rowCount ? query.rows[0].Name : `Thiết bị : ${deviceSDK.ip}`
+                sendMail({
+                    subject: "Cảnh báo mất kết nối máy chấm công.",
+                    device: {
+                        Name: deviceName,
+                        Ip: deviceSDK.ip,
+                    },
+                });
 
-                    wss.clients.forEach(function each(client) {
-                        client.send(
-                            getResponse({
-                                type: "Ping",
-                                data: {
-                                    deviceIp: deviceSDK.ip,
-                                    status: false,
-                                },
-                            })
-                        );
-                    });
+                wss.clients.forEach(function each(client) {
+                    client.send(
+                        getResponse({
+                            type: "Ping",
+                            data: {
+                                deviceIp: deviceSDK.ip,
+                                status: false,
+                            },
+                        })
+                    );
+                });
 
-                    this.deviceSDKs = this.deviceSDKs.map((device) => {
-                        if (device.ip === deviceSDK.ip) {
-                            device.ztcp.socket = null;
-                            device.connectionType = null
-                        }
+                this.deviceSDKs = this.deviceSDKs.map((device) => {
+                    if (device.ip === deviceSDK.ip) {
+                        device.ztcp.socket = null;
+                        device.connectionType = null
+                    }
 
-                        return device;
-                    });
+                    return device;
+                });
 
-                    logger.error(`Device: ${deviceSDK.ip} lost connection at ${dayjs().format(DATE_FORMAT)}`);
+                logger.error(`Device: ${deviceSDK.ip} lost connection at ${dayjs().format(DATE_FORMAT)}`);
 
-                    const sendErrorToSheet = async () => {
-                        const sheets = await getSheets();
-                        const result = await initSheets(
-                            sheets.rows.map((item) => ({
-                                SheetName: "Error",
-                                DocumentId: item.DocumentId,
-                            })),
-                            ["IP", "Lỗi", "Ngày giờ"]
-                        );
+                const sendErrorToSheet = async () => {
+                    const sheets = await getSheets();
+                    const result = await initSheets(
+                        sheets.rows.map((item) => ({
+                            SheetName: "THÔNG BÁO",
+                            DocumentId: item.DocumentId,
+                        })),
+                        ["IP", "Tên thiết bị", "Lỗi", "Ngày", "Giờ"]
+                    );
 
-                        if (result.isSuccess) {
-                            await appendRow(result.data, [
-                                [deviceSDK.ip, "Mất kết nối", dayjs().format(DATE_FORMAT)],
-                            ]);
-                        } else {
-                            logger.error(`Can not init sheet to push error. ${deviceSDK.ip} -- ${dayjs().format(DATE_FORMAT)}`);
-                        }
-                    };
+                    if (result.isSuccess) {
+                        await appendRow(result.data, [
+                            [deviceSDK.ip, deviceName, "Mất kết nối", dayjs().format(DATE_FORMAT), dayjs().format(TIME_FORMAT)],
+                        ]);
+                    } else {
+                        logger.error(`Can not init sheet to push error. ${deviceSDK.ip} -- ${dayjs().format(DATE_FORMAT)}`);
+                    }
+                };
 
-                    await sendErrorToSheet()
-                }
+                await sendErrorToSheet()
             }
         }
     }
