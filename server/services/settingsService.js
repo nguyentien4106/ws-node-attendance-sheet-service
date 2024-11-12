@@ -13,3 +13,11 @@ export const getSettings = async () => {
         SELECT * FROM "Settings"
     `)
 }
+
+export const login = async (email, password) => {
+    return query(
+    `
+        SELECT * FROM "Settings" WHERE "Email" = '${email}' AND "Password" = '${password}' LIMIT 1
+    `
+    )
+}

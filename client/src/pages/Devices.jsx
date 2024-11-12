@@ -17,6 +17,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import { notification } from "antd";
 import DeviceForm from "../components/devices/DeviceForm";
 import { getHostUrl } from "../helper/common";
+import Auth from "../layout/Auth";
 
 const WS_URL = getHostUrl();
 
@@ -132,7 +133,7 @@ export default function Devices() {
     }, []);
 
     return (
-        <div>
+        <Auth>
             <div className="d-flex justify-content-between mb-3">
                 <h3>Thiết bị</h3>
                 <Button onClick={() => setOpen(true)} type="primary">Thêm thiết bị</Button>
@@ -153,6 +154,6 @@ export default function Devices() {
             >
                 <DeviceForm setLoading={setLoading} setOpen={setOpen} sendJsonMessage={sendJsonMessage} submitRef={submitRef}></DeviceForm>
             </Modal>
-        </div>
+        </Auth>
     );
 }

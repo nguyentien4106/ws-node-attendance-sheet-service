@@ -458,7 +458,7 @@ export class DeviceContainer {
 
     async ping(wss, counter) {
         const devices = this.deviceSDKs.filter(
-            (device) => device.connectionType
+            (device) => device.connectionType && device.ztcp?.socket
         );
 
         for (const deviceSDK of devices) {

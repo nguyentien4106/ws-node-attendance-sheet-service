@@ -7,6 +7,7 @@ import UserInformationForm from "../components/users/UserInformationForm";
 import UsersTable from "../components/users/UsersTable";
 import SyncForm from "../components/users/SyncForm";
 import { getHostUrl } from "../helper/common";
+import Auth from "../layout/Auth";
 const WS_URL = getHostUrl();
 
 const OPEN_TYPE = {
@@ -25,9 +26,10 @@ export default function Users() {
             console.log("on closed");
         },
         onError: (err) => {
-            console.log(err)
-            message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
-
+            console.log(err);
+            message.error(
+                "Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. "
+            );
         },
         onMessage: (event) => {
             const response = JSON.parse(event.data);
@@ -102,13 +104,20 @@ export default function Users() {
             }
 
             if (response.type === RequestTypes.EditUser) {
-                console.log(response.data)
-                if(response.data.isSuccess){
-                    message.success("Cập nhật thông tin người dùng thành công.")
-                    setUsers(prev => prev.map(item => item.Id === response.data.data.Id ? response.data.data : item))
-                }
-                else {
-                    message.error(response.data.message)
+                console.log(response.data);
+                if (response.data.isSuccess) {
+                    message.success(
+                        "Cập nhật thông tin người dùng thành công."
+                    );
+                    setUsers((prev) =>
+                        prev.map((item) =>
+                            item.Id === response.data.data.Id
+                                ? response.data.data
+                                : item
+                        )
+                    );
+                } else {
+                    message.error(response.data.message);
                 }
             }
         },
@@ -142,67 +151,69 @@ export default function Users() {
     }, [deviceSelected]);
 
     return (
-        <div>
-            <div className="d-flex justify-content-between">
-                <h2>Người dùng</h2>
-                <Space>
-                    <h6>Thiết bị : </h6>
-                    <Select
-                        style={{
-                            width: 200,
-                        }}
-                        onChange={(deviceIp) => setDeviceSelected(deviceIp)}
-                        options={options}
-                        defaultValue={deviceSelected}
-                    ></Select>
-                    <Button
-                        onClick={() => setOpen(OPEN_TYPE.AddUser)}
-                        type="primary"
-                    >
-                        Thêm người dùng
-                    </Button>
-                    <Button onClick={() => setOpen(OPEN_TYPE.SyncData)}>
-                        Đồng bộ
-                    </Button>
-                </Space>
+        <Auth>
+            <div>
+                <div className="d-flex justify-content-between">
+                    <h2>Người dùng</h2>
+                    <Space>
+                        <h6>Thiết bị : </h6>
+                        <Select
+                            style={{
+                                width: 200,
+                            }}
+                            onChange={(deviceIp) => setDeviceSelected(deviceIp)}
+                            options={options}
+                            defaultValue={deviceSelected}
+                        ></Select>
+                        <Button
+                            onClick={() => setOpen(OPEN_TYPE.AddUser)}
+                            type="primary"
+                        >
+                            Thêm người dùng
+                        </Button>
+                        <Button onClick={() => setOpen(OPEN_TYPE.SyncData)}>
+                            Đồng bộ
+                        </Button>
+                    </Space>
+                </div>
+                <UsersTable
+                    deviceIp={deviceSelected}
+                    users={users}
+                    sendJsonMessage={sendJsonMessage}
+                    setOpen={setOpen}
+                ></UsersTable>
+                <Modal
+                    onCancel={() => setOpen(OPEN_TYPE.Close)}
+                    open={!!open}
+                    onOk={() => submitUserFormRef.current.click()}
+                    title={
+                        <div className="d-flex justify-content-center mb-3">
+                            {OPEN_TYPE.AddUser
+                                ? "Thông tin User"
+                                : "Thông tin Sheet"}
+                        </div>
+                    }
+                >
+                    {open === OPEN_TYPE.AddUser ? (
+                        <UserInformationForm
+                            devices={devices}
+                            submitRef={submitUserFormRef}
+                            sendJsonMessage={sendJsonMessage}
+                            device={null}
+                            setOpen={setOpen}
+                        ></UserInformationForm>
+                    ) : (
+                        <SyncForm
+                            devices={devices}
+                            submitRef={submitUserFormRef}
+                            sendJsonMessage={sendJsonMessage}
+                            device={null}
+                            setOpen={setOpen}
+                            users={users}
+                        ></SyncForm>
+                    )}
+                </Modal>
             </div>
-            <UsersTable
-                deviceIp={deviceSelected}
-                users={users}
-                sendJsonMessage={sendJsonMessage}
-                setOpen={setOpen}
-            ></UsersTable>
-            <Modal
-                onCancel={() => setOpen(OPEN_TYPE.Close)}
-                open={!!open}
-                onOk={() => submitUserFormRef.current.click()}
-                title={
-                    <div className="d-flex justify-content-center mb-3">
-                        {OPEN_TYPE.AddUser
-                            ? "Thông tin User"
-                            : "Thông tin Sheet"}
-                    </div>
-                }
-            >
-                {open === OPEN_TYPE.AddUser ? (
-                    <UserInformationForm
-                        devices={devices}
-                        submitRef={submitUserFormRef}
-                        sendJsonMessage={sendJsonMessage}
-                        device={null}
-                        setOpen={setOpen}
-                    ></UserInformationForm>
-                ) : (
-                    <SyncForm
-                        devices={devices}
-                        submitRef={submitUserFormRef}
-                        sendJsonMessage={sendJsonMessage}
-                        device={null}
-                        setOpen={setOpen}
-                        users={users}
-                    ></SyncForm>
-                )}
-            </Modal>
-        </div>
+        </Auth>
     );
 }

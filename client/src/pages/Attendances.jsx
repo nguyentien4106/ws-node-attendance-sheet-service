@@ -9,6 +9,7 @@ import { DATE_FORMAT } from "../constants/common";
 import AttendanceForm from "../components/attendances/AttendanceForm";
 import SheetSyncForm from "../components/attendances/SheetSyncForm";
 import { getHostUrl } from "../helper/common";
+import Auth from "../layout/Auth";
 
 const { RangePicker } = DatePicker;
 const WS_URL = getHostUrl();
@@ -166,7 +167,7 @@ export default function Attendances() {
     const submitRef = useRef();
 
     return (
-        <div>
+        <Auth>
             <Space size={30}>
                 <Space>
                     <label>Khoảng: </label>
@@ -224,6 +225,6 @@ export default function Attendances() {
                     </SheetSyncForm>
                 )}
             </Modal>
-        </div>
+        </Auth>
     );
 }

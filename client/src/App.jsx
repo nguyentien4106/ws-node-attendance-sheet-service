@@ -14,6 +14,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import Users from "./pages/Users";
 import Attendances from "./pages/Attendances";
 import Settings from "./pages/Settings";
+import Login from "./pages/Login";
 
 function App() {
     const { loading } = useLoading()
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/users" element={<Users />} />
                     <Route path="/attendances" element={<Attendances />} />
                     <Route path="/settings" element={<Settings />} />
+                    <Route path="/login" element={<Login />} />
                 </Route>
             </Routes>
         </>
