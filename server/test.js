@@ -10,6 +10,7 @@ const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_u
 
 const TOKEN_PATH = 'token.json';
 
+const parentId = "1HNds8-VenunJPtzfiUcx2fIf5-j72PF5UABLruM8jjY"
 // Authenticate the user
 function authorize() {
   return new Promise((resolve, reject) => {
@@ -48,11 +49,13 @@ async function createAppsScriptForSheet() {
   const script = google.script({ version: 'v1', auth });
 
   // Create a new Apps Script project
+  const requestBody = {
+    title: 'Script 1',
+    parentId: parentId,
+  }
+
   const { data } = await script.projects.create({
-    requestBody: {
-      title: 'Script',
-      parentId: '1gV0bLSWeHdhdXBuK-UVqEUn946FaJ3txPinR-gse8RQ'
-    },
+    requestBody: requestBody
   });
 
   const scriptId = data.scriptId;
@@ -60,11 +63,40 @@ async function createAppsScriptForSheet() {
 
   // Define Google Apps Script code to interact with the Google Sheet
   const scriptCode = `
-    function logSheetData() {
-      const sheet = SpreadsheetApp.openById('YOUR_SHEET_ID');
-      const data = sheet.getSheetByName('Sheet1').getDataRange().getValues();
-      Logger.log(data);
+    function removeDuplicatesAndSort() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("DATA CHẤM CÔNG");
+  const data = sheet.getDataRange().getValues();
+  const rowsToDelete = [];
+  const valueIndexMap = new Map();
+
+  const length = data.length - 1;
+  for (var i = length; i >= 1; i--) {
+    const firstCellValue = data[i][0];
+    const secondCellValue = data[i][1];
+
+    if (valueIndexMap.has(firstCellValue)) {
+      rowsToDelete.push(i + 1);
+    } else {
+      valueIndexMap.set(firstCellValue, i + 1);
+
+      if (secondCellValue === "deleted") {
+        rowsToDelete.push(i + 1);
+
+      }
     }
+  }
+
+  rowsToDelete.sort((a, b) => b - a);
+  for (const rowIndex of rowsToDelete) {
+    sheet.deleteRow(rowIndex);
+  }
+
+  const lastRow = sheet.getLastRow() - 1;
+  const lastColumn = sheet.getLastColumn();
+  sheet.getRange(2, 1, lastRow, lastColumn)
+       .sort({ column: 1, ascending: true });
+}
+
   `;
 
   // Add code to the Apps Script project

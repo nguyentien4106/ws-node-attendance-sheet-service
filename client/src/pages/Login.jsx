@@ -15,14 +15,15 @@ const Login = () => {
             body: JSON.stringify(values)
           })
         .then(res => res.json())
-        .then(data => {
-            if(data.auth){
-                sessionStorage.setItem("auth", data.email)
+        .then(res => {
+            console.log(res.data)
+            if(res.isSuccess){
+                sessionStorage.setItem("auth", res.data.email)
                 navigate(window.location.pathname)
                 window.location.reload()
             }
             else{
-                message.error("Sai tên đăng nhập hoặc mật khẩu. Tên đăng nhập là email bạn đã đăng ký nhận thông báo.")
+                message.error(res.message)
             }
         })
     };

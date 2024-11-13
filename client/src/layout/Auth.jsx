@@ -2,7 +2,7 @@ import React from 'react'
 import Login from '../pages/Login'
 
 export default function Auth({ children }) {
-    const auth = sessionStorage.getItem("auth") === "true" ? true : false
+    const auth = sessionStorage.getItem("auth") != null ? true : false
 
     if(auth){
         return children
