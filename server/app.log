@@ -5881,3 +5881,6 @@
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-12T06:22:33.322Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-12T06:22:34.632Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-12T07:00:34.085Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-11-13T09:30:17.147Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-13T09:30:17.150Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-13T09:30:17.150Z"}
