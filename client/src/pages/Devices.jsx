@@ -72,7 +72,7 @@ export default function Devices() {
 
             if(response.type === RequestTypes.AddDevice){
                 const data = response.data;
-                if(data.code === 200){
+                if(data.isSuccess){
                     location.reload()
                     setDevices(prev => [...prev, data.data])
                     message.success("Thêm thiết bị thành công.")

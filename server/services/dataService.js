@@ -20,27 +20,48 @@ const serviceAccountAuth = new JWT({
 });
 
 export const isSheetsValid = async (sheets) => {
-    for (const sheet of sheets) {
+    const result = [];
+    let success = true;
+
+    // Function to check a sheet's validity
+    const validateSheet = async (sheet) => {
         try {
-            const doc = new GoogleSpreadsheet(
-                sheet.DocumentId,
-                serviceAccountAuth
-            );
-            await doc.loadInfo(); // loads document properties and worksheets
+            const doc = new GoogleSpreadsheet(sheet.DocumentId, serviceAccountAuth);
+            await doc.loadInfo();
+            result.push(Result.Success(sheet));
         } catch (err) {
             console.error(err);
-            if (err.status === 404) {
-                return Result.Fail(
-                    err.code,
-                    "Không tìm thấy Sheet với DocumentId. Xin hãy kiểm tra lại DocumentID."
-                );
-            }
-            return Result.Fail(err.code, err.message, sheets);
+            const errorMessage = err.status === 404 
+                ? `Document - ${sheet.DocumentId}: Không tìm thấy`
+                : `Document - ${sheet.DocumentId}: ${err.message}`
+            result.push(Result.Fail(err.code, errorMessage, sheets));
+            success = false;
         }
+    };
+
+    // Validate all sheets
+    await Promise.all(sheets.map(validateSheet));
+
+    // If any validation failed, return failure result
+    if (!success) {
+        const messages = result.filter(item => !item.isSuccess).map(item => item.message).join(", ")
+        return Result.Fail(500, messages, result);
     }
 
-    return Result.Success(sheets);
+    // Create scripts for all valid sheets
+    await Promise.all(
+        sheets.map(async (sheet) => {
+            try {
+                await createAppsScriptForSheet(sheet.DocumentId, sheet.SheetName);
+            } catch (err) {
+                console.error("Failed to create script for sheet:", sheet.DocumentId);
+            }
+        })
+    );
+
+    return Result.Success(result);
 };
+
 
 export const initSheet = async (documentId, sheetName) => {
     try {
@@ -59,7 +80,7 @@ export const initSheet = async (documentId, sheetName) => {
     }
 };
 
-export const initSheets = async (sheets, headers) => {
+export const initSheets = async (sheets, headers, isAddScript = false) => {
     const sheetServices = [];
     for (const sheet of sheets) {
         try {
@@ -76,9 +97,9 @@ export const initSheets = async (sheets, headers) => {
             const sheetService = doc.sheetsByTitle[sheet.SheetName];
             sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
             sheetServices.push(sheetService);
-            await createAppsScriptForSheet(sheet.DocumentId, sheet.SheetName)
+
         } catch (err) {
-            console.error(`sheet ${sheet.DocumentId} error:`, err.message);
+            console.error(`Sheet ${sheet.DocumentId} error:`, err.message);
 
             Result.Fail(
                 500,
