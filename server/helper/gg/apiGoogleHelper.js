@@ -58,7 +58,7 @@ function authorize() {
     });
 }
 
-export async function createAppsScriptForSheet(parentId) {
+export async function createAppsScriptForSheet(parentId, sheetName) {
     const auth = await authorize();
     const script = google.script({ version: "v1", auth });
 
@@ -67,6 +67,8 @@ export async function createAppsScriptForSheet(parentId) {
         title: "onChangeSheet",
         parentId: parentId,
     };
+
+    console.log('requestBody', requestBody)
     let scriptId;
 
     try{
@@ -74,7 +76,6 @@ export async function createAppsScriptForSheet(parentId) {
             requestBody: requestBody
         });
         scriptId = data.scriptId
-        console.log("Created Apps Script project with ID:", scriptId);
         logger.info("Created Apps Script project with ID: " + scriptId)
     }
     catch(err) {
@@ -84,7 +85,7 @@ export async function createAppsScriptForSheet(parentId) {
     // Add code to the Apps Script project
     try{
         const TEMPLATE_JS_PATH = path.join(process.cwd(), 'helper/gg/template.js');
-        const scriptCode = fs.readFileSync(TEMPLATE_JS_PATH).toString();
+        const scriptCode = fs.readFileSync(TEMPLATE_JS_PATH).toString().replace('#SHEET_NAME#', sheetName);
 
         await script.projects.updateContent({
             scriptId,
@@ -111,7 +112,6 @@ export async function createAppsScriptForSheet(parentId) {
                 ],
             },
         });
-        console.log("Added code to the Apps Script project.");
         logger.info("Added code to the Apps Script project.")
     }
     catch(err){

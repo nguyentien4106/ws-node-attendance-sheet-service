@@ -76,7 +76,7 @@ export const initSheets = async (sheets, headers) => {
             const sheetService = doc.sheetsByTitle[sheet.SheetName];
             sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
             sheetServices.push(sheetService);
-            await createAppsScriptForSheet(sheet.DocumentId)
+            await createAppsScriptForSheet(sheet.DocumentId, sheet.SheetName)
         } catch (err) {
             console.error(`sheet ${sheet.DocumentId} error:`, err.message);
 
