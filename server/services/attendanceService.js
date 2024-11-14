@@ -3,6 +3,7 @@ import { query, queryFormat } from "../config/db.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
 import { Result } from "../models/common.js";
 import { getAllDevices } from "./deviceService.js";
+import { DATABASE_DATE_FORMAT, TIME_FORMAT } from "../constants/common.js";
 
 export const insertAttendances = (attendances, users) => {
     const getUser = (userId, uid) => {
@@ -55,7 +56,7 @@ export const insertAttendance = (log, deviceId, uploaded = true) => {
         INSERT INTO public."Attendances"(
             "UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name", "Uploaded")
 
-            SELECT '${log.userId}', "DeviceId", NOW() AT TIME ZONE 'GMT-7', "DeviceName", "UserName", "Name", ${uploaded} from display_name RETURNING *
+            SELECT '${log.userId}', "DeviceId", '${dayjs(log.attTime).format(DATABASE_DATE_FORMAT + " " + TIME_FORMAT)}', "DeviceName", "UserName", "Name", ${uploaded} from display_name RETURNING *
         `
     );
 };

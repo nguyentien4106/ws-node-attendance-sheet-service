@@ -6,6 +6,8 @@ import { useLoading } from "../../context/LoadingContext";
 import AttendanceForm from "./AttendanceForm";
 import dayjs from "dayjs";
 import { DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 
 export default function AttendancesTable({ attendances, sendJsonMessage }) {
     const deviceNameFilters = [
@@ -59,14 +61,14 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             key: "Date",
             sorter: (a, b) =>
                 Date.parse(a.VerifyDate) - Date.parse(b.VerifyDate),
-            render: (value) => dayjs(value).format(DATE_SHOW_FORMAT),
+            render: (value) => dayjs().utc(value).format(DATE_SHOW_FORMAT),
         },
         {
             title: "Giờ",
             dataIndex: "VerifyDate",
             key: "Time",
             render: (value) => {
-                return dayjs(value).format(TIME_FORMAT)
+                return dayjs().utc(value).format(TIME_FORMAT)
             },
         },
         {

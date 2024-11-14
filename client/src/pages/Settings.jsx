@@ -6,12 +6,16 @@ import { useLoading } from "../context/LoadingContext";
 import { getHostUrl, getServerIp, setServerIp } from "../helper/common";
 import Auth from "../layout/Auth";
 import { Form } from "react-router-dom";
+import dayjs from "dayjs";
+import { DATE_SHOW_FORMAT, TIME_FORMAT } from "../constants/common";
 const WS_URL = getHostUrl();
 
 export default function Settings() {
     const [email, setEmail] = useState("");
     const { setLoading } = useLoading();
     const [ip, setIp] = useState(getServerIp());
+    const [time, setTime] = useState(dayjs())
+
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onOpen: () => {
             console.log("WebSocket connection established.");
@@ -30,7 +34,9 @@ export default function Settings() {
             setLoading(false);
 
             if (response.type === RequestTypes.GetSettings) {
-                setEmail(response.data.Email);
+                console.log(response.data)
+                setEmail(response.data.setting.Email);
+                setTime(response.data.time)
             }
 
             if (response.type === RequestTypes.UpdateEmail) {
@@ -126,6 +132,10 @@ export default function Settings() {
                     >
                         Cập nhật
                     </Button>
+                </Space>
+                <Space style={{ width: "70%", marginTop: 20 }}>
+                    <label>Thời gian trên máy chủ: </label>
+                    <label>{dayjs(time).format(`${DATE_SHOW_FORMAT} ${TIME_FORMAT}`)}</label>
                 </Space>
                 <Space style={{ width: "70%", marginTop: 20 }}>
                     <label>Thời gian trên máy: </label>

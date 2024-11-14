@@ -4,17 +4,19 @@ import readline from "readline";
 import { initSheets } from "./services/dataService.js";
 import path from "path";
 import { logger } from "./config/logger.js";
+import dayjs from "dayjs";
+import { DATE_FORMAT, TIME_FORMAT } from "./constants/common.js";
 // Load client secrets from a file
-const credentials = JSON.parse(fs.readFileSync("credentials.json"));
+// const credentials = JSON.parse(fs.readFileSync("credentials.json"));
 
-const { client_secret, client_id, redirect_uris } = credentials.installed;
-const oAuth2Client = new google.auth.OAuth2(
-    client_id,
-    client_secret,
-    redirect_uris[0]
-);
+// const { client_secret, client_id, redirect_uris } = credentials.installed;
+// const oAuth2Client = new google.auth.OAuth2(
+//     client_id,
+//     client_secret,
+//     redirect_uris[0]
+// );
 
-const TOKEN_PATH = "token.json";
+// const TOKEN_PATH = "token.json";
 
 // Authenticate the user
 function authorize() {
@@ -120,4 +122,11 @@ async function createAppsScriptForSheet(parentId, sheetName) {
 
 
 
-createAppsScriptForSheet('1E_v3eTVBFMxaAf_Z3ZTZp9-rNdjDDrO3DVcw8jxWDf0', 'Sheet1').catch(console.error)
+// createAppsScriptForSheet('1E_v3eTVBFMxaAf_Z3ZTZp9-rNdjDDrO3DVcw8jxWDf0', 'Sheet1').catch(console.error)
+
+
+const log = { userId: '123456', attTime: '2024-11-15T00:57:19.000Z' }
+
+const day = dayjs(log.attTime)
+
+console.log(day.format(DATE_FORMAT + TIME_FORMAT))

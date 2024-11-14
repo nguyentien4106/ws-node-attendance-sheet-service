@@ -6,6 +6,7 @@ import { insertRawAttendances } from "./attendanceService.js";
 import { handleSyncDataToSheet } from "../helper/dataHelper.js";
 import dayjs from "dayjs";
 import { createAppsScriptForSheet } from "../helper/gg/apiGoogleHelper.js";
+import { logger } from "../config/logger.js";
 
 // Initialize auth - see https://theoephraim.github.io/node-google-spreadsheet/#/guides/authentication
 const serviceAccountAuth = new JWT({
@@ -44,8 +45,8 @@ export const isSheetsValid = async (sheets) => {
 
     // If any validation failed, return failure result
     if (!success) {
-        const messages = result.filter(item => !item.isSuccess).map(item => item.message).join(", ")
-        return Result.Fail(500, messages, result);
+        logger.error(JSON.stringify(result))
+        return Result.Fail(500, "Xảy ra lỗi khi cố gắng khởi tạo sheet, xin hãy kiểm tra lại.", result);
     }
 
     // Create scripts for all valid sheets

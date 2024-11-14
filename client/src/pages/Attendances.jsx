@@ -5,7 +5,7 @@ import { RequestTypes } from "../constants/requestType";
 import AttendancesTable from "../components/attendances/AttendancesTable";
 import { Button, DatePicker, message, Modal, Select, Space } from "antd";
 import dayjs from "dayjs";
-import { DATE_FORMAT } from "../constants/common";
+import { DATE_FORMAT, TIME_FORMAT } from "../constants/common";
 import AttendanceForm from "../components/attendances/AttendanceForm";
 import SheetSyncForm from "../components/attendances/SheetSyncForm";
 import { getHostUrl } from "../helper/common";
@@ -38,6 +38,7 @@ export default function Attendances() {
             setLoading(false);
             const data = response.data;
             if (response.type === RequestTypes.GetAttendances) {
+                console.log(dayjs(response.data[0].VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT))
                 setAttendances(response.data);
             }
 
@@ -118,7 +119,6 @@ export default function Attendances() {
                 }
             }
 
-
             if(response.type === RequestTypes.GetSheets){
                 setSheets(data.data)
             }
@@ -158,7 +158,7 @@ export default function Attendances() {
 
     const { setLoading } = useLoading();
     const [attendances, setAttendances] = useState([]);
-    const [dateRange, setDateRange] = useState([dayjs().add(-3, "M"), dayjs()]);
+    const [dateRange, setDateRange] = useState([dayjs().add(-3, "M"), dayjs().add(1, "days")]);
     const [devices, setDevices] = useState([]);
     const [users, setUsers] = useState([]);
     const [deviceId, setDeviceId] = useState("All");

@@ -30,7 +30,8 @@ export default function AttendanceForm({
                 type: RequestTypes.AddLog,
                 data: {
                     DeviceId: values.DeviceName,
-                    UserId: values.UserName.trim()
+                    UserId: values.UserName.trim(),
+                    DateTime: dayjs(values.VerifyDate).format(),
                 }
             };
 

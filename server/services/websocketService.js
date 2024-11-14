@@ -201,6 +201,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
             case RequestTypes.GetAttendances:
                 getAttendances(request.data)
                     .then((res) => {
+                        console.log(res.rows)
                         ws.send(
                             getResponse({
                                 type: request.type,
@@ -294,7 +295,10 @@ export const handleMessage = (ws, message, deviceContainer) => {
                     ws.send(
                         getResponse({
                             type: request.type,
-                            data: res.rowCount ? res.rows[0] : { Id: 0, Email: "" },
+                            data: {
+                                setting: res.rowCount ? res.rows[0] : { Id: 0, Email: "" },
+                                time: dayjs().format()
+                            },
                         })
                     );
                 });
@@ -334,7 +338,10 @@ export const handleMessage = (ws, message, deviceContainer) => {
 
             case RequestTypes.AddLog:
                 insertAttendance(
-                    { userId: request.data.UserId },
+                    { 
+                        userId: request.data.UserId,
+                        attTime: request.data.DateTime
+                    },
                     request.data.DeviceId,
                     false
                 ).then((res) => {

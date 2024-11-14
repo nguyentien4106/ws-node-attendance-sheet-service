@@ -100,13 +100,10 @@ export async function createAppsScriptForSheet(parentId, sheetName) {
                         name: "appsscript",
                         type: "JSON",
                         source: JSON.stringify({
-                            timeZone: "America/New_York",
+                            timeZone: "Asia/Ho_Chi_Minh",
                             dependencies: {},
                             exceptionLogging: "STACKDRIVER",
-                            webapp: {
-                                access: "ANYONE_ANONYMOUS",
-                                executeAs: "USER_DEPLOYING",
-                            },
+                            runtimeVersion: "V8",
                         }),
                     },
                 ],
