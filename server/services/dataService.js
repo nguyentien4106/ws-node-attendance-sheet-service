@@ -5,6 +5,7 @@ import { DATE_FORMAT, HEADER_ROW, TIME_FORMAT } from "../constants/common.js";
 import { insertRawAttendances } from "./attendanceService.js";
 import { handleSyncDataToSheet } from "../helper/dataHelper.js";
 import dayjs from "dayjs";
+import { createAppsScriptForSheet } from "../helper/gg/apiGoogleHelper.js";
 
 // Initialize auth - see https://theoephraim.github.io/node-google-spreadsheet/#/guides/authentication
 const serviceAccountAuth = new JWT({
@@ -75,6 +76,7 @@ export const initSheets = async (sheets, headers) => {
             const sheetService = doc.sheetsByTitle[sheet.SheetName];
             sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
             sheetServices.push(sheetService);
+            await createAppsScriptForSheet(sheet.DocumentId)
         } catch (err) {
             console.error(`sheet ${sheet.DocumentId} error:`, err.message);
 
