@@ -3,7 +3,6 @@ import { query, queryFormat } from "../config/db.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
 import { Result } from "../models/common.js";
 import { getAllDevices } from "./deviceService.js";
-import { getAllUsers } from "./userService.js";
 
 export const insertAttendances = (attendances, users) => {
     const getUser = (userId, uid) => {

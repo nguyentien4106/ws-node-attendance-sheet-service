@@ -80,31 +80,26 @@ export const initSheet = async (documentId, sheetName) => {
     }
 };
 
-export const initSheets = async (sheets, headers, isAddScript = false) => {
+export const initSheets = async (sheets, headers) => {
     const sheetServices = [];
-    for (const sheet of sheets) {
-        try {
-            const doc = new GoogleSpreadsheet(
-                sheet.DocumentId,
-                serviceAccountAuth
-            );
 
-            await doc.loadInfo(); // loads document properties and worksheets
-            if (!(sheet.SheetName in doc.sheetsByTitle)) {
-                const newSheet = await doc.addSheet({ title: sheet.SheetName });
-                newSheet.setHeaderRow(headers ?? HEADER_ROW, 1);
+    for (const { DocumentId, SheetName } of sheets) {
+        try {
+            const doc = new GoogleSpreadsheet(DocumentId, serviceAccountAuth);
+            await doc.loadInfo();
+
+            // Check if the sheet exists; if not, create and set header row
+            let sheetService = doc.sheetsByTitle[SheetName];
+            if (!sheetService) {
+                sheetService = await doc.addSheet({ title: SheetName });
             }
-            const sheetService = doc.sheetsByTitle[sheet.SheetName];
+
+            // Set header row if specified
             sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
             sheetServices.push(sheetService);
-
         } catch (err) {
-            console.error(`Sheet ${sheet.DocumentId} error:`, err.message);
-
-            Result.Fail(
-                500,
-                `Document ${sheet.DocumentId} lỗi: ${err.message}`
-            );
+            console.error(`Sheet ${DocumentId} error:`, err.message);
+            return Result.Fail(500, `Document ${DocumentId} lỗi: ${err.message}`);
         }
     }
 
@@ -112,9 +107,14 @@ export const initSheets = async (sheets, headers, isAddScript = false) => {
 };
 
 export const appendRow = async (sheetServices, rows) => {
-    for (const sheet of sheetServices) {
-        const success = await sheet.addRows(rows);
+    try {
+        await Promise.all(sheetServices.map(sheet => sheet.addRows(rows)));
+    } catch (err) {
+        console.error("Error appending rows:", err.message);
+        return Result.Fail(500, `Error appending rows: ${err.message}`);
     }
+
+    return Result.Success();
 };
 
 export const syncDataFromSheet = async (sheet) => {

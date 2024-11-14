@@ -141,8 +141,9 @@ export class DeviceContainer {
 
             const connect = async () => {
                 success = await deviceSDK.createSocket();
-                const info = await deviceSDK.getPIN();
+                await deviceSDK.getPIN();
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
+                    console.log('realTimeLog', realTimeLog)
                     const insertResult = await handleRealTimeData(
                         realTimeLog,
                         device.Id
