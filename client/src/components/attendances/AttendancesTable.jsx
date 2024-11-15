@@ -4,7 +4,7 @@ import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
 import AttendanceForm from "./AttendanceForm";
 import dayjs from "dayjs";
-import { DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
+import { DATE_FORMAT, DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
 import utc from 'dayjs/plugin/utc'
 import writeXlsxFile from "write-excel-file"
 
@@ -12,13 +12,14 @@ dayjs.extend(utc)
 
 export default function AttendancesTable({ attendances, sendJsonMessage }) {
     const deviceNameFilters = [
-        ...new Set(attendances.map((item) => item.DeviceName)),
+        ...new Set(attendances?.map((item) => item.DeviceName)),
     ].map((item) => ({ text: item, value: item }));
 
     const userNameFilters = [
-        ...new Set(attendances.map((item) => item.UserName)),
+        ...new Set(attendances?.map((item) => item.UserName)),
     ].map((item) => ({ text: item, value: item }));
 
+    console.log(attendances)
     const columns = [
         {
             title: "Id",
@@ -127,7 +128,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.SyncLogData,
-            data: rc,
+            data: Object.assign(rc, { VerifyDate: dayjs(rc.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT)}),
         });
     };
 

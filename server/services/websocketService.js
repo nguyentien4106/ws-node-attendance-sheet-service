@@ -17,8 +17,9 @@ import { appendRow, initSheets, syncDataFromSheet } from "./dataService.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
 import { changePassword, getSettings, updateSettings } from "./settingsService.js";
 import dayjs from "dayjs";
-import { DATE_FORMAT, TIME_FORMAT } from "../constants/common.js";
+import { DATE_FORMAT, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
 import { getSheets } from "./sheetService.js";
+import { UserRoles } from "../constants/userRoles.js";
 
 const addDevice = (device, container) => {
     return container.addDevice(device);
@@ -52,22 +53,18 @@ const syncUserData = async (data) => {
     try {
         const rows = data.users.map((item) => [
             item.Id,
-            item.Name,
-            item.Password,
-            item.CardNo,
-            item.DisplayName,
-            item.DeviceIp,
             item.UID,
             item.UserId,
+            UserRoles[item.Role],
+            item.DeviceIp,
             item.DeviceName,
+            item.Name,
+            item.DisplayName,
+            item.Password,
         ]);
-        const result = await initSheets([data.sheet]);
+        const sheetServices = await initSheets([data.sheet], USER_HEADER_ROW);
 
-        if (!result.isSuccess) {
-            return result;
-        }
-
-        await appendRow(result.data, rows);
+        await appendRow(sheetServices.map(item => item.data), rows);
 
         return Result.Success(data);
     } catch (err) {
@@ -201,7 +198,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
             case RequestTypes.GetAttendances:
                 getAttendances(request.data)
                     .then((res) => {
-                        console.log(res.rows)
                         ws.send(
                             getResponse({
                                 type: request.type,
@@ -411,6 +407,16 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         getResponse({
                             type: request.type,
                             data: res.rowCount ? Result.Success(res.rows) : Result.Fail(500, "Không thể cập nhật mật khẩu vui lòng thử lại."),
+                        })
+                    );
+                })
+                break;
+            case RequestTypes.PullUserData:
+                deviceContainer.handlePullUserData(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res
                         })
                     );
                 })

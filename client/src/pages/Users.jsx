@@ -1,4 +1,4 @@
-import { Button, message, Modal, Popconfirm, Select, Space, Table } from "antd";
+import { Button, message, Modal, Popconfirm, Select, Space, Table, Tooltip } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
@@ -15,6 +15,7 @@ const OPEN_TYPE = {
     AddUser: 1,
     SyncData: 2,
     EditUser: 3,
+    PullData: 4
 };
 
 export default function Users() {
@@ -73,11 +74,20 @@ export default function Users() {
                 }
             }
 
+            if (response.type === RequestTypes.PullUserData) {
+                console.log(response)
+                if (response.data.isSuccess) {
+                    message.success("Đã tải dữ liệu User lên Sheet.");
+                } else {
+                    message.error(response.data.message);
+                }
+            }
+
             if (response.type === RequestTypes.AddUser) {
-                const successes = response.data.data.filter(
+                const successes = response.data.filter(
                     (item) => item.isSuccess
                 );
-                const failed = response.data.data.filter(
+                const failed = response.data.filter(
                     (item) => !item.isSuccess
                 );
 
@@ -118,6 +128,37 @@ export default function Users() {
                     );
                 } else {
                     message.error(response.data.message);
+                }
+            }
+
+            if (response.type === RequestTypes.PullUserData) {
+                console.log(response.data);
+                const successes = response.data.filter(
+                    (item) => item.isSuccess
+                );
+                const failed = response.data.filter(
+                    (item) => !item.isSuccess
+                );
+
+                if (successes.length) {
+                    message.success(
+                        <Space direction="vertical">
+                            {successes.map((item) => (
+                                <p key={item.message}>{item.message}</p>
+                            ))}
+                        </Space>,
+                        10000
+                    );
+                }
+                if (failed.length) {
+                    message.error(
+                        <Space direction="vertical">
+                            {failed.map((item) => (
+                                <p key={item.message}>{item.message}</p>
+                            ))}
+                        </Space>,
+                        10000
+                    );
                 }
             }
         },
@@ -171,9 +212,22 @@ export default function Users() {
                         >
                             Thêm người dùng
                         </Button>
-                        <Button onClick={() => setOpen(OPEN_TYPE.SyncData)}>
-                            Đồng bộ
-                        </Button>
+                        <Tooltip
+                            title="Chức năng này giúp bạn đẩy dữ liệu có trong máy chấm công lên Sheet"
+                            color="#108ee9"
+                        >
+                            <Button onClick={() => setOpen(OPEN_TYPE.SyncData)}>
+                                Đồng bộ lên Sheet
+                            </Button>
+                        </Tooltip>
+                        <Tooltip
+                            title="Chức năng này giúp bạn lấy dữ liệu user từ một trang Sheet và thêm vào máy chấm công."
+                            color="#108ee9"
+                        >
+                            <Button onClick={() => setOpen(OPEN_TYPE.PullData)}>
+                                Đồng bộ từ Sheet
+                            </Button>
+                        </Tooltip>
                     </Space>
                 </div>
                 <UsersTable
@@ -188,7 +242,7 @@ export default function Users() {
                     onOk={() => submitUserFormRef.current.click()}
                     title={
                         <div className="d-flex justify-content-center mb-3">
-                            {OPEN_TYPE.AddUser
+                            {open == OPEN_TYPE.AddUser
                                 ? "Thông tin User"
                                 : "Thông tin Sheet"}
                         </div>
@@ -210,6 +264,7 @@ export default function Users() {
                             device={null}
                             setOpen={setOpen}
                             users={users}
+                            open={open}
                         ></SyncForm>
                     )}
                 </Modal>

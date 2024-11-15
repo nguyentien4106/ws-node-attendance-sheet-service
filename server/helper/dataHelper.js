@@ -34,13 +34,9 @@ const insertDB = async (log, deviceId) => {
 export const insertToGGSheet = async (rows, deviceId) => {
     try {
         const sheets = await getSheets(deviceId);
-        const result = await initSheets(sheets.rows);
-
-        if(!result.isSuccess){
-            return result
-        }
-
-        await appendRow(result.data, rows);
+        const sheetServices = await initSheets(sheets.rows);
+        console.log(sheetServices)
+        await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), rows);
         for(const row of rows){
             setUploadStatus(row[0], true)
         }
@@ -55,18 +51,14 @@ export const handleSyncDataToSheet = async (rows, deviceId, isDeleteAll = true) 
     try {
         const sheets = await getSheets();
         const sheetServices = await initSheets(sheets.rows);
-
-        if(!sheetServices.isSuccess){
-            return sheetServices
-        }
         
         if(isDeleteAll){
-            for(const sheet of sheetServices.data){
+            for(const sheet of sheetServices.filter(item => item.isSuccess).map(item => item.data)){
                 await sheet.clearRows()
             } 
         }
 
-        await appendRow(sheetServices.data, rows);
+        const result = await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), rows);
         for(const row of rows){
             setUploadStatus(row[0], true)
         }

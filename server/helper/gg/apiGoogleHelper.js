@@ -7,9 +7,8 @@ import path, { dirname } from "path";
 
 // Load client secrets from a file
 // path.join(__dirname, "credentials.json")
-const a = path.join(process.cwd(), 'helper/gg/credentials.json');
-console.log(a )
-const credentials = JSON.parse(fs.readFileSync(a));
+const credentialsPath = path.join(process.cwd(), 'helper/gg/credentials.json');
+const credentials = JSON.parse(fs.readFileSync(credentialsPath));
 
 const { client_secret, client_id } = credentials.installed;
 const oAuth2Client = new google.auth.OAuth2(
@@ -18,9 +17,7 @@ const oAuth2Client = new google.auth.OAuth2(
     'urn:ietf:wg:oauth:2.0:oob'
 );
 
-const TOKEN_PATH = path.join(process.cwd(), 'helper/gg/token.json');// path.join(__dirname, "token.json");
-console.log(TOKEN_PATH)
-// const parentId = "1HV8rmG0IOun2vjvoigQ_vh8ZZRsLupsdfvpRu_N2YtY";
+const TOKEN_PATH = path.join(process.cwd(), 'helper/gg/token.json');
 
 // Authenticate the user
 function authorize() {
@@ -40,7 +37,7 @@ function authorize() {
                     "https://www.googleapis.com/auth/spreadsheets",
                 ],
             });
-            console.log("Authorize this app by visiting this URL:", authUrl);
+            logger.info("Authorize this app by visiting this URL:", authUrl);
             const rl = readline.createInterface({
                 input: process.stdin,
                 output: process.stdout,
@@ -68,7 +65,6 @@ export async function createAppsScriptForSheet(parentId, sheetName) {
         parentId: parentId,
     };
 
-    console.log('requestBody', requestBody)
     let scriptId;
 
     try{

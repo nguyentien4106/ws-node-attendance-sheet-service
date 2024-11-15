@@ -11,15 +11,17 @@ import { Result } from "./common.js";
 import Zkteco from "zkteco-js";
 import {
     appendRow,
+    initSheet,
     initSheets,
     isSheetsValid,
 } from "../services/dataService.js";
 import { syncAttendancesData } from "../services/attendanceService.js";
 import {
     getAllUsers,
-    getUsersByDeviceId,
+    getLastUID,
     insertNewUsers,
     removeUser,
+    validUserId,
 } from "../services/userService.js";
 import {
     handleRealTimeData,
@@ -28,8 +30,9 @@ import {
 import { getResponse } from "./response.js";
 import { sendMail } from "../services/emailService.js";
 import dayjs from "dayjs";
-import { DATE_FORMAT, TIME_FORMAT } from "../constants/common.js";
+import { DATE_FORMAT, TEMPLATE_USER_HEADER_ROW, TIME_FORMAT } from "../constants/common.js";
 import { getSheets } from "../services/sheetService.js";
+import { UserRoles } from "../constants/userRoles.js";
 
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
@@ -48,15 +51,25 @@ export class DeviceContainer {
     }
 
     async initAll() {
-        const res = await getAllDevices();
-        for (const device of res.rows) {
-            const addSuccess = this.addDeviceToContainer(device);
-            if (!addSuccess) {
-                return false;
+        try {
+            const res = await getAllDevices();
+            for (const device of res.rows) {
+                const addSuccess = this.addDeviceToContainer(device);
+                if (!addSuccess) {
+                    return Result.Fail(500, "Không thể khởi tạo thiết bị.");
+                }
             }
-        }
 
-        return true;
+            return Result.Success();
+        }
+        catch (err) {
+            if(err.code === 'ECONNREFUSED'){
+                return Result.Fail(500, "Không thể kết nối tới database. Vui lòng liên hệ quản trị.")
+            }
+
+            return Result.Fail(500, "Xảy ra lỗi không mong muốn. Vui lòng liên hệ quản trị.")
+
+        }
     }
 
     addDeviceToContainer(device) {
@@ -103,13 +116,14 @@ export class DeviceContainer {
                 TIME_OUT,
                 IN_PORT
             );
+            const success = await deviceSDK.createSocket();
+            await deviceSDK.getPIN();
 
             const sheetsValid = await isSheetsValid(device.Sheets);
             if (!sheetsValid.isSuccess) {
                 return sheetsValid;
             }
 
-            const success = await deviceSDK.createSocket();
             if (success) {
                 await deviceSDK.freeData()
                 const users = await deviceSDK.getUsers();
@@ -123,11 +137,15 @@ export class DeviceContainer {
             return result.rowCount
                 ? Result.Success(result.rows[0])
                 : Result.Fail(
-                      500,
-                      "Không thể thêm thiết bị vào hệ thống. Vui lòng reset và thử lại.",
-                      device
-                  );
+                    500,
+                    "Không thể thêm thiết bị vào hệ thống. Vui lòng reset và thử lại.",
+                    device
+                );
         } catch (err) {
+            console.log(err)
+            if(err.err.toString().includes("TIMEOUT_ON_WRITING_MESSAGE")){
+                return Result.Fail(500, "Thiết bị đang bị quá tải hoặc đang được kết nối bởi một tác vụ khác. Vui lòng reset lại MCC và thử lại!")
+            }
             return Result.Fail(500, err.message, device);
         }
     }
@@ -148,7 +166,7 @@ export class DeviceContainer {
                         realTimeLog,
                         device.Id
                     );
-                    console.log("handle realtime data result: ", insertResult);
+                    console.log("handle realtime data result: ", insertResult.isSuccess);
                 });
                 setConnectStatus(device.Ip, success);
 
@@ -277,51 +295,59 @@ export class DeviceContainer {
         return true;
     }
 
+    async addUserToDevice(user, users, deviceSDK){
+        try {
+            // const users = await deviceSDK.getUsers();
+            const query = (await getLastUID(deviceSDK.ip))
+            const lastUid = query.rowCount ? query.rows[0].UID : 0;
+
+            const isValidUserId = await validUserId(deviceSDK.ip, user.userId)
+            if(!isValidUserId){
+                return Result.Fail(500, `UserID ${user.userId}: Đã tồn tại trong thiết bị ${deviceSDK.ip}, vui lòng chọn một UserId khác.`)
+            }
+            const addDBResult = await insertNewUsers(
+                [Object.assign(user, { cardno: 0, uid: lastUid + 1 })],
+                deviceSDK.ip,
+                user.displayName
+            );
+            const res = await deviceSDK.setUser(
+                lastUid + 1,
+                user.userId,
+                user.name,
+                user.password,
+                user.role
+            );
+
+            return Result.Success({ addDBResult: addDBResult.rowCount, res }, `Thiết bị: ${deviceSDK.ip}: Thêm thành công. User ID: ${user.userId} - Tên: ${user.name}`);
+        } catch (err) {
+            console.log(err)
+            return Result.Fail(500, err, user)
+        }
+    }
     async addUser(user) {
         const result = [];
         for (const deviceIp of user.devices) {
             const deviceSDK = this.deviceSDKs.find(
                 (item) => item.ip === deviceIp
             );
-
-            if (!deviceSDK) {
-                result.push(Result.Fail(500, UNEXPECTED_ERR_MSG + deviceIp, deviceIp));
+    
+            if (!deviceSDK ) {
+                result.push(Result.Fail(500, UNEXPECTED_ERR_MSG + deviceIp, deviceIp))
                 continue
             }
 
-            if (!deviceSDK.connectionType) {
-                result.push(Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp, deviceIp))
+            if(!deviceSDK.connectionType || !deviceSDK.ztcp?.socket){
+                result.push(Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp, deviceIp));
                 continue
             }
 
-            try {
-                const users = await deviceSDK.getUsers();
-                const lastUid = Math.max(
-                    ...users.data.map((item) => +item.uid)
-                );
+            const users = (await deviceSDK.getUsers()).data;
+            const res = await this.addUserToDevice(user, users, deviceSDK)
 
-                const addDBResult = await insertNewUsers(
-                    [Object.assign(user, { cardno: 0, uid: lastUid + 1 })],
-                    deviceSDK.ip,
-                    user.displayName
-                );
-                const res = await deviceSDK.setUser(
-                    lastUid + 1,
-                    user.userId,
-                    user.name,
-                    user.password,
-                    user.role
-                );
-
-                result.push(Result.Success({ addDBResult: addDBResult.rowCount, res }, `Thiết bị: ${deviceIp}: Thêm thành công user`));
-            } catch (err) {
-                console.log(err.message);
-                result.push(Result.Fail(500, err, user))
-                continue;
-            }
+            result.push(res)
         }
 
-        return Result.Success(result);
+        return result;
     }
 
     async getAttendances(deviceIp) {
@@ -336,8 +362,7 @@ export class DeviceContainer {
         }
 
         try {
-            const result = await deviceSDK.getAttendances((e) => {});
-            console.log(result);
+            const result = await deviceSDK.getAttendances((e) => { });
 
             return Result.Success(result);
         } catch (err) {
@@ -404,7 +429,7 @@ export class DeviceContainer {
                 isDeleteAll
             );
 
-            const rowsData = attendances.map((item) => [
+            const rowsData = attendances?.map((item) => [
                 item.Id,
                 item.DeviceId,
                 item.DeviceName,
@@ -414,8 +439,6 @@ export class DeviceContainer {
                 dayjs(item.VerifyDate).format(DATE_FORMAT),
                 dayjs(item.VerifyDate).format(TIME_FORMAT)
             ]);
-
-            console.log(rowsData)
 
             const result = await handleSyncDataToSheet(
                 rowsData,
@@ -445,12 +468,12 @@ export class DeviceContainer {
             (device) => device.connectionType
         );
         const result = []
-        for(const device of devices){
-            try{
-                await device.setTime(new Date())
+        for (const device of devices) {
+            try {
+                 await device.setTime(new Date(new Date().getTime()  + 7 * 60 * 60 * 1000));
                 result.push(Result.Success(device.ip))
             }
-            catch(err) {
+            catch (err) {
                 result.push(Result.Fail(500, ``, device.ip))
             }
         }
@@ -464,9 +487,9 @@ export class DeviceContainer {
 
         for (const deviceSDK of devices) {
             try {
-                const info = await deviceSDK.getPIN();
+                await deviceSDK.getPIN();
                 if (counter.value === 10) {
-                    const fd = await deviceSDK.freeData();
+                    await deviceSDK.freeData();
                     counter.value = 0;
                 } else {
                     counter.value++;
@@ -488,10 +511,7 @@ export class DeviceContainer {
                     client.send(
                         getResponse({
                             type: "Ping",
-                            data: {
-                                deviceIp: deviceSDK.ip,
-                                status: false,
-                            },
+                            data: `${deviceSDK.ip} đã bị mất kết nối. Vui lòng kiểm tra lại.`,
                         })
                     );
                 });
@@ -509,7 +529,7 @@ export class DeviceContainer {
 
                 const sendErrorToSheet = async () => {
                     const sheets = await getSheets();
-                    const result = await initSheets(
+                    const sheetServices = await initSheets(
                         sheets.rows.map((item) => ({
                             SheetName: "THÔNG BÁO",
                             DocumentId: item.DocumentId,
@@ -517,13 +537,9 @@ export class DeviceContainer {
                         ["IP", "Tên thiết bị", "Lỗi", "Ngày", "Giờ"]
                     );
 
-                    if (result.isSuccess) {
-                        await appendRow(result.data, [
-                            [deviceSDK.ip, deviceName, "Mất kết nối", dayjs().format(DATE_FORMAT), dayjs().format(TIME_FORMAT)],
-                        ]);
-                    } else {
-                        logger.error(`Can not init sheet to push error. ${deviceSDK.ip} -- ${dayjs().format(DATE_FORMAT)}`);
-                    }
+                    await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), [
+                        [deviceSDK.ip, deviceName, "Mất kết nối", dayjs().format(DATE_FORMAT), dayjs().format(TIME_FORMAT)],
+                    ]);
                 };
 
                 await sendErrorToSheet()
@@ -532,4 +548,41 @@ export class DeviceContainer {
     }
 
 
+    async handlePullUserData(data){
+        const initResult = await initSheet(data.DocumentId, data.SheetName, TEMPLATE_USER_HEADER_ROW)
+        if(!initResult.isSuccess){
+            return [initResult]
+        }
+
+        const sdk = this.deviceSDKs.find(item => item.ip === data.Device)
+
+        if(!sdk || !sdk.connectionType || !sdk.ztcp?.socket){
+            return Result.Fail(500, UNCONNECTED_ERR_MSG + sdk.Ip);
+        }
+
+        const sheet = initResult.data
+
+        const rows = await sheet.getRows()
+        const newUsers = rows.map(row => {
+            const roleText = row.get(TEMPLATE_USER_HEADER_ROW[1])
+            const role = UserRoles.indexOf(roleText) 
+            return {
+                userId: row.get(TEMPLATE_USER_HEADER_ROW[0]),
+                role: role === -1 ? 0 : role,
+                deviceIp: row.get(TEMPLATE_USER_HEADER_ROW[2]),
+                name: row.get(TEMPLATE_USER_HEADER_ROW[3]),
+                displayName: row.get(TEMPLATE_USER_HEADER_ROW[4]),
+                password: row.get(TEMPLATE_USER_HEADER_ROW[5]),
+            }
+        })
+
+        const result = []
+        const users = (await sdk.getUsers()).data
+        for(const user of newUsers){
+            const addResult = await this.addUserToDevice(user, users ?? [], sdk)
+            result.push(addResult)
+        }
+
+        return result
+    }
 }

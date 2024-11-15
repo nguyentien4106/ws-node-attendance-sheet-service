@@ -111,17 +111,7 @@ export default function Devices() {
 
             if(response.type === "Ping"){
                 const data = response.data
-                const devicesDisconnected = devices.filter(item => !item.IsConnected).map(item => item.Ip)
-                if(!devicesDisconnected.includes(data.deviceIp)){
-                    if(data.status){
-                        message.info(`${data.deviceIp} đã được kết nói lại`)
-                        setDevices(prev => prev.map(item => item.Ip === data.deviceIp ? Object.assign(item, { IsConnected: true }) : item))
-                    }
-                    else {
-                        message.error(`${data.deviceIp} đã mất kết nối. Vui lòng kiểm tra lại."} `)
-                        setDevices(prev => prev.map(item => item.Ip === data.deviceIp ? Object.assign(item, { IsConnected: false }) : item))
-                    }
-                }
+                message.error(data)
             }
         },
     });

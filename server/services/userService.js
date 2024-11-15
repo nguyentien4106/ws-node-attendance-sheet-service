@@ -39,7 +39,7 @@ export const getUsersByDeviceId = deviceId => {
     return query(text);
 }
 
-export const getUID = (deviceIp) =>
+export const getLastUID = (deviceIp) =>
     query(
         `SELECT "UID" FROM public."Users" WHERE "DeviceIp" = '${deviceIp}' ORDER BY "UID" DESC LIMIT 1`
     );
@@ -61,4 +61,10 @@ export const editUserDisplayName = async (data) => {
     `
 
     return query(sql)
+}
+
+export const validUserId = async (deviceIp, userId) => {
+    const users = (await getAllUsers(deviceIp)).rows
+
+    return users.find(item => item.UserId === userId) ? false : true
 }

@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import fs from "node:fs";
 import { getSettings } from "./settingsService.js";
+import { logger } from "../config/logger.js";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -31,7 +32,7 @@ export const sendMail = async (email) => {
       html: data, // html body
     });
 
-    console.log("Message sent: %s", info.messageId);
+    logger.log("Message sent: %s", info.messageId);
 
     return info;
   });

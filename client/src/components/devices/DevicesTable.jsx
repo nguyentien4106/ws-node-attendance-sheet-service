@@ -247,7 +247,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {record.Sheets.map((sheet) => (
+                                {record?.Sheets?.map((sheet) => (
                                     <tr
                                         key={`${sheet.DocumentId} ${sheet.SheetName}`}
                                     >

@@ -13,7 +13,7 @@ export const insertAttendances = (attendances, users) => {
         return result.length ? result[0] : null;
     };
 
-    const values = attendances.map((item) => {
+    const values = attendances?.map((item) => {
         const user = getUser(item.user_id, item.sn);
         if (!user) {
             return [
@@ -64,7 +64,7 @@ export const insertAttendance = (log, deviceId, uploaded = true) => {
 export const getAttendances = (params) => {
     if (params.deviceId == "All") {
         return query(`
-            SELECT "Id", "DeviceId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"
+            SELECT "Id", "DeviceId", "UserId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"
             FROM public."Attendances"
             WHERE "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
             ORDER BY "Id" DESC 
@@ -72,7 +72,8 @@ export const getAttendances = (params) => {
     }
 
     return query(`
-        SELECT * FROM public."Attendances" 
+        SELECT "Id", "DeviceId", "UserId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"
+        FROM public."Attendances"
         WHERE "DeviceId" = ${params.deviceId} and "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
         ORDER BY "Id" DESC 
     `);
@@ -87,15 +88,14 @@ export const setUploadStatus = (attId, status = false) => {
 export const syncAttendancesData = async (attendances, users, isDeleteAll = true) => {
     const queryDevices = await getAllDevices();
 
-    const getUser = (userId, uid) => users.find((item) => item.UID === uid && item.UserId === userId);
+    const getUser = (userId) => users.find((item) => item.UserId === userId);
 
     const devices = queryDevices.rows;
     const getDevice = (ip) => devices.find((item) => item.Ip == ip)
 
-    const values = attendances.map((item) => {
-        const user = getUser(item.user_id, item.sn);
+    const values = attendances?.map((item) => {
+        const user = getUser(item.user_id);
         const device = getDevice(item.ip);
-        console.log(dayjs(item.record_time).format("YYYY-MM-DD HH:mm:ss"))
         return [
             device.Id,
             dayjs(item.record_time).format("YYYY-MM-DD HH:mm:ss"),

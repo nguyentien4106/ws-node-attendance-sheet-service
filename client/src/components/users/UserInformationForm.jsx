@@ -49,7 +49,7 @@ const UserInformationForm = ({
                 maxWidth: 600,
             }}
             initialValues={{
-                Devices: devices.map((item) => item.Ip),
+                Devices: devices?.map((item) => item.Ip),
             }}
         >
             <Form.Item

@@ -38,12 +38,11 @@ export default function Attendances() {
             setLoading(false);
             const data = response.data;
             if (response.type === RequestTypes.GetAttendances) {
-                console.log(dayjs(response.data[0].VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT))
                 setAttendances(response.data);
             }
 
             if (response.type === RequestTypes.GetDevices) {
-                const options = response.data.map((item) => ({
+                const options = response.data?.map((item) => ({
                     label: item.Name,
                     value: item.Id,
                 }));
@@ -101,7 +100,7 @@ export default function Attendances() {
 
             if (response.type === RequestTypes.GetUsersByDeviceId) {
                 setUsers(
-                    data.map((user) => ({
+                    data?.map((user) => ({
                         label: `${user.DisplayName} - (${user.Name}) `,
                         value: user.UserId,
                     }))
@@ -111,7 +110,6 @@ export default function Attendances() {
             if(response.type === RequestTypes.AddLog){
                 if(data.isSuccess){
                     message.success("Thêm dữ liệu thành công.")
-                    console.log(data.data)
                     setAttendances(prev => {
                         prev.unshift(data.data[0])
                         return prev

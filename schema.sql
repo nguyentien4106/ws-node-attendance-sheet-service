@@ -274,4 +274,8 @@ ALTER TABLE ONLY public."Sheets"
 
 INSERT INTO public."Settings"(
 "Email", "Password")
-	VALUES ('example@gmail.com', '1');
+	VALUES ('admin@gmail.com', 'admin');
+
+INSERT INTO public."Settings"(
+"Email", "Password")
+	VALUES ('mcc.sanabox@gmail.com', 'admin');

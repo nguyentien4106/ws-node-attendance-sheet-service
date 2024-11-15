@@ -8,8 +8,20 @@ const deviceContainer = new DeviceContainer();
 const counter = { value: 0 }
 
 deviceContainer.initAll().then((res) => {
-    console.log(`Initialize containers ${res ? "successfully" : "failed"}`);
-    logger.info(`Initialize containers ${res ? "successfully" : "failed"}`)
+    if(res.isSuccess){
+        logger.info(`Initialize containers successfully`)
+    }
+    else {
+        logger.info(`Initialize containers failed`)
+        websocket.wss.clients.forEach(function each(client) {
+            client.send(
+                getResponse({
+                    type: "Ping",
+                    data: res.message,
+                })
+            );
+        });
+    }
 });
 
 cron.schedule("*/2 * * * *", () => {

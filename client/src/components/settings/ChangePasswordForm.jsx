@@ -12,7 +12,6 @@ const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
             type: RequestTypes.ChangePassword,
             data: Object.assign(values, { email })
         })
-
     }
 
     return (
@@ -25,7 +24,18 @@ const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
             }}
             layout="vertical"
             onFinish={onFinish}
+            initialValues={{
+                email: email
+            }}
         >
+            <Form.Item
+                label="Mật khẩu hiện tại"
+                name="email"
+
+            >
+                <Input disabled />
+
+            </Form.Item>
             <Form.Item
                 label="Mật khẩu hiện tại"
                 name="currentPassword"
@@ -36,7 +46,8 @@ const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
                     },
                 ]}
             >
-                <Input />
+                <Input.Password />
+
             </Form.Item>
             <Form.Item
                 label="Mật khẩu mới"
@@ -49,7 +60,7 @@ const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
                     },
                 ]}
             >
-                <Input />
+                <Input.Password />
             </Form.Item>
 
             {/* Field */}
@@ -72,7 +83,8 @@ const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
                     }),
                 ]}
             >
-                <Input />
+                <Input.Password />
+
             </Form.Item>
             <Form.Item>
                 <Space>

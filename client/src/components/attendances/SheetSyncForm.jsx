@@ -10,7 +10,7 @@ export default function SheetSyncForm({
 }) {
     const [form] = Form.useForm();
     const { setLoading } = useLoading();
-    const documentOptions = [...new Set(sheets.map(item => item.DocumentId))].map(item => ({ label: item, value: item }))
+    const documentOptions = [...new Set(sheets?.map(item => item.DocumentId))].map(item => ({ label: item, value: item }))
     const [sheetNameOptions, setSheetNameOptions] = useState([])
 
     const onFinish = (values) => {

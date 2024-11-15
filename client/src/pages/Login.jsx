@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
-import { API_URL, getHostUrl } from "../helper/common";
+import { getAPIUrl } from "../helper/common";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const navigate = useNavigate()
     const onFinish = (values) => {
-        fetch(`${API_URL}/login`, {
+        fetch(`${getAPIUrl()}/login`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',

@@ -31,10 +31,9 @@ export const isSheetsValid = async (sheets) => {
             await doc.loadInfo();
             result.push(Result.Success(sheet));
         } catch (err) {
-            console.error(err);
             const errorMessage = err.status === 404 
-                ? `Document - ${sheet.DocumentId}: Không tìm thấy`
-                : `Document - ${sheet.DocumentId}: ${err.message}`
+                ? `Document - ${sheet.DocumentId}: Không tìm thấy sheet với Document ID này.`
+                : err.status === 403 ? `Document - ${sheet.DocumentId}: Sheet này chưa cấp quyền editor` : `Document - ${sheet.DocumentId}: ${err.message}`
             result.push(Result.Fail(err.code, errorMessage, sheets));
             success = false;
         }
@@ -46,13 +45,16 @@ export const isSheetsValid = async (sheets) => {
     // If any validation failed, return failure result
     if (!success) {
         logger.error(JSON.stringify(result))
-        return Result.Fail(500, "Xảy ra lỗi khi cố gắng khởi tạo sheet, xin hãy kiểm tra lại.", result);
+        const msg = result.filter(item => !item.isSuccess).map(item => item.message).join(", ")
+        return Result.Fail(500, msg, result);
     }
 
     // Create scripts for all valid sheets
+    await initSheets(sheets)
     await Promise.all(
         sheets.map(async (sheet) => {
             try {
+
                 await createAppsScriptForSheet(sheet.DocumentId, sheet.SheetName);
             } catch (err) {
                 console.error("Failed to create script for sheet:", sheet.DocumentId);
@@ -64,20 +66,26 @@ export const isSheetsValid = async (sheets) => {
 };
 
 
-export const initSheet = async (documentId, sheetName) => {
+export const initSheet = async (documentId, sheetName, headers) => {
     try {
         const doc = new GoogleSpreadsheet(documentId, serviceAccountAuth);
+        await doc.loadInfo();
 
-        await doc.loadInfo(); // loads document properties and worksheets
-
-        if (!(sheetName in doc.sheetsByTitle)) {
-            return Result.Success(await doc.addSheet({ title: sheetName }));
+        // Check if the sheet exists; if not, create and set header row
+        let sheetService = doc.sheetsByTitle[sheetName];
+        if (!sheetService) {
+            sheetService = await doc.addSheet({ title: sheetName });
         }
 
-        return Result.Success(doc.sheetsByTitle[sheetName]);
+        // Set header row if specified
+        sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
+        return Result.Success(sheetService)
     } catch (err) {
-        console.error(err);
-        return Result.Fail(err.code, err.message, { documentId, sheetName });
+        console.error(`Sheet ${documentId} error:`, err.message);
+        const errorMessage = err.status === 404 
+                ? `Document - ${documentId}: Không tìm thấy sheet với Document ID này.`
+                : err.status === 403 ? `Document - ${documentId}: Sheet này chưa cấp quyền editor` : `Document - ${documentId}: ${err.message}`
+        return Result.Fail(500, errorMessage);
     }
 };
 
@@ -85,26 +93,11 @@ export const initSheets = async (sheets, headers) => {
     const sheetServices = [];
 
     for (const { DocumentId, SheetName } of sheets) {
-        try {
-            const doc = new GoogleSpreadsheet(DocumentId, serviceAccountAuth);
-            await doc.loadInfo();
-
-            // Check if the sheet exists; if not, create and set header row
-            let sheetService = doc.sheetsByTitle[SheetName];
-            if (!sheetService) {
-                sheetService = await doc.addSheet({ title: SheetName });
-            }
-
-            // Set header row if specified
-            sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
-            sheetServices.push(sheetService);
-        } catch (err) {
-            console.error(`Sheet ${DocumentId} error:`, err.message);
-            return Result.Fail(500, `Document ${DocumentId} lỗi: ${err.message}`);
-        }
+        const result = await initSheet(DocumentId, SheetName, headers)
+        sheetServices.push(result)
     }
 
-    return Result.Success(sheetServices);
+    return sheetServices;
 };
 
 export const appendRow = async (sheetServices, rows) => {
@@ -141,7 +134,7 @@ export const syncDataFromSheet = async (sheet) => {
     ]);
     const attendances = await insertRawAttendances(data);
 
-    const rowsData = attendances.map((item) => [
+    const rowsData = attendances?.map((item) => [
         item.Id,
         item.DeviceId,
         item.DeviceName,
