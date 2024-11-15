@@ -64,7 +64,8 @@ export const insertAttendance = (log, deviceId, uploaded = true) => {
 export const getAttendances = (params) => {
     if (params.deviceId == "All") {
         return query(`
-            SELECT * FROM public."Attendances" 
+            SELECT "Id", "DeviceId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"
+            FROM public."Attendances"
             WHERE "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
             ORDER BY "Id" DESC 
         `);

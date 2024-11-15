@@ -1,7 +1,6 @@
 import { Button, Space, Table, Popconfirm, Modal } from "antd";
 import React, { useRef, useState } from "react";
 import { RequestTypes } from "../../constants/requestType";
-import { Excel } from "antd-table-saveas-excel";
 import { useLoading } from "../../context/LoadingContext";
 import AttendanceForm from "./AttendanceForm";
 import dayjs from "dayjs";
