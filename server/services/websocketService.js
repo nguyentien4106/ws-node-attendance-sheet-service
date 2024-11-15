@@ -15,7 +15,7 @@ import {
 } from "./attendanceService.js";
 import { appendRow, initSheets, syncDataFromSheet } from "./dataService.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
-import { getSettings, updateSettings } from "./settingsService.js";
+import { changePassword, getSettings, updateSettings } from "./settingsService.js";
 import dayjs from "dayjs";
 import { DATE_FORMAT, TIME_FORMAT } from "../constants/common.js";
 import { getSheets } from "./sheetService.js";
@@ -403,6 +403,17 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         })
                     );
                 });
+                break;
+
+            case RequestTypes.ChangePassword:
+                changePassword(request.data).then(res => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res.rowCount ? Result.Success(res.rows) : Result.Fail(500, "Không thể cập nhật mật khẩu vui lòng thử lại."),
+                        })
+                    );
+                })
                 break;
         }
     } catch (err) {

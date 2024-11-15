@@ -1,5 +1,5 @@
 import { Button, Input, message, Modal, Space } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
 import { useLoading } from "../context/LoadingContext";
@@ -8,10 +8,11 @@ import Auth from "../layout/Auth";
 import { Form } from "react-router-dom";
 import dayjs from "dayjs";
 import { DATE_SHOW_FORMAT, TIME_FORMAT } from "../constants/common";
+import ChangePasswordForm from "../components/settings/ChangePasswordForm";
 const WS_URL = getHostUrl();
 
 export default function Settings() {
-    const [email, setEmail] = useState("");
+    const [settings, setSettings] = useState(null);
     const { setLoading } = useLoading();
     const [ip, setIp] = useState(getServerIp());
     const [time, setTime] = useState(dayjs())
@@ -35,7 +36,7 @@ export default function Settings() {
 
             if (response.type === RequestTypes.GetSettings) {
                 console.log(response.data)
-                setEmail(response.data.setting.Email);
+                setSettings(response.data.setting);
                 setTime(response.data.time)
             }
 
@@ -67,7 +68,17 @@ export default function Settings() {
                 if (failed.length) {
                     message.error(
                         "Cập nhật thất bại thiết bị: " +
-                            failed.map((item) => item.data).join(", ")
+                        failed.map((item) => item.data).join(", ")
+                    );
+                }
+            }
+
+            if (response.type === RequestTypes.ChangePassword) {
+                if (response.data.isSuccess) {
+                    message.success("Cập nhật thành công");
+                } else {
+                    message.error(
+                        "Cập nhật thất bại. " + response.data.message
                     );
                 }
             }
@@ -97,8 +108,7 @@ export default function Settings() {
 
     const [open, setOpen] = useState(false);
 
-    const onFinish = (values) => {};
-
+    const submitRef = useRef()
     return (
         <Auth>
             <div className="d-flex justify-content-start flex-column">
@@ -107,12 +117,12 @@ export default function Settings() {
                     <Input
                         width={500}
                         type="email"
-                        value={email}
+                        value={settings?.Email}
                         onChange={(val) => setEmail(val.target.value)}
                     ></Input>
                     <Button onClick={updateEmail}>Cập nhật</Button>
                 </Space>
-                <Space style={{ width: "70%" }}>
+                <Space style={{ width: "70%", marginTop: 20 }}>
                     <label>Mật khẩu: </label>
                     <Button onClick={() => setOpen(true)}>Cập nhật</Button>
                 </Space>
@@ -147,52 +157,19 @@ export default function Settings() {
                         Đồng bộ thời gian
                     </Button>
                 </Space>
-                <Modal open={open} onCancel={() => setOpen(false)} onOk={() => console.log('a')}>
-                <Form
-                    name="basic"
-                    labelCol={{
-                        span: 8,
-                    }}
-                    wrapperCol={{
-                        span: 16,
-                    }}
-                    style={{
-                        maxWidth: 1000,
-                        width: "30%",
-                    }}
-                    onFinish={onFinish}
-                    autoComplete="on"
-                >
-                    <Form.Item
-                        label="Username"
-                        name="email"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Vui lòng nhập email",
-                            },
-                        ]}
+                {
+                    open && <Modal
+                        open={open}
+                        onCancel={() => setOpen(false)}
+                        onOk={() => {
+                            submitRef.current.click()
+                            setOpen(false)
+                        }}
                     >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Password"
-                        name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Vui lòng nhập mật khẩu",
-                            },
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
-
-                </Form>
-            </Modal>
+                        <ChangePasswordForm sendJsonMessage={sendJsonMessage} submitRef={submitRef} email={settings?.Email}></ChangePasswordForm>
+                    </Modal>
+                }
             </div>
-            
         </Auth>
     );
 }

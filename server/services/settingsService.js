@@ -21,3 +21,12 @@ export const login = async (email, password) => {
     `
     )
 }
+
+export const changePassword = async (data) => {
+    
+    return query(`
+        UPDATE public."Settings"
+        SET "Password"= '${data.password}'
+        WHERE "Email" = '${data.email}' AND "Password" = '${data.currentPassword}';
+    `)
+}
