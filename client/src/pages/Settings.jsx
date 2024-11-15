@@ -1,4 +1,4 @@
-import { Button, Input, message, Modal, Space } from "antd";
+import { Button, Input, message, Modal, Popconfirm, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
@@ -16,6 +16,7 @@ export default function Settings() {
     const { setLoading } = useLoading();
     const [ip, setIp] = useState(getServerIp());
     const [time, setTime] = useState(dayjs())
+    const [email, setEmail] = useState("")
 
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onOpen: () => {
@@ -35,9 +36,9 @@ export default function Settings() {
             setLoading(false);
 
             if (response.type === RequestTypes.GetSettings) {
-                console.log(response.data)
                 setSettings(response.data.setting);
                 setTime(response.data.time)
+                setEmail(response.data.setting.Email)
             }
 
             if (response.type === RequestTypes.UpdateEmail) {
@@ -51,7 +52,6 @@ export default function Settings() {
             }
 
             if (response.type === RequestTypes.SyncTime) {
-                console.log(response.data);
                 const successes = response.data.data.filter(
                     (item) => item.isSuccess
                 );
@@ -117,10 +117,22 @@ export default function Settings() {
                     <Input
                         width={500}
                         type="email"
-                        value={settings?.Email}
+                        value={email}
                         onChange={(val) => setEmail(val.target.value)}
                     ></Input>
-                    <Button onClick={updateEmail}>Cập nhật</Button>
+                    <Popconfirm
+                        title={`Cập nhật email.`}
+                        description="Khi cập nhật email thành công. Tên đăng nhập mới là email được nhận cảnh báo."
+                        onConfirm={(e) => {
+                            updateEmail();
+                        }}
+                        onCancel={() => { }}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button >Cập nhật</Button>
+
+                    </Popconfirm>
                 </Space>
                 <Space style={{ width: "70%", marginTop: 20 }}>
                     <label>Mật khẩu: </label>

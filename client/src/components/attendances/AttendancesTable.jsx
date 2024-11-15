@@ -7,6 +7,8 @@ import AttendanceForm from "./AttendanceForm";
 import dayjs from "dayjs";
 import { DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
 import utc from 'dayjs/plugin/utc'
+import writeXlsxFile from "write-excel-file"
+
 dayjs.extend(utc)
 
 export default function AttendancesTable({ attendances, sendJsonMessage }) {
@@ -61,14 +63,14 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             key: "Date",
             sorter: (a, b) =>
                 Date.parse(a.VerifyDate) - Date.parse(b.VerifyDate),
-            render: (value) => dayjs().utc(value).format(DATE_SHOW_FORMAT),
+            render: (value) => dayjs(value).format(DATE_SHOW_FORMAT),
         },
         {
             title: "Giờ",
             dataIndex: "VerifyDate",
             key: "Time",
             render: (value) => {
-                return dayjs().utc(value).format(TIME_FORMAT)
+                return dayjs(value).format(TIME_FORMAT)
             },
         },
         {
@@ -109,7 +111,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                         onConfirm={(e) => {
                             handleDelete(record);
                         }}
-                        onCancel={() => {}}
+                        onCancel={() => { }}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -141,6 +143,54 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
     const { setLoading } = useLoading();
     const submitRef = useRef();
 
+    const exportExcel = async () => {
+        const schema = [
+            {
+                column: 'Id',
+                type: Number,
+                value: att => att.Id
+            },
+            {
+                column: 'ID Thiết bị',
+                type: Number,
+                value: att => att.DeviceId
+            },
+            {
+                column: 'Tên thiết bị',
+                type: String,
+                value: att => att.DeviceName
+            },
+            {
+                column: 'User Id',
+                type: String,
+                value: att => att.UserId
+            },
+            {
+                column: 'Tên trong máy',
+                type: String,
+                value: att => att.UserName
+            },
+            {
+                column: 'Tên hiển thị',
+                type: String,
+                value: att => att.Name
+            },
+            {
+                column: 'Ngày (DD/MM/YYYY)',
+                type: String,
+                value: att => dayjs(new Date(att.VerifyDate)).format(DATE_SHOW_FORMAT)
+            },
+            {
+                column: 'Giờ',
+                type: String,
+                value: att => dayjs(new Date(att.VerifyDate)).format(TIME_FORMAT)
+            },
+        ]
+        await writeXlsxFile(attendances, {
+            schema, // (optional) column widths, etc.
+            fileName: `Attendances_Report.xlsx`
+        })
+    }
     return (
         <>
             <div
@@ -150,15 +200,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                 }}
                 className="d-flex justify-content-end"
                 onClick={() => {
-                    const excel = new Excel();
-                    excel
-                        .addSheet("data")
-                        .addColumns(columns)
-                        .addDataSource(attendances, {
-                            str2Percent: true,
-                        })
-                        .setRowHeight(5, "cm")
-                        .saveAs("Attendances.xlsx");
+                    exportExcel()
                 }}
             >
                 <img
