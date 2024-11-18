@@ -100,7 +100,7 @@ export default function AttendanceForm({
 
                 {isEdit && (
                     <Form.Item
-                        label="Tên hiển thị"
+                        label="Tên nhân viên"
                         name="Name"
                         rules={[
                             {

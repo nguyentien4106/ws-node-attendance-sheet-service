@@ -40,6 +40,7 @@ const IN_PORT = 2000;
 const UNCONNECTED_ERR_MSG = `Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. `;
 const UNEXPECTED_ERR_MSG =
     "Đã xảy ra lỗi không mong muốn. Vui lòng reset thiết bị và thử lại hoặc liên hệ quản trị. ";
+
 export class DeviceContainer {
     constructor(devices = []) {
         this.deviceSDKs = devices;
@@ -295,40 +296,42 @@ export class DeviceContainer {
         return true;
     }
 
-    async addUserToDevice(user, users, deviceSDK){
+    async addUserToDevice(user, deviceSDK, deviceName){
         try {
             // const users = await deviceSDK.getUsers();
             const query = (await getLastUID(deviceSDK.ip))
-            const lastUid = query.rowCount ? query.rows[0].UID : 0;
+            const lastUid = query.rowCount ? query.rows[0].UID + 1 : 1;
 
             const isValidUserId = await validUserId(deviceSDK.ip, user.userId)
             if(!isValidUserId){
                 return Result.Fail(500, `UserID ${user.userId}: Đã tồn tại trong thiết bị ${deviceSDK.ip}, vui lòng chọn một UserId khác.`)
             }
             const addDBResult = await insertNewUsers(
-                [Object.assign(user, { cardno: 0, uid: lastUid + 1 })],
+                [Object.assign(user, { uid: lastUid })],
                 deviceSDK.ip,
                 user.displayName
             );
-            const res = await deviceSDK.setUser(
-                lastUid + 1,
+            await deviceSDK.setUser(
+                lastUid,
                 user.userId,
                 user.name,
                 user.password,
-                user.role
+                user.role,
+                +user.cardno
             );
 
-            return Result.Success({ addDBResult: addDBResult.rowCount, res }, `Thiết bị: ${deviceSDK.ip}: Thêm thành công. User ID: ${user.userId} - Tên: ${user.name}`);
+            return Result.Success({ user: addDBResult.rowCount ? { ...addDBResult.rows[0], DeviceName: deviceName } : null }, `Thiết bị: ${deviceSDK.ip}: Thêm thành công. User ID: ${user.userId} - Tên: ${user.name}`);
         } catch (err) {
             console.log(err)
             return Result.Fail(500, err, user)
         }
     }
+
     async addUser(user) {
         const result = [];
-        for (const deviceIp of user.devices) {
+        for (const device of user.devices) {
             const deviceSDK = this.deviceSDKs.find(
-                (item) => item.ip === deviceIp
+                (item) => item.ip === device.ip
             );
     
             if (!deviceSDK ) {
@@ -341,8 +344,7 @@ export class DeviceContainer {
                 continue
             }
 
-            const users = (await deviceSDK.getUsers()).data;
-            const res = await this.addUserToDevice(user, users, deviceSDK)
+            const res = await this.addUserToDevice(user, deviceSDK, device.name)
 
             result.push(res)
         }
@@ -534,11 +536,11 @@ export class DeviceContainer {
                             SheetName: "THÔNG BÁO",
                             DocumentId: item.DocumentId,
                         })),
-                        ["IP", "Tên thiết bị", "Lỗi", "Ngày", "Giờ"]
+                        ["ID","IP", "Tên thiết bị", "Lỗi", "Ngày", "Giờ"]
                     );
 
                     await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), [
-                        [deviceSDK.ip, deviceName, "Mất kết nối", dayjs().format(DATE_FORMAT), dayjs().format(TIME_FORMAT)],
+                        [da().unix(), deviceSDK.ip, deviceName, "Mất kết nối", dayjs().format(DATE_FORMAT), dayjs().format(TIME_FORMAT)],
                     ]);
                 };
 

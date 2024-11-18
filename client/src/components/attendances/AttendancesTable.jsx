@@ -53,7 +53,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             filterSearch: true,
         },
         {
-            title: "Tên hiển thị",
+            title: "Tên nhân viên",
             dataIndex: "Name",
             key: "Name",
         },
@@ -171,7 +171,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                 value: att => att.UserName
             },
             {
-                column: 'Tên hiển thị',
+                column: 'Tên nhân viên',
                 type: String,
                 value: att => att.Name
             },

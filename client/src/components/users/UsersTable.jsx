@@ -52,12 +52,12 @@ export default function UsersTable({
       key: "DeviceName",
     },
     {
-      title: "Tên nhân viên",
+      title: "Tên trong máy",
       dataIndex: "Name",
       key: "name",
     },
     {
-      title: "Tên hiển thị",
+      title: "Tên nhân viên",
       dataIndex: "DisplayName",
       key: "DisplayName",
     },

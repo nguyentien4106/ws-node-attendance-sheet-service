@@ -18,6 +18,12 @@ const tailLayout = {
     },
 };
 
+const regex = /^[\x00-\x7F]*$/;
+
+function isValidInput(input) {
+    return regex.test(input);
+}
+
 const UserInformationForm = ({
     submitRef,
     sendJsonMessage,
@@ -26,13 +32,14 @@ const UserInformationForm = ({
 }) => {
     const [form] = Form.useForm();
     const { setLoading } = useLoading();
+    const [deviceSelected, setDeviceSelected] = useState([])
 
     const onFinish = (values) => {
         setLoading(true);
         setOpen(false);
         sendJsonMessage({
             type: RequestTypes.AddUser,
-            data: values,
+            data: {...values, devices: deviceSelected.map(device => ({ ip: device.value, name: device.label }))},
         });
     };
 
@@ -58,6 +65,7 @@ const UserInformationForm = ({
                 rules={[
                     {
                         required: true,
+                        message: "Vui lòng nhập thông tin."
                     },
                 ]}
             >
@@ -67,25 +75,39 @@ const UserInformationForm = ({
             <Form.Item
                 name="name"
                 label="Tên trong máy"
+                tooltip="Lưu ý: trường này không được viết có dấu."
                 rules={[
                     {
                         required: true,
+                        message: "Vui lòng nhập thông tin."
+
                     },
+                    ({ }) => ({
+                        validator(_, value) {
+                            if(value.split(" ").every(isValidInput)){
+                                return Promise.resolve()
+                            }
+
+                            return Promise.reject(new Error('Bạn chỉ có thể nhập tiếng anh không dấu và không chứa bất kỳ ký tự đặc biệt nào.'));
+                        },
+                    }),
                 ]}
             >
-                <Input maxLength={24} placeholder="Tên nhân viên" />
+                <Input maxLength={24} placeholder="Tên trong máy không được viết có dấu" />
             </Form.Item>
             <Form.Item
                 name="displayName"
-                label="Tên hiển thị"
+                label="Tên nhân viên"
                 rules={[
                     {
                         required: true,
+                        message: "Vui lòng nhập thông tin."
+
                     },
                 ]}
                 tooltip="Tên này dùng để hiện thị khi chấm công."
             >
-                <Input maxLength={24} placeholder="Tên hiển thị" />
+                <Input maxLength={24} placeholder="Tên nhân viên" />
             </Form.Item>
             <Form.Item
                 name="password"
@@ -93,10 +115,27 @@ const UserInformationForm = ({
                 rules={[
                     {
                         required: true,
+                        message: "Vui lòng nhập thông tin."
+
                     },
                 ]}
             >
                 <Input maxLength={24} placeholder="Mật khẩu người dùng" />
+            </Form.Item>
+            <Form.Item
+                name="cardno"
+                label="Mã thẻ từ"
+                rules={[
+                    {
+                        message: "Vui lòng nhập thông tin."
+                    },
+                ]}
+
+            >
+                <Input 
+                    type="number"
+                    placeholder="Mã thẻ từ" 
+                />
             </Form.Item>
             <Form.Item
                 label="Quyền"
@@ -104,6 +143,8 @@ const UserInformationForm = ({
                 rules={[
                     {
                         required: true,
+                        message: "Vui lòng nhập thông tin."
+
                     },
                 ]}
             >
@@ -125,6 +166,8 @@ const UserInformationForm = ({
                 rules={[
                     {
                         required: true,
+                        message: "Vui lòng nhập thông tin."
+
                     },
                 ]}
                 tooltip="Chỉ hiển thị những thiết bị đã được kết nối. Vui lòng kết nối thiết bị trước khi thêm nhân viên cho thiết bị đó."
@@ -140,6 +183,7 @@ const UserInformationForm = ({
                         label: device.Name,
                         value: device.Ip,
                     }))}
+                    onChange={(_, device) => setDeviceSelected(device)}
                 />
             </Form.Item>
             <Form.Item {...tailLayout}>

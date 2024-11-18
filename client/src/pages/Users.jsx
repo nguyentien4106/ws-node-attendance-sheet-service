@@ -97,9 +97,10 @@ export default function Users() {
                             {successes.map((item) => (
                                 <p key={item.message}>{item.message}</p>
                             ))}
-                        </Space>,
-                        10000
+                        </Space>
                     );
+
+                    setUsers(prev => [...prev, ...successes.map(item => item.data.user)])
                 }
                 if (failed.length) {
                     message.error(
@@ -107,8 +108,7 @@ export default function Users() {
                             {failed.map((item) => (
                                 <p key={item.message}>{item.message}</p>
                             ))}
-                        </Space>,
-                        10000
+                        </Space>
                     );
                 }
             }
