@@ -30,7 +30,7 @@ import {
 import { getResponse } from "./response.js";
 import { sendMail } from "../services/emailService.js";
 import dayjs from "dayjs";
-import { DATE_FORMAT, TEMPLATE_USER_HEADER_ROW, TIME_FORMAT } from "../constants/common.js";
+import { DATE_FORMAT, TEMPLATE_USER_HEADER_ROW, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
 import { getSheets } from "../services/sheetService.js";
 import { UserRoles } from "../constants/userRoles.js";
 
@@ -551,7 +551,7 @@ export class DeviceContainer {
 
 
     async handlePullUserData(data){
-        const initResult = await initSheet(data.DocumentId, data.SheetName, TEMPLATE_USER_HEADER_ROW)
+        const initResult = await initSheet(data.DocumentId, data.SheetName, USER_HEADER_ROW)
         if(!initResult.isSuccess){
             return [initResult]
         }
@@ -559,22 +559,23 @@ export class DeviceContainer {
         const sdk = this.deviceSDKs.find(item => item.ip === data.Device)
 
         if(!sdk || !sdk.connectionType || !sdk.ztcp?.socket){
-            return Result.Fail(500, UNCONNECTED_ERR_MSG + sdk.Ip);
+            return [Result.Fail(500, UNCONNECTED_ERR_MSG + sdk.ip)];
         }
 
         const sheet = initResult.data
 
         const rows = await sheet.getRows()
-        const newUsers = rows.map(row => {
-            const roleText = row.get(TEMPLATE_USER_HEADER_ROW[1])
+        const newUsersToAdd = rows.filter(row => row.get(USER_HEADER_ROW[0]).trim() === '')
+        const newUsers = newUsersToAdd.map(row => {
+            const roleText = row.get(TEMPLATE_USER_HEADER_ROW[3])
             const role = UserRoles.indexOf(roleText) 
             return {
-                userId: row.get(TEMPLATE_USER_HEADER_ROW[0]),
+                userId: row.get(TEMPLATE_USER_HEADER_ROW[2]),
                 role: role === -1 ? 0 : role,
-                deviceIp: row.get(TEMPLATE_USER_HEADER_ROW[2]),
-                name: row.get(TEMPLATE_USER_HEADER_ROW[3]),
-                displayName: row.get(TEMPLATE_USER_HEADER_ROW[4]),
-                password: row.get(TEMPLATE_USER_HEADER_ROW[5]),
+                deviceIp: row.get(TEMPLATE_USER_HEADER_ROW[4]),
+                name: row.get(TEMPLATE_USER_HEADER_ROW[6]),
+                displayName: row.get(TEMPLATE_USER_HEADER_ROW[7]),
+                password: row.get(TEMPLATE_USER_HEADER_ROW[8]),
             }
         })
 

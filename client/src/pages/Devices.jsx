@@ -106,7 +106,6 @@ export default function Devices() {
 
             if(response.type === "GetDevicesSheets"){
                 setDevices(response.data.data);
-
             }
 
             if(response.type === "Ping"){

@@ -19,7 +19,6 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
         ...new Set(attendances?.map((item) => item.UserName)),
     ].map((item) => ({ text: item, value: item }));
 
-    console.log(attendances)
     const columns = [
         {
             title: "Id",

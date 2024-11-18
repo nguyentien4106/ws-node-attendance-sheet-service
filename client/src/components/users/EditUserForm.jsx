@@ -58,7 +58,7 @@ const EditUserForm = ({
             </Form.Item>
             <Form.Item
                 name="DeviceName"
-                label="DeviceName"
+                label="Tên thiết bị"
                 rules={[
                     {
                         required: true,
@@ -69,7 +69,7 @@ const EditUserForm = ({
             </Form.Item>
             <Form.Item
                 name="Name"
-                label="Name"
+                label="Tên trong máy"
                 rules={[
                     {
                         required: true,
@@ -80,7 +80,7 @@ const EditUserForm = ({
             </Form.Item>
             <Form.Item
                 name="DisplayName"
-                label="DisplayName"
+                label="Tên nhân viên"
                 rules={[
                     {
                         required: true,

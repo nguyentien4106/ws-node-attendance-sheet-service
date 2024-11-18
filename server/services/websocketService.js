@@ -380,7 +380,7 @@ export const handleMessage = (ws, message, deviceContainer) => {
                         getResponse({
                             type: request.type,
                             data: res.rowCount
-                                ? Result.Success(res.rows[0])
+                                ? Result.Success({ ...res.rows[0], DeviceName: request.data.DeviceName })
                                 : Result.Fail(
                                     500,
                                     "Không thể cập nhật thông tin người dùng. Xin thử lại!"

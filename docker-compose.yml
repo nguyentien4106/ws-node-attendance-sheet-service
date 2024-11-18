@@ -28,6 +28,7 @@ services:
       - "3002:3002"
     volumes:
       - ./server:/app
+    restart: always
     platform: linux/arm64/v8
 
   client:

@@ -118,6 +118,7 @@ export default function Attendances() {
             }
 
             if(response.type === RequestTypes.GetSheets){
+                console.log('sheets', data.data)
                 setSheets(data.data)
             }
         },

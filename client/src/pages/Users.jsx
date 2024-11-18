@@ -74,15 +74,6 @@ export default function Users() {
                 }
             }
 
-            if (response.type === RequestTypes.PullUserData) {
-                console.log(response)
-                if (response.data.isSuccess) {
-                    message.success("Đã tải dữ liệu User lên Sheet.");
-                } else {
-                    message.error(response.data.message);
-                }
-            }
-
             if (response.type === RequestTypes.AddUser) {
                 const successes = response.data.filter(
                     (item) => item.isSuccess
@@ -114,7 +105,6 @@ export default function Users() {
             }
 
             if (response.type === RequestTypes.EditUser) {
-                console.log(response.data);
                 if (response.data.isSuccess) {
                     message.success(
                         "Cập nhật thông tin người dùng thành công."
@@ -132,7 +122,6 @@ export default function Users() {
             }
 
             if (response.type === RequestTypes.PullUserData) {
-                console.log(response.data);
                 const successes = response.data.filter(
                     (item) => item.isSuccess
                 );
@@ -146,8 +135,7 @@ export default function Users() {
                             {successes.map((item) => (
                                 <p key={item.message}>{item.message}</p>
                             ))}
-                        </Space>,
-                        10000
+                        </Space>
                     );
                 }
                 if (failed.length) {
@@ -156,10 +144,13 @@ export default function Users() {
                             {failed.map((item) => (
                                 <p key={item.message}>{item.message}</p>
                             ))}
-                        </Space>,
-                        10000
+                        </Space>
                     );
                 }
+            }
+
+            if(response.type === RequestTypes.GetSheets){
+                setSheets(response.data.data)
             }
         },
     });
@@ -171,12 +162,16 @@ export default function Users() {
     const [options, setOptions] = useState([{ label: "All", value: "All" }]);
     const [open, setOpen] = useState(OPEN_TYPE.Close);
     const submitUserFormRef = useRef();
+    const [sheets, setSheets] = useState([])
 
     useEffect(() => {
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.GetDevices,
         });
+        sendJsonMessage({
+            type: RequestTypes.GetSheets
+        })
     }, []);
 
     useEffect(() => {
@@ -265,6 +260,7 @@ export default function Users() {
                             setOpen={setOpen}
                             users={users}
                             open={open}
+                            sheets={sheets}
                         ></SyncForm>
                     )}
                 </Modal>
