@@ -67,6 +67,11 @@ export default function UsersTable({
       key: "password",
     },
     {
+      title: "Mã thẻ từ",
+      dataIndex: "CardNo",
+      key: "CardNo",
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, record) => (

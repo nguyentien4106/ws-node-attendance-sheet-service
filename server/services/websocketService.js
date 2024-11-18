@@ -287,17 +287,21 @@ export const handleMessage = (ws, message, deviceContainer) => {
                 break;
 
             case RequestTypes.GetSettings:
-                getSettings().then((res) => {
-                    ws.send(
-                        getResponse({
-                            type: request.type,
-                            data: {
-                                setting: res.rowCount ? res.rows[0] : { Id: 0, Email: "" },
-                                time: dayjs().format()
-                            },
-                        })
-                    );
-                });
+                deviceContainer.getInfo().then(info => {
+                    getSettings().then((res) => {
+                        ws.send(
+                            getResponse({
+                                type: request.type,
+                                data: {
+                                    setting: res.rowCount ? res.rows[0] : { Id: 0, Email: "" },
+                                    time: dayjs().format(),
+                                    info: info
+                                },
+                            })
+                        );
+                    });
+                })
+                
                 break;
             case RequestTypes.GetUsersByDeviceId:
                 getUsersByDeviceId(request.data).then((res) => {

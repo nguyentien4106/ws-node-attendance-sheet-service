@@ -17,6 +17,7 @@ export default function Settings() {
     const [ip, setIp] = useState(getServerIp());
     const [time, setTime] = useState(dayjs())
     const [email, setEmail] = useState("")
+    const [info, setInfo] = useState("")
 
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onOpen: () => {
@@ -39,6 +40,7 @@ export default function Settings() {
                 setSettings(response.data.setting);
                 setTime(response.data.time)
                 setEmail(response.data.setting.Email)
+                setInfo(response.data.info)
             }
 
             if (response.type === RequestTypes.UpdateEmail) {
@@ -168,6 +170,10 @@ export default function Settings() {
                     >
                         Đồng bộ thời gian
                     </Button>
+                </Space>
+                <Space style={{ width: "70%", marginTop: 20 }}>
+                    <label>Thông tin: </label>
+                    <label>{JSON.stringify(info)}</label>
                 </Space>
                 {
                     open && <Modal
