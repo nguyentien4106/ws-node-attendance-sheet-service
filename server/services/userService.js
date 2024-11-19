@@ -1,6 +1,8 @@
 import { query, queryFormat } from "../config/db.js";
+import { appendRow, initSheets } from "./dataService.js";
+import { getSheetsByDeviceIp } from "./sheetService.js";
 
-export const insertNewUsers = (users, deviceIp, displayName) => {
+export const insertNewUsers = async (users, deviceIp, displayName) => {
     const values = users.map((item) => [
         item.uid,
         item.name,
@@ -12,10 +14,17 @@ export const insertNewUsers = (users, deviceIp, displayName) => {
         deviceIp,
     ]);
 
-    return queryFormat(
+    const result = await queryFormat(
         `INSERT INTO public."Users"("UID", "Name", "Password", "Role", "CardNo", "DisplayName", "UserId", "DeviceIp")`,
         values
     );
+    
+    const query = await getSheetsByDeviceIp(deviceIp);
+    const sheets = await initSheets(query.rows)
+
+    await appendRow(sheets.filter(item => item.isSuccess).map(item => item.data), result.rows)
+
+    return result
 };
 
 export const getAllUsers = (deviceIp = "All") => {
