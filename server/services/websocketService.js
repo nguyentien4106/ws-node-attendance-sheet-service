@@ -13,7 +13,7 @@ import {
     insertAttendance,
     updateAttendance,
 } from "./attendanceService.js";
-import { appendRow, initSheets, syncDataFromSheet } from "./dataService.js";
+import { appendRow, initSheet, initSheets, syncDataFromSheet } from "./dataService.js";
 import { insertToGGSheet } from "../helper/dataHelper.js";
 import { changePassword, getSettings, updateSettings } from "./settingsService.js";
 import dayjs from "dayjs";
@@ -62,9 +62,17 @@ const syncUserData = async (data) => {
             item.DisplayName,
             item.Password,
         ]);
-        const sheetServices = await initSheets([data.sheet], USER_HEADER_ROW);
+        const service = await initSheet(data.sheet?.DocumentId, data.sheet?.SheetName, USER_HEADER_ROW);
 
-        await appendRow(sheetServices.map(item => item.data), rows);
+        if(!service.isSuccess){
+            return service
+        }
+
+        const rowsInSheets = await service.data.getRows()
+        const existedRows = rowsInSheets.map(row => +row.get(USER_HEADER_ROW[0]))
+        const newRows = rows.filter(item => !existedRows.includes(item[0]))
+
+        await appendRow([service.data], newRows);
 
         return Result.Success(data);
     } catch (err) {

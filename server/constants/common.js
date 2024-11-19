@@ -9,3 +9,8 @@ export const HEADER_ROW = ["ID", "ID thiết bị", "Tên thiết bị", "User I
 export const USER_HEADER_ROW = ["ID", "UID", "Mã nhân viên", "Quyền", "IP thiết bị", "Tên thiết bị", "Tên trong máy", "Tên nhân viên", "Mật khẩu"]
 
 export const TEMPLATE_USER_HEADER_ROW = ["Mã nhân viên", "Quyền", "IP thiết bị", "Tên trong máy", "Tên nhân viên", "Mật khẩu"]
+
+export const OPTIONS_DELETE_SHEETS = {
+    All: "All",
+    ByDeviceId: "ByDeviceId"
+}

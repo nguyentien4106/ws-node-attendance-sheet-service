@@ -3,7 +3,7 @@ import { Result } from "../models/common.js";
 import { insertAttendance, setUploadStatus } from "../services/attendanceService.js";
 import { appendRow, initSheets } from "../services/dataService.js";
 import { getSheets } from "../services/sheetService.js";
-import { DATE_FORMAT, TIME_FORMAT } from "../constants/common.js";
+import { DATE_FORMAT, HEADER_ROW, OPTIONS_DELETE_SHEETS, TIME_FORMAT } from "../constants/common.js";
 
 export const handleRealTimeData = async (log, deviceId) => {
     try{
@@ -47,18 +47,29 @@ export const insertToGGSheet = async (rows, deviceId) => {
     }
 };
 
-export const handleSyncDataToSheet = async (rows, deviceId, isDeleteAll = true) => {
+export const handleSyncDataToSheet = async (rows, deviceId, opts) => {
     try {
         const sheets = await getSheets();
         const sheetServices = await initSheets(sheets.rows);
-        
-        if(isDeleteAll){
-            for(const sheet of sheetServices.filter(item => item.isSuccess).map(item => item.data)){
+        const services = sheetServices.filter(item => item.isSuccess).map(item => item.data)
+
+        if(opts.type === OPTIONS_DELETE_SHEETS.ByDeviceId){
+            for(const sheet of services){
+                const rows = await sheet.getRows()
+                for(const row of rows){
+                    if(+row.get(HEADER_ROW[1]) === opts.deviceId){
+                        await row.delete()
+                    }
+                }
+            } 
+        }
+        else if(opts.type === OPTIONS_DELETE_SHEETS.All){
+            for(const sheet of services){
                 await sheet.clearRows()
             } 
         }
 
-        const result = await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), rows);
+        await appendRow(services, rows);
         for(const row of rows){
             setUploadStatus(row[0], true)
         }

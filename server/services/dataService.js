@@ -1,7 +1,7 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
 import { Result } from "../models/common.js";
-import { DATE_FORMAT, HEADER_ROW, TIME_FORMAT } from "../constants/common.js";
+import { DATABASE_DATE_FORMAT, DATE_FORMAT, HEADER_ROW, OPTIONS_DELETE_SHEETS, TIME_FORMAT } from "../constants/common.js";
 import { insertRawAttendances } from "./attendanceService.js";
 import { handleSyncDataToSheet } from "../helper/dataHelper.js";
 import dayjs from "dayjs";
@@ -75,10 +75,10 @@ export const initSheet = async (documentId, sheetName, headers) => {
         let sheetService = doc.sheetsByTitle[sheetName];
         if (!sheetService) {
             sheetService = await doc.addSheet({ title: sheetName });
+            sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
         }
 
         // Set header row if specified
-        sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
         return Result.Success(sheetService)
     } catch (err) {
         console.error(`Sheet ${documentId} error:`, err.message);
@@ -105,11 +105,15 @@ export const appendRow = async (sheetServices, rows) => {
         await Promise.all(sheetServices.map(sheet => sheet.addRows(rows)));
     } catch (err) {
         console.error("Error appending rows:", err.message);
-        return Result.Fail(500, `Error appending rows: ${err.message}`);
+        return Result.Fail(500, `Xảy ra lỗi khi thêm dòng mới vào sheet: ${err.message}`);
     }
 
     return Result.Success();
 };
+
+export const removeRows = async (services, rows) => {
+
+}
 
 export const syncDataFromSheet = async (sheet) => {
     const doc = new GoogleSpreadsheet(sheet.DocumentId, serviceAccountAuth);
@@ -121,17 +125,27 @@ export const syncDataFromSheet = async (sheet) => {
             `Không tìm thấy ${sheet.SheetName} trong Document: ${sheet.DocumentId}`
         );
     }
+
     const service = doc.sheetsByTitle[sheet.SheetName];
-    const rows = await service.getRows();
-    const data = rows.map((row) => [
-        +row.get(HEADER_ROW[1]),
-        row.get(HEADER_ROW[2]),
-        row.get(HEADER_ROW[3]),
-        row.get(HEADER_ROW[4]),
-        row.get(HEADER_ROW[5]),
-        `${row.get(HEADER_ROW[6])} ${row.get(HEADER_ROW[7])}`,
-        true,
-    ]);
+    const rows = await service.getRows({
+        offset: 1
+    });
+
+    const data = rows.map((row) => {
+        const date = row.get(HEADER_ROW[6]).split("/").reverse().join("-")
+        const time = row.get(HEADER_ROW[7])
+        const newDate = dayjs(date + " " + time)
+
+        return [
+            +row.get(HEADER_ROW[1]),
+            row.get(HEADER_ROW[2]),
+            row.get(HEADER_ROW[3]),
+            row.get(HEADER_ROW[4]),
+            row.get(HEADER_ROW[5]),
+            newDate.format(DATABASE_DATE_FORMAT + " " + TIME_FORMAT),
+            true,
+        ]
+    });
     const attendances = await insertRawAttendances(data);
 
     const rowsData = attendances?.map((item) => [
@@ -145,7 +159,7 @@ export const syncDataFromSheet = async (sheet) => {
         dayjs(item.VerifyDate).format(TIME_FORMAT),
     ]);
 
-    const result = await handleSyncDataToSheet(rowsData, null, true);
+    const result = await handleSyncDataToSheet(rowsData, null, { type: OPTIONS_DELETE_SHEETS.All });
 
     return Result.Success(result);
 };

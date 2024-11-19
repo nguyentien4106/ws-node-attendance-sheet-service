@@ -1,5 +1,5 @@
 function removeDuplicatesAndSort() {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet("#SHEET_NAME");
     const data = sheet.getDataRange().getValues();
     const rowsToDelete = [];
     const valueIndexMap = new Map();

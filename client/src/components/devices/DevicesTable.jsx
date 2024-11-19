@@ -108,7 +108,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                             cancelText="No"
                         >
                             <Button 
-                                disabled={!record?.IsConnected}
+                                // disabled={!record?.IsConnected}
                             >
                                 Đồng bộ toàn bộ dữ liệu
                             </Button>
@@ -120,7 +120,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                         color="#108ee9"
                     >
                         <Button
-                            disabled={!record?.IsConnected}
+                            // disabled={!record?.IsConnected}
                             onClick={() => {
                                 setOpen(OPEN_TYPES.SYNC_DATA_FORM)
                                 setDevice(record)

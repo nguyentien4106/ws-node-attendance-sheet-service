@@ -81,7 +81,7 @@ export async function createAppsScriptForSheet(parentId, sheetName) {
     // Add code to the Apps Script project
     try{
         const TEMPLATE_JS_PATH = path.join(process.cwd(), 'helper/gg/template.js');
-        const scriptCode = fs.readFileSync(TEMPLATE_JS_PATH).toString();
+        const scriptCode = fs.readFileSync(TEMPLATE_JS_PATH).toString().replace("#SHEET_NAME", sheetName);
 
         await script.projects.updateContent({
             scriptId,

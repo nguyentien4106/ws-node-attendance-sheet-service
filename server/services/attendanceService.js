@@ -85,7 +85,7 @@ export const setUploadStatus = (attId, status = false) => {
     `);
 };
 
-export const syncAttendancesData = async (attendances, users, isDeleteAll = true) => {
+export const syncAttendancesData = async (attendances, users, deviceId) => {
     const queryDevices = await getAllDevices();
 
     const getUser = (userId) => users.find((item) => item.UserId === userId);
@@ -109,8 +109,8 @@ export const syncAttendancesData = async (attendances, users, isDeleteAll = true
         ];
     });
 
-    if(isDeleteAll){
-        await query('DELETE FROM public."Attendances";')
+    if(deviceId){
+        await query(`DELETE FROM public."Attendances" WHERE "DeviceId" = ${deviceId};`)
     }
     
     if(values?.length == 0){
