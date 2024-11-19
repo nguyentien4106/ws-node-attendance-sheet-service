@@ -1,59 +1,5 @@
-import { getResponse } from "../models/response.js";
-import * as DeviceService from "../dbServices/deviceService.js";
-import { RequestTypes } from "../constants/requestType.js";
-import { Result } from "../models/common.js";
-import {
-    editUserDisplayName,
-    getAllUsers,
-    getUsersByDeviceId,
-} from "../dbServices/userService.js";
-import {
-    deleteAttendance,
-    getAttendances,
-    insertAttendance,
-    updateAttendance,
-} from "../dbServices/attendanceService.js";
-import { appendRow, initSheet, initSheets, syncDataFromSheet } from "../dbServices/dataService.js";
-import { insertToGGSheet } from "../helper/dataHelper.js";
-import { changePassword, getSettings, updateSettings } from "../dbServices/settingsService.js";
-import dayjs from "dayjs";
-import { DATE_FORMAT, EMPLOYEE_DATA, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
-import { getSheets, getSheetsByDeviceIp } from "../dbServices/sheetService.js";
-import { UserRoles } from "../constants/userRoles.js";
-import { addUser, deleteUser, syncUserData } from "./user.js";
-import { syncData, syncLogData } from "./attendance.js";
-import { addDevice, connectDevice, disconnectDevice, removeDevice } from "./device.js";
-import { deviceHandlers } from "../handlers/device.js";
-import { userHandlers } from "../handlers/user.js";
-import { attendanceHandlers } from "../handlers/attendance.js";
-
-const updateEmail = async (data) => {
-    try {
-        const result = await updateSettings(data);
-
-        return result.rowCount
-            ? Result.Success(data)
-            : Result.Fail(500, "Không thể update settings", data);
-    } catch (err) {
-        return Result.Fail(500, err.message, data);
-    }
-};
-
-export const handleMessage = (ws, message, deviceContainer) => {
-    const request = JSON.parse(message);
-    console.log("Received message:", request);
-
-    try {
-        if(request.type.startsWith('Device.')){
-            deviceHandlers(request, ws, deviceContainer)
-        }
-        else if(request.type.startsWith("User.")){
-            userHandlers(request, ws, deviceContainer)
-        }
-        else if(request.type.startsWith("Attendance.")){
-            attendanceHandlers(request, ws, deviceContainer)
-        }
-        // switch (request.type) {
+export const attendanceHandlers = (request, ws, deviceContainer) => {
+     // switch (request.type) {
         //     case request.type.startsWith("Device."):
         //         console.log('handle devices')
         //         break;
@@ -374,13 +320,4 @@ export const handleMessage = (ws, message, deviceContainer) => {
         //         })
         //         break;
         // }
-    } catch (err) {
-        console.error(err);
-        ws.send(
-            getResponse({
-                type: request.type,
-                data: Result.Fail(500, err.message, request.data),
-            })
-        );
-    }
-};
+}

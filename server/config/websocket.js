@@ -3,7 +3,7 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { getSettings, login } from "../services/settingsService.js";
+import { getSettings, login } from "../dbServices/settingsService.js";
 import { Result } from "../models/common.js";
 
 const app = express();

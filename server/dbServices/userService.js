@@ -20,7 +20,7 @@ export const insertNewUsers = async (users, deviceIp, displayName) => {
     );
     
     const query = await getSheetsByDeviceIp(deviceIp);
-    const sheets = await initSheets(query.rows)
+    const sheets = await initSheets(query.rows.map(item => ({ DocumentId: item.DocumentId, SheetName: "DATA NHÂN VIÊN" })))
 
     await appendRow(sheets.filter(item => item.isSuccess).map(item => item.data), result.rows)
 
@@ -54,8 +54,10 @@ export const getLastUID = (deviceIp) =>
     );
 
 export const removeUser = (uid, deviceIp) =>
-    query(`DELETE FROM public."Users"
-	WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}';`);
+    query(`
+        DELETE FROM public."Users"
+	    WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}';
+    `);
 
 export const getUser = (uid, userId) => query(
     `SELECT * FROM public."Users" WHERE "UID" = '${uid}' AND "UserId" = '${userId}'`

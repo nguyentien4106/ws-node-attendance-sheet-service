@@ -14,3 +14,5 @@ export const OPTIONS_DELETE_SHEETS = {
     All: "All",
     ByDeviceId: "ByDeviceId"
 }
+
+export const EMPLOYEE_DATA = "DATA NHÂN VIÊN"

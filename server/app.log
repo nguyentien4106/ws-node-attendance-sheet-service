@@ -6463,3 +6463,24 @@
 {"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-18T17:38:38.897Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-18T17:38:56.026Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-18T17:38:57.076Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-11-19T09:28:35.600Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-19T09:28:35.602Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-19T09:28:35.602Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-19T09:57:26.723Z"}
+{"level":"error","message":"Document - undefined: Không tìm thấy sheet với Document ID này.","timestamp":"2024-11-19T10:09:56.075Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'map')","timestamp":"2024-11-19T10:10:43.442Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-19T10:13:10.313Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'map')","timestamp":"2024-11-19T10:13:13.231Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-19T10:34:37.309Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-11-19T10:36:39.054Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-19T10:36:39.056Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-19T10:36:39.056Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-19T10:36:44.769Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-19T10:36:48.935Z"}
+{"level":"error","message":{"command":"TCP CONNECT","err":{"command":"TCP CONNECT","err":{"address":"192.168.1.200","code":"ETIMEDOUT","errno":-4039,"port":4370,"syscall":"connect"},"ip":"192.168.1.200"},"ip":"192.168.1.200"},"timestamp":"2024-11-19T10:37:56.858Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-11-19T10:39:33.658Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-19T10:39:33.660Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-19T10:39:33.661Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-19T10:39:35.302Z"}
+{"level":"error","message":"data is not defined","timestamp":"2024-11-19T10:39:44.125Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-19T11:02:58.253Z"}

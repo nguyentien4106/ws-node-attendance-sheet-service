@@ -6,7 +6,7 @@ import {
     getDeviceByIp,
     insertNewDevice,
     setConnectStatus,
-} from "../services/deviceService.js";
+} from "../dbServices/deviceService.js";
 import { Result } from "./common.js";
 import Zkteco from "zkteco-js";
 import {
@@ -14,21 +14,21 @@ import {
     initSheet,
     initSheets,
     isSheetsValid,
-} from "../services/dataService.js";
-import { syncAttendancesData } from "../services/attendanceService.js";
+} from "../dbServices/dataService.js";
+import { syncAttendancesData } from "../dbServices/attendanceService.js";
 import {
     getAllUsers,
     getLastUID,
     insertNewUsers,
     removeUser,
     validUserId,
-} from "../services/userService.js";
+} from "../dbServices/userService.js";
 import {
     handleRealTimeData,
     handleSyncDataToSheet,
 } from "../helper/dataHelper.js";
 import { getResponse } from "./response.js";
-import { sendMail } from "../services/emailService.js";
+import { sendMail } from "../dbServices/emailService.js";
 import dayjs from "dayjs";
 import {
     DATE_FORMAT,
@@ -37,7 +37,7 @@ import {
     TIME_FORMAT,
     USER_HEADER_ROW,
 } from "../constants/common.js";
-import { getSheets } from "../services/sheetService.js";
+import { getSheets } from "../dbServices/sheetService.js";
 import { UserRoles } from "../constants/userRoles.js";
 
 const TIME_OUT = 5500;
@@ -384,7 +384,7 @@ export class DeviceContainer {
         }
     }
 
-    async syncData(data, ws) {
+    async syncAttendancesData(data, ws) {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
 
         if (!deviceSDK || !deviceSDK.ztcp.socket) {
@@ -582,6 +582,7 @@ export class DeviceContainer {
         const newUsersToAdd = rows.filter(
             (row) => row.get(USER_HEADER_ROW[0]).trim() === ""
         );
+
         const newUsers = newUsersToAdd.map((row) => {
             const roleText = row.get(USER_HEADER_ROW[3]);
             const role = UserRoles.indexOf(roleText);
@@ -594,6 +595,7 @@ export class DeviceContainer {
                 password: row.get(USER_HEADER_ROW[8]),
             };
         });
+
         const result = [];
         const users = (await sdk.getUsers()).data;
         for (const user of newUsers) {
@@ -612,12 +614,8 @@ export class DeviceContainer {
         for (const device of devices) {
             try {
                 const firmware = await device.getFirmware();
-                console.log(firmware);
                 const platform = await device.getPlatform();
-                console.log(platform);
-
                 const version = await device.getDeviceVersion();
-                console.log(version);
 
                 result.push(
                     Result.Success({

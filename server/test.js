@@ -1,6 +1,8 @@
 import { TEMPLATE_USER_HEADER_ROW, USER_HEADER_ROW } from "./constants/common.js";
-import { initSheet } from "./services/dataService.js";
-import { getLastUID } from "./services/userService.js";
+import { initSheet } from "./dbServices/dataService.js";
+import { getDeviceByIp } from "./dbServices/deviceService.js";
+import { getSheetsByDeviceIp } from "./dbServices/sheetService.js";
+import { getLastUID } from "./dbServices/userService.js";
 import Zkteco from "zkteco-js";
 
 // const query = await getLastUID()
@@ -56,4 +58,6 @@ const manageZktecoDevice = async () => {
     }
 };
 
-manageZktecoDevice();
+// manageZktecoDevice();
+
+getSheetsByDeviceIp('192.168.1.200').then(res => console.log(res.rows))

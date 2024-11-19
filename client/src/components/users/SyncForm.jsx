@@ -39,10 +39,7 @@ const SyncForm = ({
             open === SyncData
                 ? {
                     type: RequestTypes.SyncUserData,
-                    data: {
-                        sheet: values,
-                        users: users,
-                    },
+                    data: values,
                 }
                 : {
                     type: RequestTypes.PullUserData,
@@ -69,34 +66,38 @@ const SyncForm = ({
                 Devices: devices,
             }}
         >
-            <Form.Item
-                name="DocumentId"
-                label="Document Id"
-                rules={[
-                    {
-                        required: true,
-                    },
-                ]}
-            >
-                <Select 
-                    options={documentOptions}
-                />
-            </Form.Item>
+            {
+                open !== SyncData && <Form.Item
+                    name="DocumentId"
+                    label="Document Id"
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Select
+                        options={documentOptions}
+                    />
+                </Form.Item>
+            }
 
 
-            <Form.Item
-                name="SheetName"
-                label="SheetName"
-                rules={[
-                    {
-                        required: true,
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            
-            {open !== SyncData && (
+            {
+                open !== SyncData && <Form.Item
+                    name="SheetName"
+                    label="SheetName"
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+            }
+
+            {open === SyncData && (
                 <Form.Item
                     name="Device"
                     label="Thiết bị"
