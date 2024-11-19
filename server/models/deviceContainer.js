@@ -32,6 +32,7 @@ import { sendMail } from "../services/emailService.js";
 import dayjs from "dayjs";
 import {
     DATE_FORMAT,
+    OPTIONS_DELETE_SHEETS,
     TEMPLATE_USER_HEADER_ROW,
     TIME_FORMAT,
     USER_HEADER_ROW,
@@ -414,10 +415,11 @@ export class DeviceContainer {
                 });
             };
 
+            const deviceId = isDeleteAll ? data?.value?.Id : null
             const attendances = await syncAttendancesData(
                 getAttendanceData(),
                 users,
-                isDeleteAll
+                deviceId
             );
 
             const rowsData = attendances?.map((item) => [
@@ -434,7 +436,10 @@ export class DeviceContainer {
             const result = await handleSyncDataToSheet(
                 rowsData,
                 data.Id,
-                isDeleteAll
+                {
+                    type: isDeleteAll ? OPTIONS_DELETE_SHEETS.All : OPTIONS_DELETE_SHEETS.ByDeviceId,
+                    deviceId: deviceId
+                }
             );
 
             ws.send(
