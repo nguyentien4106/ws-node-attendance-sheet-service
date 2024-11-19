@@ -1,4 +1,5 @@
 import { EMPLOYEE_DATA, USER_HEADER_ROW } from "../constants/common.js";
+import { UserRoles } from "../constants/userRoles.js";
 import { appendRow, initSheets } from "../dbServices/dataService.js";
 import { getSheetsByDeviceIp } from "../dbServices/sheetService.js";
 import { getAllUsers } from "../dbServices/userService.js";
@@ -36,6 +37,7 @@ export const syncUserData = async (data) => {
                 item.Name,
                 item.DisplayName,
                 item.Password,
+                item.CardNo
             ]);
 
             await appendRow([service.data], newRows);

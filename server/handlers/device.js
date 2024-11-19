@@ -1,10 +1,10 @@
-import { RequestTypes } from "../constants/requestType";
-import { getAllUsers } from "../dbServices/userService";
-import { getResponse } from "../models/response";
+import { RequestTypes } from "../constants/requestType.js";
+import { getAllUsers } from "../dbServices/userService.js";
+import { getResponse } from "../models/response.js";
 import * as DeviceService from "../dbServices/deviceService.js";
-import { addDevice, connectDevice, disconnectDevice, removeDevice } from "../services/device";
-import { syncData } from "../services/attendance";
-import { syncDataFromSheet } from "../dbServices/dataService";
+import { addDevice, connectDevice, disconnectDevice, removeDevice } from "../services/device.js";
+import { syncAttendancesData } from "../services/attendance.js";
+import { syncDataFromSheet } from "../dbServices/dataService.js";
 
 export const deviceHandlers = (request, ws, deviceContainer) => {
     switch (request.type) {
@@ -83,11 +83,11 @@ export const deviceHandlers = (request, ws, deviceContainer) => {
 
 
         case RequestTypes.SyncData:
-            syncData(request.data, deviceContainer, ws);
+            syncAttendancesData(request.data, deviceContainer, ws);
 
             break;
 
-        case "GetDevicesSheets":
+        case RequestTypes.GetDevicesSheets:
             DeviceService.getAllDevicesWithSheets().then((res) => {
                 ws.send(
                     getResponse({

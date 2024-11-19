@@ -1,4 +1,5 @@
 import { TEMPLATE_USER_HEADER_ROW, USER_HEADER_ROW } from "./constants/common.js";
+import { getAttendances } from "./dbServices/attendanceService.js";
 import { initSheet } from "./dbServices/dataService.js";
 import { getDeviceByIp } from "./dbServices/deviceService.js";
 import { getSheetsByDeviceIp } from "./dbServices/sheetService.js";
@@ -60,4 +61,6 @@ const manageZktecoDevice = async () => {
 
 // manageZktecoDevice();
 
-getSheetsByDeviceIp('192.168.1.200').then(res => console.log(res.rows))
+getAttendances().then(res => {
+    console.log(res.rows)
+})

@@ -13,6 +13,5 @@ export const getSheetsByDeviceIp = async (ip) => {
         SELECT * FROM public."Sheets" JOIN "Devices" ON "Devices"."Id" = "Sheets"."DeviceId"
         WHERE "Devices"."Ip" = '${ip}'
     `
-
     return query(sql)
 }

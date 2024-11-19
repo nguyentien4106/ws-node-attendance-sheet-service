@@ -1,127 +1,168 @@
 import React, { useState } from "react";
 import {
-    DesktopOutlined,
-    FileOutlined,
-    PieChartOutlined,
-    TeamOutlined,
-    UserOutlined,
+	DesktopOutlined,
+	FileOutlined,
+	PieChartOutlined,
+	TeamOutlined,
+	UserOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, message, theme } from "antd";
 import Devices from "../pages/Devices";
 import { Outlet, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png"
+import logo from "../assets/logo.png";
+import devicePng from "../assets/logo.png";
+
 const { Header, Content, Footer, Sider } = Layout;
 
-
 const AppLayout = () => {
-    const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
-    
-    const navigate = useNavigate()
-    const [msg, contextHolder] = message.useMessage();
-    const [tab, setTab] = useState([window.location.pathname.slice(1).trim() ?? "Devices"])
+	const [collapsed, setCollapsed] = useState(false);
+	const {
+		token: { colorBgContainer, borderRadiusLG },
+	} = theme.useToken();
 
-    const items = [
-        
-        {
-            key: 'Devices',
-            icon: <TeamOutlined />,
-            label: 'Thiết bị',
-            onClick: () => {
-                setTab(["Devices"])
-                navigate("/Devices")
-            }
-        },
-        {
-            key: 'Users',
-            icon: <DesktopOutlined />,
-            label: 'Người dùng',
-            onClick: () => {
-                setTab(["Users"])
-                navigate("/Users")
-            }
-        },
-        {
-            key: 'Attendances',
-            icon: <DesktopOutlined />,
-            label: 'Dữ liệu chấm công',
-            onClick: () => {
-                setTab(["Attendances"])
-                navigate("/Attendances")
-            }
-        },
-        {
-            key: 'Settings',
-            icon: <DesktopOutlined />,
-            label: 'Cài đặt',
-            onClick: () => {
-                setTab(["Settings"])
-                navigate("/Settings")
-            }
-        },
-    ];
+	const navigate = useNavigate();
+	const [msg, contextHolder] = message.useMessage();
+	const [tab, setTab] = useState([
+		window.location.pathname.slice(1).trim() ?? "Devices",
+	]);
 
-    return (
-        <Layout
-            style={{
-                minHeight: "100vh",
-                
-            }}
-        >
-            <Sider
-                collapsible
-                collapsed={collapsed}
-                onCollapse={(value) => setCollapsed(value)}
-            >
-                <div className="demo-logo-vertical" />
-                <img src={logo} height={70} width={210} className="pointer" style={{ cursor: "pointer" }} onClick={() => {
-                    setTab([""])
-                    navigate("/")
-                }}/>
-                <Menu
-                    theme="dark"
-                    selectedKeys={tab}
-                    defaultSelectedKeys={["Devices"]}
-                    mode="inline"
-                    items={items}
-                />
-            </Sider>
-            <Layout>
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-                />
-                <Content
-                    style={{
-                        margin: "0 16px",
-                    }}
-                >
-                    <div
-                        style={{
-                            padding: 24,
-                            minHeight: 360,
-                            background: colorBgContainer,
-                            borderRadius: borderRadiusLG,
-                        }}
-                    >
-                        <Outlet>
-                            {contextHolder}
-                        </Outlet>
-                    </div>
-                </Content>
-                <Footer
-                    style={{
-                        textAlign: "center",
-                    }}
-                >
-                    SANA POS ©{new Date().getFullYear()} Created by ePower Team
-                </Footer>
-            </Layout>
-        </Layout>
-    );
+	const items = [
+		{
+			key: "Devices",
+			icon: (
+				<img
+					width="32"
+					height="32"
+					color="white"
+					style={{ color: "white" }}
+					src="https://img.icons8.com/ios/50/usb-connected.png"
+					alt="usb-connected"
+				/>
+			),
+			label: "Thiết bị",
+			onClick: () => {
+				setTab(["Devices"]);
+				navigate("/Devices");
+			},
+		},
+		{
+			key: "Users",
+			icon: (
+				<img
+					width="32"
+					height="32"
+					src="https://img.icons8.com/ios-filled/50/user-male-circle.png"
+					alt="user-male-circle"
+				/>
+			),
+			label: "Người dùng",
+			onClick: () => {
+				setTab(["Users"]);
+				navigate("/Users");
+			},
+		},
+		{
+			key: "Attendances",
+			icon: (
+				<img
+					width="32"
+					height="32"
+					src="https://img.icons8.com/material-two-tone/100/edit-property.png"
+					alt="edit-property"
+				/>
+			),
+			label: "Dữ liệu chấm công",
+			onClick: () => {
+				setTab(["Attendances"]);
+				navigate("/Attendances");
+			},
+		},
+		{
+			key: "Settings",
+			icon: (
+				<img
+					width="32"
+					height="32"
+					src="https://img.icons8.com/dotty/50/settings.png"
+					alt="settings"
+				/>
+			),
+			label: "Cài đặt",
+			onClick: () => {
+				setTab(["Settings"]);
+				navigate("/Settings");
+			},
+		},
+	];
+
+	return (
+		<Layout
+			style={{
+				minHeight: "100vh",
+			}}
+            
+		>
+			<Sider
+				collapsible
+				collapsed={collapsed}
+				onCollapse={(value) => setCollapsed(value)}
+				width={250}
+                theme="light"
+			>
+				<div className="demo-logo-vertical" />
+				{!collapsed && (
+					<img
+						src={logo}
+						height={70}
+						width={210}
+						className="pointer"
+						style={{ cursor: "pointer" }}
+						onClick={() => {
+							setTab([""]);
+							navigate("/");
+						}}
+					/>
+				)}
+				<Menu
+					theme="light"
+					selectedKeys={tab}
+					defaultSelectedKeys={["Devices"]}
+					mode="inline"
+					items={items}
+				/>
+			</Sider>
+			<Layout>
+				<Header
+					style={{
+						padding: 0,
+						background: colorBgContainer,
+					}}
+				/>
+				<Content
+					style={{
+						margin: "0 16px",
+					}}
+				>
+					<div
+						style={{
+							padding: 24,
+							minHeight: 360,
+							background: colorBgContainer,
+							borderRadius: borderRadiusLG,
+						}}
+					>
+						<Outlet>{contextHolder}</Outlet>
+					</div>
+				</Content>
+				<Footer
+					style={{
+						textAlign: "center",
+					}}
+				>
+					SANA POS ©{new Date().getFullYear()} Created by ePower Team
+				</Footer>
+			</Layout>
+		</Layout>
+	);
 };
 export default AppLayout;

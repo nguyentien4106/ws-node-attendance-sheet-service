@@ -104,7 +104,7 @@ export default function Devices() {
                 }
             }
 
-            if(response.type === "GetDevicesSheets"){
+            if(response.type === RequestTypes.GetDevicesSheets){
                 setDevices(response.data.data);
             }
 
@@ -117,7 +117,7 @@ export default function Devices() {
 
     useEffect(() => {
         sendJsonMessage({
-            type: "GetDevicesSheets",
+            type: RequestTypes.GetDevicesSheets,
         });
     }, []);
 

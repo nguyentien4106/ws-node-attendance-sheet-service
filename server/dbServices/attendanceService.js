@@ -62,6 +62,13 @@ export const insertAttendance = (log, deviceId, uploaded = true) => {
 };
 
 export const getAttendances = (params) => {
+    if(!params){
+        return query(`
+            SELECT "Id", "DeviceId", "UserId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"
+            FROM public."Attendances"
+        `);
+    }
+
     if (params.deviceId == "All") {
         return query(`
             SELECT "Id", "DeviceId", "UserId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"

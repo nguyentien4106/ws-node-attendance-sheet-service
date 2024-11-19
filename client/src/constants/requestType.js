@@ -4,6 +4,7 @@ export const RequestTypes = {
     UpdateDevice: "Device.Update",
     ConnectDevice: "Device.Connect",
     GetDevices: "Device.GetAll",
+    GetDevicesSheets: "Device.GetAllWithSheets",
     DisconnectDevice: "Device.Disconnect",
     GetUsers: "User.GetUsers",
     AddUser: "User.Add",

@@ -5,10 +5,7 @@ import { useLoading } from "../../context/LoadingContext";
 import AttendanceForm from "./AttendanceForm";
 import dayjs from "dayjs";
 import { DATE_FORMAT, DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
-import utc from 'dayjs/plugin/utc'
 import writeXlsxFile from "write-excel-file"
-
-dayjs.extend(utc)
 
 export default function AttendancesTable({ attendances, sendJsonMessage }) {
     const deviceNameFilters = [

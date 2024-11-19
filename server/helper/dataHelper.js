@@ -33,9 +33,8 @@ const insertDB = async (log, deviceId) => {
 
 export const insertToGGSheet = async (rows, deviceId) => {
     try {
-        const sheets = await getSheets(deviceId);
+        const sheets = await getSheets();
         const sheetServices = await initSheets(sheets.rows);
-        console.log(sheetServices)
         await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), rows);
         for(const row of rows){
             setUploadStatus(row[0], true)

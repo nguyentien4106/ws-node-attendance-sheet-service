@@ -15,7 +15,7 @@ import {
     initSheets,
     isSheetsValid,
 } from "../dbServices/dataService.js";
-import { syncAttendancesData } from "../dbServices/attendanceService.js";
+import { getAttendances, syncAttendancesData } from "../dbServices/attendanceService.js";
 import {
     getAllUsers,
     getLastUID,
@@ -32,13 +32,14 @@ import { sendMail } from "../dbServices/emailService.js";
 import dayjs from "dayjs";
 import {
     DATE_FORMAT,
+    EMPLOYEE_DATA,
     OPTIONS_DELETE_SHEETS,
-    TEMPLATE_USER_HEADER_ROW,
     TIME_FORMAT,
     USER_HEADER_ROW,
 } from "../constants/common.js";
 import { getSheets } from "../dbServices/sheetService.js";
 import { UserRoles } from "../constants/userRoles.js";
+import { RequestTypes } from "../constants/requestType.js";
 
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
@@ -120,7 +121,7 @@ export class DeviceContainer {
             if (success) {
                 await deviceSDK.freeData();
                 const users = await deviceSDK.getUsers();
-                const result = await insertNewUsers(users.data, deviceSDK.ip);
+                const result = await insertNewUsers(users.data, { Ip: device.Ip, DeviceName: device.Name, Sheets: device.Sheets });
 
                 await deviceSDK.disconnect();
             }
@@ -306,7 +307,7 @@ export class DeviceContainer {
 
             const addDBResult = await insertNewUsers(
                 [Object.assign(user, { uid: lastUid })],
-                deviceSDK.ip,
+                { Ip: deviceSDK.ip, DeviceName: deviceName },
                 user.displayName
             );
 
@@ -330,12 +331,12 @@ export class DeviceContainer {
             const deviceSDK = this.deviceSDKs.find((item) => item.ip === device.ip);
 
             if (!deviceSDK) {
-                result.push(Result.Fail(500, UNEXPECTED_ERR_MSG + deviceIp, deviceIp));
+                result.push(Result.Fail(500, UNEXPECTED_ERR_MSG + device.ip, device.ip));
                 continue;
             }
 
             if (!deviceSDK.connectionType || !deviceSDK.ztcp?.socket) {
-                result.push(Result.Fail(500, UNCONNECTED_ERR_MSG + deviceIp, deviceIp));
+                result.push(Result.Fail(500, UNCONNECTED_ERR_MSG + device.ip, device.ip));
                 continue;
             }
 
@@ -384,22 +385,15 @@ export class DeviceContainer {
         }
     }
 
-    async syncAttendancesData(data, ws) {
+    async syncAttendancesData(data) {
         const deviceSDK = this.deviceSDKs.find((item) => item.ip === data.Ip);
 
         if (!deviceSDK || !deviceSDK.ztcp.socket) {
-            ws.send(
-                getResponse({
-                    type: "SyncData",
-                    data: Result.Fail(500, UNCONNECTED_ERR_MSG + data.Ip),
-                })
-            );
-
-            return;
+            return Result.Fail(500, UNCONNECTED_ERR_MSG + data.Ip);
         }
+
         try {
             const isDeleteAll = data.type == "All";
-            // await deviceSDK.freeData()
             const atts = await deviceSDK.getAttendances();
             const users = (await getAllUsers(data.Ip)).rows;
             const getAttendanceData = () => {
@@ -416,13 +410,15 @@ export class DeviceContainer {
             };
 
             const deviceId = isDeleteAll ? data?.value?.Id : null
-            const attendances = await syncAttendancesData(
+            await syncAttendancesData(
                 getAttendanceData(),
                 users,
                 deviceId
             );
 
-            const rowsData = attendances?.map((item) => [
+            const attendances = await getAttendances()
+
+            const rowsData = attendances.rows.map((item) => [
                 item.Id,
                 item.DeviceId,
                 item.DeviceName,
@@ -437,25 +433,15 @@ export class DeviceContainer {
                 rowsData,
                 data.Id,
                 {
-                    type: isDeleteAll ? OPTIONS_DELETE_SHEETS.All : OPTIONS_DELETE_SHEETS.ByDeviceId,
+                    type: OPTIONS_DELETE_SHEETS.All,
                     deviceId: deviceId
                 }
             );
 
-            ws.send(
-                getResponse({
-                    type: "SyncData",
-                    data: result,
-                })
-            );
+            return result;
         } catch (err) {
-            console.error(err);
-            ws.send(
-                getResponse({
-                    type: "SyncData",
-                    data: Result.Fail(500, err.message, data),
-                })
-            );
+
+            return Result.Fail(500, err.message, data)
         }
     }
 
@@ -562,14 +548,13 @@ export class DeviceContainer {
 
     async handlePullUserData(data) {
         const sdk = this.deviceSDKs.find((item) => item.ip === data.Device);
-
         if (!sdk || !sdk.connectionType || !sdk.ztcp?.socket) {
-            return [Result.Fail(500, UNCONNECTED_ERR_MSG + sdk.ip)];
+            return [Result.Fail(500, UNCONNECTED_ERR_MSG + sdk?.ip)];
         }
 
         const initResult = await initSheet(
             data.DocumentId,
-            data.SheetName,
+            EMPLOYEE_DATA,
             USER_HEADER_ROW
         );
         if (!initResult.isSuccess) {
@@ -593,13 +578,13 @@ export class DeviceContainer {
                 name: row.get(USER_HEADER_ROW[6]),
                 displayName: row.get(USER_HEADER_ROW[7]),
                 password: row.get(USER_HEADER_ROW[8]),
+                cardno: row.get(USER_HEADER_ROW[9])
             };
         });
 
         const result = [];
-        const users = (await sdk.getUsers()).data;
         for (const user of newUsers) {
-            const addResult = await this.addUserToDevice(user, users ?? [], sdk);
+            const addResult = await this.addUserToDevice(user, sdk, data.DeviceName);
             result.push(addResult);
         }
 

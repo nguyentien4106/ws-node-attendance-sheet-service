@@ -1,8 +1,8 @@
-import { RequestTypes } from "../constants/requestType";
-import { editUserDisplayName, getAllUsers, getUsersByDeviceId } from "../dbServices/userService";
-import { Result } from "../models/common";
-import { getResponse } from "../models/response";
-import { addUser, deleteUser, syncUserData } from "../services/user";
+import { RequestTypes } from "../constants/requestType.js";
+import { editUserDisplayName, getAllUsers, getUsersByDeviceId } from "../dbServices/userService.js";
+import { Result } from "../models/common.js";
+import { getResponse } from "../models/response.js";
+import { addUser, deleteUser, syncUserData } from "../services/user.js";
 
 export const userHandlers = (request, ws, deviceContainer) => {
     switch (request.type) {

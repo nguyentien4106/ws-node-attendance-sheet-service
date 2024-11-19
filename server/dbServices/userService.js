@@ -1,8 +1,10 @@
 import { query, queryFormat } from "../config/db.js";
+import { EMPLOYEE_DATA, USER_HEADER_ROW } from "../constants/common.js";
+import { UserRoles } from "../constants/userRoles.js";
 import { appendRow, initSheets } from "./dataService.js";
 import { getSheetsByDeviceIp } from "./sheetService.js";
 
-export const insertNewUsers = async (users, deviceIp, displayName) => {
+export const insertNewUsers = async (users, device, displayName) => {
     const values = users.map((item) => [
         item.uid,
         item.name,
@@ -11,18 +13,24 @@ export const insertNewUsers = async (users, deviceIp, displayName) => {
         item.cardno,
         displayName ?? item.name,
         item.userId,
-        deviceIp,
+        device.Ip,
     ]);
 
     const result = await queryFormat(
         `INSERT INTO public."Users"("UID", "Name", "Password", "Role", "CardNo", "DisplayName", "UserId", "DeviceIp")`,
         values
     );
-    
-    const query = await getSheetsByDeviceIp(deviceIp);
-    const sheets = await initSheets(query.rows.map(item => ({ DocumentId: item.DocumentId, SheetName: "DATA NHÂN VIÊN" })))
 
-    await appendRow(sheets.filter(item => item.isSuccess).map(item => item.data), result.rows)
+    const usersToSheet = result.rows.map(item => [item.Id, item.UID, item.UserId, UserRoles[item.Role], item.DeviceIp, device.DeviceName, item.Name, item.DisplayName, item.Password, item.CardNo])
+    
+    let sheets = device.Sheets
+    if (!sheets){
+        const query = await getSheetsByDeviceIp(device.Ip);
+        sheets = query.rows
+    }
+
+    const sheetServices = await initSheets(sheets.map(item => ({ DocumentId: item.DocumentId, SheetName: EMPLOYEE_DATA})), USER_HEADER_ROW)
+    await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), usersToSheet)
 
     return result
 };
