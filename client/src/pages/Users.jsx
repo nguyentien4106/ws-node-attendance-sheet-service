@@ -91,7 +91,7 @@ export default function Users() {
                         </Space>
                     );
 
-                    setUsers(prev => [...prev, ...successes.map(item => item.data.user)])
+                    setUsers(prev => [ ...successes.map(item => item.data.user), ...prev])
                 }
                 if (failed.length) {
                     message.error(
@@ -137,6 +137,7 @@ export default function Users() {
                             ))}
                         </Space>
                     );
+                    setUsers(prev => [ ...successes.map(item => item.data.user), ...prev])
                 }
                 if (failed.length) {
                     message.error(

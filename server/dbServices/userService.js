@@ -1,7 +1,7 @@
 import { query, queryFormat } from "../config/db.js";
 import { EMPLOYEE_DATA, USER_HEADER_ROW } from "../constants/common.js";
 import { UserRoles } from "../constants/userRoles.js";
-import { appendRow, initSheets } from "./dataService.js";
+import { appendRow, initSheet, initSheets } from "./dataService.js";
 import { getSheetsByDeviceIp } from "./sheetService.js";
 
 export const insertNewUsers = async (users, device, displayName) => {
@@ -61,11 +61,16 @@ export const getLastUID = (deviceIp) =>
         `SELECT "UID" FROM public."Users" WHERE "DeviceIp" = '${deviceIp}' ORDER BY "UID" DESC LIMIT 1`
     );
 
-export const removeUser = (uid, deviceIp) =>
-    query(`
+export const removeUser = async (uid, deviceIp) => {
+    const sql = `
         DELETE FROM public."Users"
-	    WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}';
-    `);
+	    WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}' RETURNING *;
+    `
+    const user = (await query(sql)).rows
+    const sheets = (await getSheetsByDeviceIp(deviceIp)).rows
+    const sheetServices = await initSheets(sheets.map(item => ({ DocumentId: item.DocumentId, SheetName: EMPLOYEE_DATA})))
+    await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), [[user[0].Id, "deleted"]])
+};
 
 export const getUser = (uid, userId) => query(
     `SELECT * FROM public."Users" WHERE "UID" = '${uid}' AND "UserId" = '${userId}'`

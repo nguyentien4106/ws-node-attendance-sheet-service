@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ti100600@
+      POSTGRES_DB: attdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    platform: linux/arm64/v8
+    
+  server:
+    image: nguyentien0620/server-arm
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ti100600@
+      POSTGRES_DATABASE: attdb
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: postgres
+      SERVER_HOST: 3002
+    depends_on:
+      - postgres
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./server:/app
+    restart: always
+    platform: linux/arm64/v8
+
+  client:
+    image: nguyentien0620/client-arm
+    environment:
+      VITE_WS_URL: ws://192.168.1.51:3002
+    depends_on:
+      - postgres
+    ports:
+      - "3001:3001"
+    platform: linux/arm64/v8

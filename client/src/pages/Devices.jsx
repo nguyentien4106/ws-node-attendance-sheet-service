@@ -96,6 +96,7 @@ export default function Devices() {
 
             if(response.type === RequestTypes.SyncData){
                 const data = response.data;
+                console.log(data)
                 if(data.isSuccess){
                     message.success("Đồng bộ dữ liệu thành công")
                 }

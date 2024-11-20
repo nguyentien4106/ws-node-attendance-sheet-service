@@ -4,6 +4,8 @@ import readline from "readline";
 import { logger } from "../../config/logger.js";
 import { Result } from "../../models/common.js";
 import path, { dirname } from "path";
+import dayjs from "dayjs";
+import { DATABASE_DATE_FORMAT, DATE_FORMAT, TIME_FORMAT } from "../../constants/common.js";
 
 // Load client secrets from a file
 // path.join(__dirname, "credentials.json")
@@ -61,7 +63,7 @@ export async function createAppsScriptForSheet(parentId, sheetName) {
 
     // Create a new Apps Script project
     const requestBody = {
-        title: "onChangeSheet",
+        title: `appScript_${dayjs().format(DATABASE_DATE_FORMAT + TIME_FORMAT)}`,
         parentId: parentId,
     };
 

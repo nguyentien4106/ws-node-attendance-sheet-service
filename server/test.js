@@ -6,23 +6,22 @@ import { getSheetsByDeviceIp } from "./dbServices/sheetService.js";
 import { getLastUID } from "./dbServices/userService.js";
 import Zkteco from "zkteco-js";
 
-// const query = await getLastUID()
-// console.log(query)
-// const sheet = (await initSheet('11PzLthgKxIg6a70ZRQkFAWSxG5qEP_e4HIULGKNzhJM', 'users', TEMPLATE_USER_HEADER_ROW)).data
+const sheet = (await initSheet('1oViy_ep8qgD3xO-9tULB2YzNkFMpuVr3QOMl6VZXr-I', 'DATA NHÂN VIÊN', USER_HEADER_ROW)).data
 
-// const rows = await sheet.getRows({
-//     offset: 0
-// })
+const rows = await sheet.getRows({
+    offset: 0
+})
 
-// const users = rows.map(row => ({
-//     userId: row.get(TEMPLATE_USER_HEADER_ROW[0]),
-//     role: row.get(TEMPLATE_USER_HEADER_ROW[1]),
-//     deviceIp: row.get(TEMPLATE_USER_HEADER_ROW[2]),
-//     name: row.get(TEMPLATE_USER_HEADER_ROW[3]),
-//     displayName: row.get(TEMPLATE_USER_HEADER_ROW[4]),
-//     password: row.get(TEMPLATE_USER_HEADER_ROW[5]),
-// }))
-// console.log(users)
+rows[0].set
+const newUsersToAdd = rows.filter(
+    (row) => row.get(USER_HEADER_ROW[0]).trim() === ""
+);
+
+newUsersToAdd[0].set(USER_HEADER_ROW[0], 100)
+await newUsersToAdd[0].save()
+console.log(rows[0])
+console.log(newUsersToAdd)
+
 const manageZktecoDevice = async () => {
     const device = new Zkteco("192.168.1.160", 4370, 5200, 5000);
 
@@ -60,7 +59,3 @@ const manageZktecoDevice = async () => {
 };
 
 // manageZktecoDevice();
-
-getAttendances().then(res => {
-    console.log(res.rows)
-})

@@ -40,41 +40,6 @@ export const handleMessage = (ws, message, deviceContainer) => {
 			attendanceHandlers(request, ws, deviceContainer);
 		}
 		switch (request.type) {
-
-			//     case RequestTypes.DeleteUser:
-			//         deleteUser(request.data, deviceContainer).then((res) => {
-			//             ws.send(
-			//                 getResponse({
-			//                     type: request.type,
-			//                     data: res,
-			//                 })
-			//             );
-			//         });
-			//         break;
-
-			//     case RequestTypes.GetAllUsers:
-			//         getAllUsers().then((res) => {
-			//             ws.send(
-			//                 getResponse({
-			//                     type: request.type,
-			//                     data: res.rows,
-			//                 })
-			//             );
-			//         });
-			//         break;
-
-			case RequestTypes.SyncData:
-				deviceContainer.syncAttendancesData(request.data).then((res) => {
-					ws.send(
-						getResponse({
-							type: RequestTypes.SyncData,
-							data: res,
-						})
-					);
-				});
-
-				break;
-
 			case RequestTypes.UpdateEmail:
 				updateEmail(request.data).then((res) => {
 					ws.send(

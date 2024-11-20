@@ -40,7 +40,9 @@ import {
 import { getSheets } from "../dbServices/sheetService.js";
 import { UserRoles } from "../constants/userRoles.js";
 import { RequestTypes } from "../constants/requestType.js";
+import { websocket } from '../config/websocket.js'
 
+const { wss } = websocket
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
 
@@ -147,7 +149,7 @@ export class DeviceContainer {
         }
     }
 
-    async connectDevice(device) {
+    async connectDevice(device, ws) {
         try {
             let success = false;
             const deviceSDK = this.deviceSDKs.find((item) => item.ip === device.Ip);
@@ -159,6 +161,14 @@ export class DeviceContainer {
                     console.log("realTimeLog", realTimeLog);
                     const insertResult = await handleRealTimeData(realTimeLog, device.Id);
                     console.log("handle realtime data result: ", insertResult.isSuccess);
+                    wss.clients.forEach(function each(client) {
+                        client.send(
+                            getResponse({
+                                type: RequestTypes.AddLog,
+                                data: insertResult,
+                            })
+                        );
+                    });
                 });
                 setConnectStatus(device.Ip, success);
 
@@ -564,6 +574,7 @@ export class DeviceContainer {
         const sheet = initResult.data;
 
         const rows = await sheet.getRows();
+        
         const newUsersToAdd = rows.filter(
             (row) => row.get(USER_HEADER_ROW[0]).trim() === ""
         );
@@ -583,9 +594,20 @@ export class DeviceContainer {
         });
 
         const result = [];
+        let index = 0;
         for (const user of newUsers) {
             const addResult = await this.addUserToDevice(user, sdk, data.DeviceName);
+            if(addResult.isSuccess){
+                await newUsersToAdd[index].delete()
+
+                await newUsersToAdd[index].assign({
+                    [USER_HEADER_ROW[0]] : addResult.data.Id,
+                    [USER_HEADER_ROW[1]] : addResult.data.UID,
+                })
+
+            }
             result.push(addResult);
+            index++;
         }
 
         return result;

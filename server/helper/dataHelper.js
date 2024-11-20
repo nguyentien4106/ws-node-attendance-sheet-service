@@ -18,7 +18,7 @@ export const handleRealTimeData = async (log, deviceId) => {
             setUploadStatus(dbRow[0].Id)
             return Result.Fail(500, `Data chưa được đẩy lển sheet. ${sheetRow.message}`)
         }
-        return Result.Success({ dbRow, sheetRow })
+        return Result.Success(dbRow)
     }
     catch(err){
 

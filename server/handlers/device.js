@@ -32,7 +32,7 @@ export const deviceHandlers = (request, ws, deviceContainer) => {
             break;
 
         case RequestTypes.ConnectDevice:
-            connectDevice(request.data, deviceContainer)
+            connectDevice(request.data, deviceContainer, ws)
                 .then((res) => {
                     ws.send(
                         getResponse({
@@ -79,12 +79,6 @@ export const deviceHandlers = (request, ws, deviceContainer) => {
                     })
                 );
             });
-            break;
-
-
-        case RequestTypes.SyncData:
-            syncAttendancesData(request.data, deviceContainer, ws);
-
             break;
 
         case RequestTypes.GetDevicesSheets:

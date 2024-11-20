@@ -3,6 +3,7 @@ import { deleteAttendance, getAttendances, insertAttendance, updateAttendance } 
 import { getResponse } from "../models/response.js";
 import * as DeviceService from "../dbServices/deviceService.js";
 import { syncLogData } from "../services/attendance.js";
+import { Result } from "../models/common.js";
 
 export const attendanceHandlers = (request, ws, deviceContainer) => {
 	switch (request.type) {

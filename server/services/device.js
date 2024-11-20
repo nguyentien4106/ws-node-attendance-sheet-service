@@ -7,8 +7,8 @@ export const removeDevice = (device, container) => {
 };
 
 
-export const connectDevice = (device, container) => {
-    return container.connectDevice(device);
+export const connectDevice = (device, container, ws) => {
+    return container.connectDevice(device, ws);
 };
 
 export const disconnectDevice = (device, container) => {
