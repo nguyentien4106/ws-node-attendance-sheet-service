@@ -65,6 +65,8 @@ export class DeviceContainer {
             const res = await getAllDevices();
             for (const device of res.rows) {
                 const addSuccess = this.addDeviceToContainer(device);
+                await setConnectStatus(device.Ip, false)
+
                 if (!addSuccess) {
                     return Result.Fail(500, "Không thể khởi tạo thiết bị.");
                 }
@@ -88,7 +90,6 @@ export class DeviceContainer {
 
     addDeviceToContainer(device) {
         const existed = this.deviceSDKs.some((item) => item.ip === device.Ip);
-
         if (!existed) {
             const deviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
 
