@@ -16,7 +16,7 @@ import { useLoading } from "../context/LoadingContext";
 import { CloseOutlined } from "@ant-design/icons";
 import { notification } from "antd";
 import DeviceForm from "../components/devices/DeviceForm";
-import { getHostUrl } from "../helper/common";
+import { getHostUrl, isAuth } from "../helper/common";
 import Auth from "../layout/Auth";
 
 const WS_URL = getHostUrl();
@@ -117,6 +117,9 @@ export default function Devices() {
     });
 
     useEffect(() => {
+        if(!isAuth){
+            return
+        }
         sendJsonMessage({
             type: RequestTypes.GetDevicesSheets,
         });

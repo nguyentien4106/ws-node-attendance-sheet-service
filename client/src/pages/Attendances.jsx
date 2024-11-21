@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import { DATE_FORMAT, TIME_FORMAT } from "../constants/common";
 import AttendanceForm from "../components/attendances/AttendanceForm";
 import SheetSyncForm from "../components/attendances/SheetSyncForm";
-import { getHostUrl } from "../helper/common";
+import { getHostUrl, isAuth } from "../helper/common";
 import Auth from "../layout/Auth";
 
 const { RangePicker } = DatePicker;
@@ -124,6 +124,9 @@ export default function Attendances() {
     });
 
     useEffect(() => {
+        if(!isAuth){
+            return;
+        }
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.GetAttendances,

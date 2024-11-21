@@ -192,23 +192,24 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             fileName: `Attendances_Report.xlsx`
         })
     }
+
     return (
         <>
             <div
-                style={{
-                    marginBottom: 20,
-                    cursor: "pointer",
-                }}
                 className="d-flex justify-content-end"
-                onClick={() => {
-                    exportExcel()
-                }}
             >
                 <img
+                    onClick={() => {
+                        exportExcel()
+                    }}
                     width="32"
                     height="32"
                     src="https://img.icons8.com/color/48/ms-excel.png"
                     alt="ms-excel"
+                    style={{
+                        cursor: "pointer",
+                        marginBottom: 20,
+                    }}
                 />
             </div>
             <Table

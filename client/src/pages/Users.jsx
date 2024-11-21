@@ -6,7 +6,7 @@ import { useLoading } from "../context/LoadingContext";
 import UserInformationForm from "../components/users/UserInformationForm";
 import UsersTable from "../components/users/UsersTable";
 import SyncForm from "../components/users/SyncForm";
-import { getHostUrl } from "../helper/common";
+import { getHostUrl, isAuth } from "../helper/common";
 import Auth from "../layout/Auth";
 const WS_URL = getHostUrl();
 
@@ -166,6 +166,9 @@ export default function Users() {
     const [sheets, setSheets] = useState([])
 
     useEffect(() => {
+        if(!isAuth){
+            return
+        }
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.GetDevices,

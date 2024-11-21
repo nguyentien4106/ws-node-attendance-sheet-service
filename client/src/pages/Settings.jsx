@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
 import { useLoading } from "../context/LoadingContext";
-import { getHostUrl, getServerIp, setServerIp } from "../helper/common";
+import { getHostUrl, getServerIp, isAuth, setServerIp } from "../helper/common";
 import Auth from "../layout/Auth";
 import { Form } from "react-router-dom";
 import dayjs from "dayjs";
@@ -88,6 +88,9 @@ export default function Settings() {
     });
 
     useEffect(() => {
+        if(!isAuth){
+            return;
+        }
         sendJsonMessage({
             type: RequestTypes.GetSettings,
         });
@@ -111,6 +114,7 @@ export default function Settings() {
     const [open, setOpen] = useState(false);
 
     const submitRef = useRef()
+
     return (
         <Auth>
             <div className="d-flex justify-content-start flex-column">

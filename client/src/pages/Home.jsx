@@ -1,8 +1,6 @@
 import React from "react";
 import qr from '../assets/qr.jpg'
 export default function Home() {
-    const auth = sessionStorage.getItem("auth") === "true" ? true : false
-
     return (
         <div>
             <h1>SANA POS</h1>
