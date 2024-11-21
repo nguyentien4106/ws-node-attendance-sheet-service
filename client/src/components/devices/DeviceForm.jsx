@@ -1,11 +1,15 @@
-import { Button, Form, Input, Space } from "antd";
+import { Button, Form, Input, message, Space } from "antd";
 import React from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { RequestTypes } from "../../constants/requestType";
 
 export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submitRef }) {
-
     const addDevice = device => {
+        const documentIds = new Set([...device.Sheets.map(item => item.DocumentId)])
+        if(documentIds.size != device.Sheets?.length){
+            message.error("Document ID không được trùng nhau.")
+            return;
+        }
         setOpen(false)
         setLoading(true)
         sendJsonMessage({
@@ -99,7 +103,7 @@ export default function DeviceForm({ setOpen, sendJsonMessage, setLoading, submi
                                             if (fields.length > 1) {
                                                 remove(field.name);
                                             } else {
-                                                msg.error("error");
+                                                message.error("Bạn phải có ít nhất một Sheet");
                                             }
                                         }}
                                     />
