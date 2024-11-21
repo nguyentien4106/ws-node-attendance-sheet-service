@@ -118,7 +118,6 @@ export default function Attendances() {
             }
 
             if(response.type === RequestTypes.GetSheets){
-                console.log('sheets', data.data)
                 setSheets(data.data)
             }
         },
@@ -204,7 +203,6 @@ export default function Attendances() {
                 open={open}
                 onCancel={() => setOpen(OPEN_TYPES.CLOSE)}
                 onOk={() => {
-                    setOpen(OPEN_TYPES.CLOSE);
                     submitRef.current.click();
                 }}
             >

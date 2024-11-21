@@ -21,6 +21,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             title: "Id",
             dataIndex: "Id",
             key: "Id",
+            fixed: 'left'
         },
         {
             title: "ID Thiết bị",
@@ -94,6 +95,8 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                         </Button>
                     </Space>
                 ),
+            fixed: 'right'
+
         },
         {
             title: "Action",
@@ -117,6 +120,8 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                     </Popconfirm>
                 </Space>
             ),
+            fixed: 'right'
+
         },
     ];
 
@@ -124,7 +129,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.SyncLogData,
-            data: Object.assign(rc, { VerifyDate: dayjs(rc.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT)}),
+            data: Object.assign(rc, { VerifyDate: dayjs(rc.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT) }),
         });
     };
 
@@ -200,8 +205,8 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                 }}
             >
                 <img
-                    width="16"
-                    height="16"
+                    width="32"
+                    height="32"
                     src="https://img.icons8.com/color/48/ms-excel.png"
                     alt="ms-excel"
                 />

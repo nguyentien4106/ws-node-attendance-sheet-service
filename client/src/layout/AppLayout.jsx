@@ -95,6 +95,7 @@ const AppLayout = () => {
 		},
 	];
 
+    const bgColor = "#B6C99B"
 	return (
 		<Layout
 			style={{
@@ -132,15 +133,11 @@ const AppLayout = () => {
 				/>
 			</Sider>
 			<Layout>
-				<Header
-					style={{
-						padding: 0,
-						background: colorBgContainer,
-					}}
-				/>
 				<Content
 					style={{
-						margin: "0 16px",
+						margin: "32px 16px",
+                        backgroundColor: bgColor,
+                        borderRadius: 20
 					}}
 				>
 					<div
@@ -148,7 +145,9 @@ const AppLayout = () => {
 							padding: 24,
 							minHeight: 360,
 							background: colorBgContainer,
-							borderRadius: borderRadiusLG,
+							borderRadius: 20,
+                            backgroundColor: bgColor,
+                            
 						}}
 					>
 						<Outlet>{contextHolder}</Outlet>

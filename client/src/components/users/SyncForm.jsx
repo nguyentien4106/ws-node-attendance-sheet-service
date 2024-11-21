@@ -82,6 +82,7 @@ const SyncForm = ({
         rules={[
           {
             required: true,
+            message: "Vui lòng điền thông tin."
           },
         ]}
       >
@@ -100,6 +101,7 @@ const SyncForm = ({
           rules={[
             {
               required: true,
+              message: "Vui lòng điền thông tin."
             },
           ]}
         >

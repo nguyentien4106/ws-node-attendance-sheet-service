@@ -181,10 +181,15 @@ export default function Settings() {
                         onCancel={() => setOpen(false)}
                         onOk={() => {
                             submitRef.current.click()
-                            setOpen(false)
                         }}
                     >
-                        <ChangePasswordForm sendJsonMessage={sendJsonMessage} submitRef={submitRef} email={settings?.Email}></ChangePasswordForm>
+                        <ChangePasswordForm 
+                            sendJsonMessage={sendJsonMessage} 
+                            submitRef={submitRef} 
+                            email={settings?.Email}
+                            setOpen={setOpen}
+                        >
+                        </ChangePasswordForm>
                     </Modal>
                 }
             </div>

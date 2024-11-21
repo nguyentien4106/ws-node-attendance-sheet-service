@@ -5,25 +5,10 @@ import { getDeviceByIp } from "./dbServices/deviceService.js";
 import { getSheetsByDeviceIp } from "./dbServices/sheetService.js";
 import { getLastUID } from "./dbServices/userService.js";
 import Zkteco from "zkteco-js";
-
-const sheet = (await initSheet('1oViy_ep8qgD3xO-9tULB2YzNkFMpuVr3QOMl6VZXr-I', 'DATA NHÂN VIÊN', USER_HEADER_ROW)).data
-
-const rows = await sheet.getRows({
-    offset: 0
-})
-
-rows[0].set
-const newUsersToAdd = rows.filter(
-    (row) => row.get(USER_HEADER_ROW[0]).trim() === ""
-);
-
-newUsersToAdd[0].set(USER_HEADER_ROW[0], 100)
-await newUsersToAdd[0].save()
-console.log(rows[0])
-console.log(newUsersToAdd)
+import ZktecoJsCustom from 'zkteco-js-custom'
 
 const manageZktecoDevice = async () => {
-    const device = new Zkteco("192.168.1.160", 4370, 5200, 5000);
+    const device = new ZktecoJsCustom("192.168.1.160", 4370, 2000, 5000);
 
     try {
         // Create socket connection to the device
@@ -58,4 +43,4 @@ const manageZktecoDevice = async () => {
     }
 };
 
-// manageZktecoDevice();
+manageZktecoDevice();

@@ -103,7 +103,8 @@ const UserInformationForm = ({
                         required: true,
                         message: "Vui lòng nhập thông tin."
 
-                    },
+                    },                    
+                    
                 ]}
                 tooltip="Tên này dùng để hiện thị khi chấm công."
             >
@@ -129,6 +130,15 @@ const UserInformationForm = ({
                     {
                         message: "Vui lòng nhập thông tin."
                     },
+                    ({ }) => ({
+                        validator(_, value) {
+                            if(+value >= 1 && +value <= 65535){
+                                return Promise.resolve()
+                            }
+
+                            return Promise.reject(new Error('Mã thẻ từ chỉ có thể nằm trong khoảng từ 1 đến 65535'));
+                        },
+                    }),
                 ]}
 
             >

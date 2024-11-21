@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Button, Form, Input, Space, Typography } from 'antd';
+import { Button, Form, Input, Space } from 'antd';
 import { RequestTypes } from '../../constants/requestType';
 import { useLoading } from '../../context/LoadingContext';
 const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
