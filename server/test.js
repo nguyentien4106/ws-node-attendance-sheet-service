@@ -6,9 +6,9 @@ import { getSheetsByDeviceIp } from "./dbServices/sheetService.js";
 import { getLastUID } from "./dbServices/userService.js";
 import Zkteco from "zkteco-js";
 import ZktecoJsCustom from 'zkteco-js-custom'
-
+import ZKLib from "zklib-js";
 const manageZktecoDevice = async () => {
-    const device = new ZktecoJsCustom("192.168.1.160", 4370, 2000, 5000);
+    const device = new ZktecoJsCustom("192.168.1.201", 4370, 2000, 5000);
 
     try {
         // Create socket connection to the device
@@ -36,6 +36,7 @@ const manageZktecoDevice = async () => {
             console.log(realTimeLog);
         });
 
+        await device.setTime(new Date())
         // Manually disconnect after using real-time logs
         await device.disconnect();
     } catch (error) {

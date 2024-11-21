@@ -14,7 +14,6 @@ app.use(
     })
 );
 app.use(bodyParser.json());
-
 app.use(cors());
 app.post("/login", async (req, res) => {
     try {
@@ -38,6 +37,34 @@ app.get("/test", async (req, res) => {
         token: settings.rows,
     });
 });
+
+
+const cloudServer = http.createServer((req, res) => {
+	console.log(`Request received:`);
+	console.log(`URL: ${req.url}`);
+	console.log(`Method: ${req.method}`);
+	console.log(`Headers: `, req.headers);
+	let body = "";
+    let logs = []
+	req.on("data", (chunk) => {
+		console.log("chunk", chunk.toString("ascii"));
+        const opLogs = chunk.toString("ascii").split("\n")
+        logs = opLogs.map(log => log.split("\t"))
+		body += chunk.toString();
+	});
+	req.on("end", () => {
+		console.log(`lgos: `, logs);
+		res.end("OK");
+	});
+});
+
+// 123       2024-11-22 01:10:00     4       1       0       0       0       0       0       0
+
+const port = 8081;
+cloudServer.listen(port, () => {
+	console.log("Server is listening on port " + port);
+});
+
 
 export const websocket = {
     wss: new WebSocketServer({ server }),
