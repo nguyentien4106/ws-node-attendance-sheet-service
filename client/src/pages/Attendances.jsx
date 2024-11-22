@@ -109,7 +109,7 @@ export default function Attendances() {
 
             if(response.type === RequestTypes.AddLog){
                 if(data.isSuccess){
-                    message.success("Thêm dữ liệu thành công.")
+                    message.success("Đã thêm một dữ liệu chấm công mới.")
                     setAttendances(prev => {
                         prev.unshift(data.data[0])
                         return prev

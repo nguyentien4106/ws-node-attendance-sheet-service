@@ -19,7 +19,7 @@ export const handleRealTimeDataBySN = async (log, sn) => {
         }
 
         const device = query.rows[0]
-        const result = await handleRealTimeData(log, device)
+        const result = await handleRealTimeData(log, device.Id)
 
         return Result.Success(result)
     }
@@ -32,12 +32,17 @@ export const handleRealTimeDataBySN = async (log, sn) => {
 export const handleRealTimeData = async (log, deviceId) => {
     try{
         const dbRow = await insertDB(log, deviceId)
+
+        if(!dbRow.length){
+            return Result.Fail(500, "Đã xảy ra lỗi khi thêm dữ liệu attendance mới.", { log, deviceId })
+        }
         const sheetRows = dbRow.map(item => {
             const time = dayjs(item.VerifyDate)
             return [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, time.format(DATE_FORMAT), time.format(TIME_FORMAT)]
         })
 
         const sheetRow =  await insertToGGSheet(sheetRows, deviceId);
+
         if(!sheetRow.isSuccess){
             setUploadStatus(dbRow[0].Id)
             return Result.Fail(500, `Data chưa được đẩy lển sheet. ${sheetRow.message}`)
@@ -47,7 +52,7 @@ export const handleRealTimeData = async (log, deviceId) => {
             client.send(
                 getResponse({
                     type: RequestTypes.AddLog,
-                    data: dbRow,
+                    data: Result.Success(dbRow),
                 })
             );
         });
