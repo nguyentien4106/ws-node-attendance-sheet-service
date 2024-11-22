@@ -19,9 +19,7 @@ export const handleRealTimeDataBySN = async (log, sn) => {
         }
 
         const device = query.rows[0]
-        const result = await handleRealTimeData(log, device.Id)
-
-        return Result.Success(result)
+        return await handleRealTimeData(log, device.Id)
     }
     catch(err){
 
