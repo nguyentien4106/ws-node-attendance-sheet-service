@@ -114,6 +114,7 @@ export class DeviceContainer {
 
             const deviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
             const success = await deviceSDK.createSocket();
+            let sn = "";
             await deviceSDK.getPIN();
 
             const sheetsValid = await isSheetsValid(device.Sheets);
@@ -125,12 +126,14 @@ export class DeviceContainer {
                 await deviceSDK.freeData();
                 const users = await deviceSDK.getUsers();
                 const result = await insertNewUsers(users.data, { Ip: device.Ip, DeviceName: device.Name, Sheets: device.Sheets });
+                sn = await deviceSDK.getSerialNumber()
 
                 await deviceSDK.disconnect();
             }
 
             this.deviceSDKs.push(deviceSDK);
-            const result = await insertNewDevice(device);
+            const result = await insertNewDevice(Object.assign(device, { SN: sn }));
+
             return result.rowCount
                 ? Result.Success(result.rows[0])
                 : Result.Fail(
@@ -159,17 +162,7 @@ export class DeviceContainer {
                 success = await deviceSDK.createSocket();
                 await deviceSDK.getPIN();
                 await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
-                    console.log("realTimeLog", realTimeLog);
-                    const insertResult = await handleRealTimeData(realTimeLog, device.Id);
-                    console.log("handle realtime data result: ", insertResult.isSuccess);
-                    wss.clients.forEach(function each(client) {
-                        client.send(
-                            getResponse({
-                                type: RequestTypes.AddLog,
-                                data: insertResult,
-                            })
-                        );
-                    });
+                    await handleRealTimeData(realTimeLog, device.Id);
                 });
                 setConnectStatus(device.Ip, success);
 

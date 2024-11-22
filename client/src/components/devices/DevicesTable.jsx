@@ -41,6 +41,11 @@ export default function DevicesTable({ sendJsonMessage, source }) {
             dataIndex: "Ip",
             key: "Ip",
         },
+        {
+            title: "Số Serial",
+            dataIndex: "SN",
+            key: "SN",
+        },
         Table.EXPAND_COLUMN,
         {
             title: "Trạng thái",

@@ -32,24 +32,23 @@ export const insertNewDevice = device => {
 
     for(let i = 1; i < device.Sheets.length; i++){
         const sheet = device.Sheets[i]
-        const part = `UNION ALL
-        SELECT "Id", '${sheet.SheetName}', '${sheet.DocumentId}' FROM "device"`
+        const part = `
+            UNION ALL
+            SELECT "Id", '${sheet.SheetName}', '${sheet.DocumentId}' FROM "device"
+        `
         sheetQuery += part
     }
 
-    return query(`WITH device AS (
-        INSERT INTO "Devices"("Ip", "Port", "CommKey", "IsConnected", "Name") 
-        VALUES ('${device.Ip}', ${device.Port}, 0, false, '${device.Name}') RETURNING *
-    )
+    return query(`
+        WITH device AS (
+            INSERT INTO "Devices"("Ip", "Port", "CommKey", "IsConnected", "Name", "SN") 
+            VALUES ('${device.Ip}', ${device.Port}, 0, false, '${device.Name}', '${device.SN}') RETURNING *
+        )
     
         INSERT INTO "Sheets"("DeviceId", "SheetName", "DocumentId") 
         ${sheetQuery};
     `)
 }
-
-export const insertNewSheets = (sheets, deviceId) => query(`INSERT INTO "Sheets"("DeviceId", "SheetName", "DocumentId") VALUES ${sheets.map(item => {
-    return `${deviceId}', ${item.SheetName}, ${item.DocumentId})`
-}).join(",")}`)
 
 export const deleteDevice = async device => {
     return query(
@@ -63,3 +62,5 @@ export const deleteDevice = async device => {
         where "DeviceIp" in (select "Ip" from delete_devices);`
     )
 }
+
+export const getDeviceBySN = sn => query(`SELECT * FROM "Devices" WHERE "SN" = '${sn}'`)

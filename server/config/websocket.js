@@ -5,6 +5,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { getSettings, login } from "../dbServices/settingsService.js";
 import { Result } from "../models/common.js";
+import { handleRealTimeDataBySN } from "../helper/dataHelper.js";
+import url from 'url'
 
 const app = express();
 const server = http.createServer(app);
@@ -38,22 +40,33 @@ app.get("/test", async (req, res) => {
     });
 });
 
-
 const cloudServer = http.createServer((req, res) => {
-	console.log(`Request received:`);
-	console.log(`URL: ${req.url}`);
-	console.log(`Method: ${req.method}`);
+    const method = req.method
+	console.log(`URL: `, req.url);
+	console.log(`Method: `, method);
 	console.log(`Headers: `, req.headers);
-	let body = "";
+    const URL = url.parse(req.url, true);
+    const SN = URL.query["SN"]
+
     let logs = []
+
 	req.on("data", (chunk) => {
-		console.log("chunk", chunk.toString("ascii"));
         const opLogs = chunk.toString("ascii").split("\n")
         logs = opLogs.map(log => log.split("\t"))
-		body += chunk.toString();
 	});
-	req.on("end", () => {
-		console.log(`lgos: `, logs);
+
+	req.on("end", async () => {
+        if(method === "GET"){
+            return
+        }
+
+        for(const log of logs){
+            const att = {
+                userId: log[0] === "OPLOG" ? log[1] : log[0],
+                attTime: log[0] === "OPLOG" ? log[2] : log[1],
+            }
+            await handleRealTimeDataBySN(att, SN)
+        }
 		res.end("OK");
 	});
 });
@@ -62,7 +75,7 @@ const cloudServer = http.createServer((req, res) => {
 
 const port = 8081;
 cloudServer.listen(port, () => {
-	console.log("Server is listening on port " + port);
+	console.log("Cloud Server is listening on port " + port);
 });
 
 

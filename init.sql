@@ -67,7 +67,8 @@ CREATE TABLE public."Devices" (
     "Port" text NOT NULL,
     "CommKey" text NOT NULL,
     "IsConnected" boolean NOT NULL,
-    "Name" text
+    "Name" text,
+    "SN" text
 );
 
 

@@ -4,6 +4,30 @@ import { insertAttendance, setUploadStatus } from "../dbServices/attendanceServi
 import { appendRow, initSheets } from "../dbServices/dataService.js";
 import { getSheets } from "../dbServices/sheetService.js";
 import { DATE_FORMAT, HEADER_ROW, OPTIONS_DELETE_SHEETS, TIME_FORMAT } from "../constants/common.js";
+import { websocket } from '../config/websocket.js'
+import { RequestTypes } from "../constants/requestType.js";
+import { getResponse } from "../models/response.js";
+import { getDeviceBySN } from "../dbServices/deviceService.js";
+
+// const { wss } = websocket
+
+export const handleRealTimeDataBySN = async (log, sn) => {
+    try{
+        const query = await getDeviceBySN(sn)
+        if(!query.rowCount){
+            return Result.Fail(500, `Không tìm thấy thiết bị nào có số Serial: ${sn} trong hệ thống`)
+        }
+
+        const device = query.rows[0]
+        const result = await handleRealTimeData(log, device)
+
+        return Result.Success(result)
+    }
+    catch(err){
+
+        return Result.Fail(500, err.message, { log })
+    }
+};
 
 export const handleRealTimeData = async (log, deviceId) => {
     try{
@@ -18,6 +42,16 @@ export const handleRealTimeData = async (log, deviceId) => {
             setUploadStatus(dbRow[0].Id)
             return Result.Fail(500, `Data chưa được đẩy lển sheet. ${sheetRow.message}`)
         }
+
+        websocket.wss.clients.forEach(function each(client) {
+            client.send(
+                getResponse({
+                    type: RequestTypes.AddLog,
+                    data: dbRow,
+                })
+            );
+        });
+
         return Result.Success(dbRow)
     }
     catch(err){
