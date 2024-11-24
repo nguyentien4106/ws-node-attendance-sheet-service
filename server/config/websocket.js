@@ -39,9 +39,6 @@ app.get("/test", async (req, res) => {
     res.send(dayjs().format());
 });
 
-
-// 123       2024-11-22 01:10:00     4       1       0       0       0       0       0       0
-
 export const websocket = {
     wss: new WebSocketServer({ server }),
     server: server,

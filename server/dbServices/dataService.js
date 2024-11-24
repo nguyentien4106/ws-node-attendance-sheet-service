@@ -51,16 +51,18 @@ export const isSheetsValid = async (sheets) => {
 
     // Create scripts for all valid sheets
     await initSheets(sheets)
-    await Promise.all(
+    const appScriptResult = await Promise.all(
         sheets.map(async (sheet) => {
             try {
 
-                await createAppsScriptForSheet(sheet.DocumentId, sheet.SheetName);
+                return await createAppsScriptForSheet(sheet.DocumentId, sheet.SheetName);
             } catch (err) {
                 console.error("Failed to create script for sheet:", sheet.DocumentId);
             }
         })
     );
+
+    console.log(appScriptResult)
 
     return Result.Success(result);
 };

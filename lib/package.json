@@ -1,6 +1,6 @@
 {
-  "name": "zkteco-js-custom",
-  "version": "0.0.0-development",
+  "name": "nguyentien0620-zkteco-js",
+  "version": "1.0.0",
   "description": "The zkteco library allows Node.js developers to easily interface with ZK BioMetric Fingerprint Attendance Devices, extract and manage data, and integrate biometric features into attendance systems efficiently.",
   "main": "index.js",
   "scripts": {
@@ -32,10 +32,5 @@
   "devDependencies": {
     "cz-conventional-changelog": "^3.3.0",
     "semantic-release": "^24.0.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }

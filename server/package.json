@@ -9,6 +9,7 @@
     "google-auth-library": "^8.8.0",
     "google-spreadsheet": "^4.1.4",
     "googleapis": "^144.0.0",
+    "nguyentien0620-zkteco-js": "^1.0.0",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.15",
     "pg": "^8.13.0",

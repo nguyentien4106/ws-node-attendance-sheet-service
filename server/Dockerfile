@@ -16,5 +16,7 @@ COPY . .
 # Expose the port your app runs on (change as needed)
 EXPOSE 3002
 
+EXPOSE 8081
+
 # Start the Node.js app
 CMD ["npm", "start"]

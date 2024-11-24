@@ -41,7 +41,7 @@ import { getSheets } from "../dbServices/sheetService.js";
 import { UserRoles } from "../constants/userRoles.js";
 import { RequestTypes } from "../constants/requestType.js";
 import { websocket } from '../config/websocket.js'
-
+import ZktecoJsCustom from "nguyentien0620-zkteco-js";
 const { wss } = websocket
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
@@ -91,7 +91,7 @@ export class DeviceContainer {
     addDeviceToContainer(device) {
         const existed = this.deviceSDKs.some((item) => item.ip === device.Ip);
         if (!existed) {
-            const deviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
+            const deviceSDK = new ZktecoJsCustom(device.Ip, device.Port, TIME_OUT, IN_PORT);
 
             this.deviceSDKs.push(deviceSDK);
             logger.info(`Added successfully device ${device.Ip} into container`);
@@ -112,7 +112,7 @@ export class DeviceContainer {
                 return new Result(200, "Thiết bị đã có trong hệ thống.", device);
             }
 
-            const deviceSDK = new Zkteco(device.Ip, device.Port, TIME_OUT, IN_PORT);
+            const deviceSDK = new ZktecoJsCustom(device.Ip, device.Port, TIME_OUT, IN_PORT);
             const success = await deviceSDK.createSocket();
             let sn = "";
             await deviceSDK.getPIN();
@@ -175,7 +175,7 @@ export class DeviceContainer {
                 return await connect();
             }
 
-            const newDeviceSDK = new Zkteco(
+            const newDeviceSDK = new ZktecoJsCustom(
                 device.Ip,
                 device.Port,
                 TIME_OUT,
@@ -302,7 +302,7 @@ export class DeviceContainer {
             }
             await deviceSDK.setUser(
                 lastUid,
-                user.userId,
+                `${lastUid}`,
                 user.name,
                 user.password,
                 user.role,

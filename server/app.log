@@ -7053,3 +7053,250 @@
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-21T10:01:14.386Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-21T10:01:34.999Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-11-21T10:01:38.758Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T12:56:57.750Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T12:56:57.809Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T12:56:57.818Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=None\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=30\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1100000000\r\nServerVer=2.2.14\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-22T12:57:46.195Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160&INFO=Ver%208.0.4.3-20230217,7,5,51,192.168.1.100,10,-1,0,0,101,0,0,0","timestamp":"2024-11-22T12:57:47.327Z"}
+{"level":"error","message":"column \"SN\" does not exist","timestamp":"2024-11-22T12:57:49.792Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:57:51.595Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:57:55.341Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:57:59.371Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:03.302Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:08.343Z"}
+{"level":"error","message":"column \"SN\" does not exist","timestamp":"2024-11-22T12:58:11.751Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160&INFO=Ver%208.0.4.3-20230217,7,5,52,192.168.1.100,10,-1,0,0,101,0,0,0","timestamp":"2024-11-22T12:58:13.330Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:18.368Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:23.307Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:28.342Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:33.274Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:38.323Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:43.366Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:48.300Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:53.334Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T12:58:58.303Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T13:32:06.538Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T13:32:06.590Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T13:32:06.599Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=None\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=30\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1100000000\r\nServerVer=2.2.14\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-22T13:32:14.982Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160&INFO=Ver%208.0.4.3-20230217,7,5,52,192.168.1.100,10,-1,0,0,101,0,0,0","timestamp":"2024-11-22T13:32:15.315Z"}
+{"level":"error","message":"Không tìm thấy thiết bị nào có số Serial: 1313240800160 trong hệ thống","timestamp":"2024-11-22T13:32:17.353Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:19.339Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:23.371Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:27.308Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:31.346Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T13:32:31.807Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:36.385Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:41.325Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:46.359Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:51.296Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:32:56.330Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:01.455Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:06.300Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:11.339Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:16.386Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:21.325Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:26.361Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:31.298Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:36.332Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:41.371Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:46.314Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:51.353Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:33:56.389Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:01.330Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:06.363Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:11.296Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:16.329Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:22.329Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:27.365Z"}
+{"level":"info","message":"Authorized using token.json file.","timestamp":"2024-11-22T13:34:28.902Z"}
+{"level":"error","message":"Failed to create App Scripts. Error: invalid_grant","timestamp":"2024-11-22T13:34:29.242Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:32.298Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T13:34:32.593Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:37.332Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:42.373Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160&INFO=Ver%208.0.4.3-20230217,7,5,53,192.168.1.100,10,-1,0,0,101,0,0,0","timestamp":"2024-11-22T13:34:47.371Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:52.309Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:34:57.351Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:02.391Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T13:35:04.360Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:07.899Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:13.237Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:18.276Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:23.217Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:28.264Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:33.301Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:38.237Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:43.276Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:48.218Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:53.254Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:35:58.298Z"}
+{"level":"info","message":"get request /iclock/getrequest?SN=1313240800160","timestamp":"2024-11-22T13:36:03.237Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T13:36:40.689Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T13:36:40.732Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T13:36:40.738Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T13:36:40.745Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T13:41:12.268Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T13:41:12.316Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T13:41:12.326Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T13:41:12.332Z"}
+{"level":"error","message":"Đã xảy ra lỗi khi thêm dữ liệu attendance mới.","timestamp":"2024-11-22T13:46:58.029Z"}
+{"level":"error","message":"Đã xảy ra lỗi khi thêm dữ liệu attendance mới.","timestamp":"2024-11-22T13:47:38.279Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T13:56:23.370Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T13:56:23.422Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T13:56:23.429Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T13:56:23.438Z"}
+{"level":"error","message":"Đã xảy ra lỗi khi thêm dữ liệu attendance mới.","timestamp":"2024-11-22T13:56:47.956Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=None\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=30\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=0\r\nTransFlag=1100000000\r\nServerVer=2.2.14\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-22T13:58:00.218Z"}
+{"level":"error","message":"Đã xảy ra lỗi khi thêm dữ liệu attendance mới.","timestamp":"2024-11-22T13:58:03.287Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T13:58:27.044Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T13:58:27.087Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T13:58:27.096Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T13:58:27.104Z"}
+{"level":"error","message":{"command":"TCP CONNECT","err":{"command":"TCP CONNECT","err":{"address":"192.168.1.160","code":"ETIMEDOUT","errno":-4039,"port":4370,"syscall":"connect"},"ip":"192.168.1.160"},"ip":"192.168.1.160"},"timestamp":"2024-11-22T17:31:35.186Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T17:31:51.963Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T17:55:45.555Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T17:55:45.599Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T17:55:45.605Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T17:55:45.614Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.14\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-22T17:55:49.050Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T17:59:30.803Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T17:59:30.845Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T17:59:30.852Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T17:59:30.856Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T18:00:31.497Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T18:00:31.540Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T18:00:31.546Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T18:00:31.551Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T18:00:50.655Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T18:00:50.695Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T18:00:50.700Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T18:00:50.706Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.14\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-22T18:01:16.859Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T18:02:44.669Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T18:02:44.714Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T18:02:44.719Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T18:02:44.723Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.14\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-22T18:02:49.685Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T18:03:31.941Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T18:03:31.982Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T18:03:31.987Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T18:03:31.992Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-22T18:04:09.197Z"}
+{"level":"error","message":"Đã xảy ra lỗi khi thêm dữ liệu attendance mới.","timestamp":"2024-11-22T18:08:38.315Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T18:10:01.178Z"}
+{"level":"info","message":"Authorized using token.json file.","timestamp":"2024-11-22T18:10:14.831Z"}
+{"level":"error","message":"Failed to create App Scripts. Error: invalid_grant","timestamp":"2024-11-22T18:10:15.039Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T18:10:17.603Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T18:10:24.569Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T18:10:31.346Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T18:11:02.464Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T18:11:14.441Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T18:20:32.364Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-22T18:25:07.868Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-22T18:25:07.930Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-22T18:25:07.935Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-22T18:25:07.941Z"}
+{"level":"info","message":"Authorized using token.json file.","timestamp":"2024-11-22T18:25:21.549Z"}
+{"level":"error","message":"Failed to create App Scripts. Error: invalid_grant","timestamp":"2024-11-22T18:25:21.765Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-22T18:25:24.297Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-23T09:07:27.092Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-23T09:07:27.154Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-23T09:07:27.164Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-23T09:07:27.171Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-23T09:07:34.746Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:10:05.871Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:10:11.687Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:10:15.840Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:10:18.460Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:13:10.838Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:13:13.633Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:13:18.682Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:13:31.589Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:13:59.936Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:15:08.410Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:15:11.847Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:15:59.633Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:16:01.098Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:16:24.669Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:18:10.505Z"}
+{"level":"info","message":"Authorized using token.json file.","timestamp":"2024-11-23T09:18:20.526Z"}
+{"level":"error","message":"Failed to create App Scripts. Error: invalid_grant","timestamp":"2024-11-23T09:18:20.750Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:18:23.622Z"}
+{"level":"error","message":{"command":"TCP CONNECT","err":{"command":"TCP CONNECT","err":{"address":"192.168.1.160","code":"ETIMEDOUT","errno":-4039,"port":4370,"syscall":"connect"},"ip":"192.168.1.160"},"ip":"192.168.1.160"},"timestamp":"2024-11-23T09:18:24.375Z"}
+{"level":"info","message":"Authorized using token.json file.","timestamp":"2024-11-23T09:18:50.501Z"}
+{"level":"error","message":"Failed to create App Scripts. Error: invalid_grant","timestamp":"2024-11-23T09:18:50.698Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:18:53.749Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:19:12.527Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:25:14.533Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:26:00.272Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:27:35.651Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:27:45.329Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:29:00.081Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:29:04.548Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:29:06.424Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:29:27.943Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:29:30.200Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:29:32.269Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:29:44.521Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:30:08.083Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:30:46.077Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:31:04.185Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:31:05.682Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:31:31.207Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:32:38.316Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:32:39.663Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:32:40.355Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:33:34.811Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:33:36.553Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:33:44.570Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:34:18.002Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:34:42.656Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:37:20.860Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:37:23.867Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:40:49.270Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:40:51.864Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:40:58.804Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:41:00.181Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:41:01.776Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:41:16.648Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T09:43:36.703Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T11:06:19.594Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T11:06:19.595Z"}
+{"level":"error","message":"Device: 192.168.1.100 lost connection at 23/11/2024","timestamp":"2024-11-23T11:08:06.130Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T12:22:11.659Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-23T12:22:11.661Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-24T16:38:45.384Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-24T16:38:45.496Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-24T16:38:45.506Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-24T16:38:45.517Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 1313240800160\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-11-24T16:38:49.364Z"}
+{"level":"error","message":"Sai tên đăng nhập hoặc mật khẩu.","timestamp":"2024-11-24T16:38:57.087Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:39:03.001Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:39:09.046Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:39:16.442Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-24T16:41:36.246Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-24T16:41:36.302Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-24T16:41:36.309Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-24T16:41:36.315Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:41:40.154Z"}
+{"level":"error","message":{"command":"[TCP] undefined","err":{},"ip":"192.168.1.100"},"timestamp":"2024-11-24T16:43:58.549Z"}
+{"level":"info","message":"Added successfully device 192.168.1.160 into container","timestamp":"2024-11-24T16:46:14.190Z"}
+{"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-24T16:46:14.248Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-24T16:46:14.255Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-24T16:46:14.262Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:46:22.883Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:46:25.003Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:46:55.048Z"}
+{"level":"error","message":"Đã xảy ra lỗi khi thêm dữ liệu attendance mới.","timestamp":"2024-11-24T16:47:23.755Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:47:26.673Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:47:28.020Z"}
+{"level":"error","message":"Đã xảy ra lỗi khi thêm dữ liệu attendance mới.","timestamp":"2024-11-24T16:49:17.113Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:49:38.238Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:51:51.166Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:51:57.675Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:54:15.146Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:54:19.503Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:54:21.642Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-24T16:54:36.768Z"}
+{"level":"error","message":"Device: 192.168.1.100 lost connection at 25/11/2024","timestamp":"2024-11-24T17:04:06.055Z"}

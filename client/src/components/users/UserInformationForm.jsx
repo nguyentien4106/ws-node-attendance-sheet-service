@@ -132,11 +132,11 @@ const UserInformationForm = ({
                     },
                     ({ }) => ({
                         validator(_, value) {
-                            if(+value >= 1 && +value <= 65535){
+                            if(+value >= 1 && +value <= Math.pow(2, 32)){
                                 return Promise.resolve()
                             }
 
-                            return Promise.reject(new Error('Mã thẻ từ chỉ có thể nằm trong khoảng từ 1 đến 65535'));
+                            return Promise.reject(new Error('Mã thẻ từ chỉ có thể nằm trong khoảng từ 1 đến ' + Math.pow(2, 32).toString()));
                         },
                     }),
                 ]}

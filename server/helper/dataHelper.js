@@ -9,8 +9,6 @@ import { RequestTypes } from "../constants/requestType.js";
 import { getResponse } from "../models/response.js";
 import { getDeviceBySN } from "../dbServices/deviceService.js";
 
-// const { wss } = websocket
-
 export const handleRealTimeDataBySN = async (log, sn) => {
     try{
         const query = await getDeviceBySN(sn)
