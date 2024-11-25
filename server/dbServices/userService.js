@@ -70,9 +70,15 @@ export const removeUser = async ({ uid, deviceIp, deleteSheet}) => {
 	    WHERE "UID" = ${uid} and "DeviceIp" = '${deviceIp}' RETURNING *;
     `
     const users = (await query(sql)).rows
-    if(!deleteSheet){
-        return Result.Success("Đã xoá User trong hệ thống thành công.")
+
+    if(!users.length){
+        return Result.Fail(404, "Không tìm thấy người dùng này vui lòng refresh và thử lại.")
     }
+
+    if(!deleteSheet){
+        return Result.Success(users[0], "Đã xoá User trong hệ thống thành công.")
+    }
+
     return await removeUserOnSheet(deviceIp, users[0])
 };
 
@@ -83,12 +89,37 @@ export const getUser = (uid, userId) => query(
 export const editUserDisplayName = async (data) => {
     const sql = `
         UPDATE public."Users"
-        SET "DisplayName"= '${data.DisplayName}'
+        SET "DisplayName"= '${data.DisplayName}', "EmployeeCode" = '${data.EmployeeCode}'
         WHERE "Id" = ${data.Id}
         RETURNING *;
     `
 
-    return query(sql)
+    const result = await query(sql)
+    if(!result.rowCount){
+        return result
+    }
+
+    try {
+        const sheets = (await getSheetsByDeviceIp(data.DeviceIp)).rows
+        const sheetServices = await initSheets(sheets.map(item => ({ DocumentId: item.DocumentId, SheetName: EMPLOYEE_DATA })))
+        // await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), [[user[0].Id, "deleted"]])
+        const services = sheetServices.filter(item => item.isSuccess).map(item => item.data)
+        for (const service of services) {
+            const rows = await service.getRows()
+            for (const row of rows) {
+                if (+row.get(USER_HEADER_ROW[0]) === data.Id) {
+                    row.set(USER_HEADER_ROW[7], result.rows[0].DisplayName)
+                    row.set(USER_HEADER_ROW[2], result.rows[0].EmployeeCode)
+                    await row.save()
+                }
+            }
+        }
+    }
+    catch (err) {
+        return Result.Fail(500, err.message)
+    }
+
+    return result
 }
 
 export const validUserId = async (deviceIp, userId) => {

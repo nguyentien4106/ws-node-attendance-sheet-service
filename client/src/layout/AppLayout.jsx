@@ -111,7 +111,7 @@ const AppLayout = () => {
                 theme="light"
 			>
 				<div className="demo-logo-vertical" />
-				{!collapsed && (
+				{!collapsed ? (
 					<img
 						src={logo}
 						height={100}
@@ -123,7 +123,7 @@ const AppLayout = () => {
 							navigate("/");
 						}}
 					/>
-				)}
+				) : <div style={{ height: 100 }}></div>}
 				<Menu
 					theme="light"
 					selectedKeys={tab}

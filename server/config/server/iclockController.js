@@ -21,7 +21,6 @@ export const handShake = async (req, res) => {
 }
 
 export const getRequest = async (req, res) => {
-    console.log(`GET request ${req.url}`)
     res.send("OK")
 
     return "OK"

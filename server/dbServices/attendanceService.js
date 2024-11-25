@@ -61,30 +61,30 @@ export const insertAttendance = (log, deviceId, uploaded = true) => {
     );
 };
 
-// export const getAttendances = (params) => {
-//     if(!params){
-//         return query(`
-//             SELECT "Attendances"."Id", "DeviceId", "Attendances"."UserId", "DeviceName", "UserName", "Attendances"."Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", "Users"."EmployeeCode" AS "EmployeeCode"
-//             FROM public."Attendances" JOIN "Users" on "Attendances"."UserId" = "Users"."UserId"
-//         `);
-//     }
+export const getAttendancesById = async id => {
+    const sql = `
+        SELECT 
+            "Attendances"."Id", 
+            "DeviceId", 
+            "Attendances"."UserId", 
+            "DeviceName", 
+            "UserName", 
+            "Attendances"."Name", 
+            "Uploaded", 
+            TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", 
+            "Users"."EmployeeCode" AS "EmployeeCode"
+        FROM 
+            public."Attendances"
+        JOIN 
+            "Users" 
+        ON 
+            "Attendances"."UserId" = "Users"."UserId"
 
-//     if (params.deviceId == "All") {
-//         return query(`
-//             SELECT "Attendances"."Id", "DeviceId", "Attendances"."UserId", "DeviceName", "UserName", "Attendances"."Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", "Users"."EmployeeCode" AS "EmployeeCode"
-//             FROM public."Attendances" JOIN "Users" on "Attendances"."UserId" = "Users"."UserId"
-//             WHERE "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
-//             ORDER BY "Id" DESC 
-//         `);
-//     }
+        WHERE "Attendances"."Id" = ${id}
+    `;
 
-//     return query(`
-//         SELECT "Attendances"."Id", "DeviceId", "Attendances"."UserId", "DeviceName", "UserName", "Attendances"."Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", "Users"."EmployeeCode" AS "EmployeeCode"
-//         FROM public."Attendances" JOIN "Users" on "Attendances"."UserId" = "Users"."UserId"
-//         WHERE "DeviceId" = ${params.deviceId} and "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
-//         ORDER BY "Id" DESC 
-//     `);
-// };
+    return query(sql)
+}
 
 export const getAttendances = (params) => {
     // Base query and common SELECT fields
@@ -106,8 +106,12 @@ export const getAttendances = (params) => {
         ON 
             "Attendances"."UserId" = "Users"."UserId"
     `;
+
+    if(!params){
+        return query(baseQuery)
+    }
+
     const conditions = [];
-    console.log(params.tableParams)
 
     if (params.deviceId && params.deviceId !== "All") {
         conditions.push(`"DeviceId" = '${params.deviceId}'`);
@@ -127,7 +131,7 @@ export const getAttendances = (params) => {
 
     const conditionQuery = conditions.join(" AND ")
 
-    const sql = baseQuery + " WHERE " + conditionQuery
+    const sql = baseQuery + " WHERE " + conditionQuery + ` ORDER BY "Id" DESC`
     console.log(sql)
     return query(sql)
 }
@@ -231,22 +235,3 @@ export const deleteAttendance = async (log) => {
         return Result.Fail(500, err.message, log)
     }
 }
-/*atts {
-  data: [
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sat Oct 12 2024 16:50:35 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-    {
-      sn: 2,
-      user_id: '1',
-      record_time: 'Sat Oct 12 2024 16:50:36 GMT+0700 (Indochina Time)',
-      type: 0,
-      state: 0,
-      ip: '192.168.1.201'
-    },
-     */

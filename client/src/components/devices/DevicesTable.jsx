@@ -14,6 +14,7 @@ import { useLoading } from "../../context/LoadingContext";
 import UserInformationForm from "../users/UserInformationForm";
 import dayjs from "dayjs";
 import { DATE_FORMAT, TIME_FORMAT } from "../../constants/common";
+import { DELETE_ATTENDANCES_TEXT, SYNC_ALL_ATTENDANCES_TEXT, SYNC_ATTENDANCES_BY_TIMES_TEXT } from "../../constants/text";
 
 const { RangePicker } = DatePicker;
 
@@ -35,6 +36,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
             title: "Tên thiết bị",
             dataIndex: "Name",
             key: "Name",
+            width: 500
         },
         {
             title: "Ip thiết bị",
@@ -103,8 +105,8 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                         color="#108ee9"
                     >
                         <Popconfirm
-                            title={`Đồng bộ dữ liệu từ thiết bị: ${record.Name}`}
-                            description="Dữ liệu sẽ được xoá toàn bộ và lấy dữ liệu trong máy chấm công để thay thế. Toàn bộ dữ liệu thay đổi bằng tay sẽ được xoá bỏ."
+                            title={<p>Đồng bộ dữ liệu từ thiết bị: <u><i>{record.Name}</i></u></p>}
+                            description={<p style={{ maxWidth: 500 }}>{SYNC_ALL_ATTENDANCES_TEXT}</p>}
                             onConfirm={(e) => {
                                 handleSyncData(record);
                             }}
@@ -113,7 +115,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                             cancelText="No"
                         >
                             <Button 
-                                // disabled={!record?.IsConnected}
+                                disabled={!record?.IsConnected}
                             >
                                 Đồng bộ toàn bộ dữ liệu
                             </Button>
@@ -121,11 +123,11 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                     </Tooltip>
 
                     <Tooltip
-                        title="Dữ liệu sẽ được thêm mới vào app và sheet. Bạn cần tự đảm bảo tính đúng đắn của data."
+                        title={SYNC_ATTENDANCES_BY_TIMES_TEXT}
                         color="#108ee9"
                     >
                         <Button
-                            // disabled={!record?.IsConnected}
+                            disabled={!record?.IsConnected}
                             onClick={() => {
                                 setOpen(OPEN_TYPES.SYNC_DATA_FORM)
                                 setDevice(record)
@@ -134,10 +136,39 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                             Đồng bộ dữ liệu theo thời gian
                         </Button>
                     </Tooltip>
+                    <Tooltip
+                        title="Toàn bộ dữ liệu trong máy chấm công sẽ bị xóa sau khi dùng chức năng này."
+                        color="#108ee9"
+                    >
+                       <Popconfirm
+                            title={<p>Xóa toàn bộ dữ liệu trong thiết bị: <u><i>{record.Name}</i></u></p>}
+                            description={<p style={{ maxWidth: 500}}>{DELETE_ATTENDANCES_TEXT}</p>}
+                            onConfirm={(e) => {
+                                handleClearDataAttendance(record);
+                            }}
+                            onCancel={() => {}}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button 
+                                disabled={!record?.IsConnected}
+                            >
+                                Xóa toàn bộ dữ liệu chấm công
+                            </Button>
+                        </Popconfirm>
+                    </Tooltip>
                 </Space>
             ),
         },
     ];
+
+    const handleClearDataAttendance = (record) => {
+        setLoading(true)
+        sendJsonMessage({
+            type: RequestTypes.DeviceClearAttendances,
+            data: record,
+        });
+    }
 
     const handleSyncData = (record) => {
         message.info(
@@ -266,6 +297,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                     showExpandColumn: false,
                     defaultExpandAllRows: true,
                 }}
+                scroll={{ x: 700 }}
             />
         </>
     );

@@ -27,6 +27,7 @@ export const attendanceHandlers = (request, ws, deviceContainer) => {
             break;
 
         case RequestTypes.SyncData:
+            console.log('RequestTypes.SyncData')
             deviceContainer.syncAttendancesData(request.data).then((res) => {
                 ws.send(
                     getResponse({

@@ -54,11 +54,12 @@ export default function Users() {
             }
 
             if (response.type === RequestTypes.DeleteUser) {
+                console.log(response.data)
                 if (response.data.isSuccess) {
                     message.success("Xóa User thành công");
                     setUsers((prev) =>
                         prev.filter(
-                            (item) => item.UID !== response.data.data.uid
+                            (item) => item.UID !== response.data.data.UID
                         )
                     );
                 } else {

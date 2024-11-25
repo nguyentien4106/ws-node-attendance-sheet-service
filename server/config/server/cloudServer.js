@@ -7,6 +7,9 @@ export const initializeCloudServer = () => {
     const app = express();
 
     const cloudServer = http.createServer(app);
+    app.get('/test', (req, res) => {
+        res.send("TEST OKE")
+    })
 
     app.get('/iclock/cdata', handShake)
 

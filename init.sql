@@ -103,7 +103,8 @@ CREATE TABLE public."Users" (
     "DisplayName" name COLLATE pg_catalog."default",
     "DeviceIp" text,
     "UID" integer,
-    "UserId" text
+    "UserId" text,
+    "EmployeeCode" text
 );
 
 

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { Result } from "../models/common.js";
-import { insertAttendance, setUploadStatus } from "../dbServices/attendanceService.js";
+import { getAttendancesById, insertAttendance, setUploadStatus } from "../dbServices/attendanceService.js";
 import { appendRow, initSheets } from "../dbServices/dataService.js";
 import { getSheets, getSheetsByDeviceIp } from "../dbServices/sheetService.js";
 import { DATE_FORMAT, EMPLOYEE_DATA, HEADER_ROW, OPTIONS_DELETE_SHEETS, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
@@ -27,20 +27,27 @@ export const handleRealTimeDataBySN = async (log, sn) => {
 
 export const handleRealTimeData = async (log, deviceId) => {
     try {
-        const dbRow = await insertDB(log, deviceId)
+        const logRow = await insertDB(log, deviceId)
 
-        if (!dbRow.length) {
+        if (!logRow.length) {
             return Result.Fail(500, "Đã xảy ra lỗi khi thêm dữ liệu attendance mới.", { log, deviceId })
         }
-        const sheetRows = dbRow.map(item => {
+
+        const rows = (await getAttendancesById(logRow[0].Id)).rows
+
+        if (!rows.length) {
+            return Result.Fail(500, "Đã xảy ra lỗi khi thêm dữ liệu attendance mới.", { log, deviceId })
+        }
+
+        const sheetRows = rows.map(item => {
             const time = dayjs(item.VerifyDate)
-            return [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, time.format(DATE_FORMAT), time.format(TIME_FORMAT)]
+            return [item.Id, item.DeviceName, item.UserId, item.EmployeeCode, item.UserName, item.Name, time.format(DATE_FORMAT), time.format(TIME_FORMAT)]
         })
 
         const sheetRow = await insertToGGSheet(sheetRows, deviceId);
 
         if (!sheetRow.isSuccess) {
-            setUploadStatus(dbRow[0].Id)
+            setUploadStatus(logRow[0].Id)
             return Result.Fail(500, `Data chưa được đẩy lển sheet. ${sheetRow.message}`)
         }
 
@@ -123,12 +130,12 @@ export const removeUserOnSheet = async (deviceIp, user) => {
         for (const service of services) {
             const rows = await service.getRows()
             for (const row of rows) {
-                if (+row.get(USER_HEADER_ROW[1]) === user.Id) {
+                if (+row.get(USER_HEADER_ROW[0]) === user.Id) {
                     await row.delete()
                 }
             }
         }
-        return Result.Success("Đã xoá User trên Sheets thành công.")
+        return Result.Success(user, "Đã xoá User trên Sheets thành công.")
     }
     catch (err) {
         return Result.Fail(500, err.message)

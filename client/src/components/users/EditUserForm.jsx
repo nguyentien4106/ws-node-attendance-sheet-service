@@ -25,12 +25,12 @@ const EditUserForm = ({
 }) => {
     const [form] = Form.useForm();
     const { setLoading } = useLoading();
-
+    console.log(user)
     const onFinish = (values) => {
         setLoading(true)
         sendJsonMessage({
             type: RequestTypes.EditUser,
-            data: values
+            data: Object.assign(values, { DeviceIp: user.DeviceIp })
         })      
     };
 
@@ -77,6 +77,17 @@ const EditUserForm = ({
                 ]}
             >
                 <Input disabled/>
+            </Form.Item>
+            <Form.Item
+                name="EmployeeCode"
+                label="Mã nhân viên"
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Input />
             </Form.Item>
             <Form.Item
                 name="DisplayName"
