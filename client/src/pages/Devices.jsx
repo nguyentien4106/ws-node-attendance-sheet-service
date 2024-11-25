@@ -26,6 +26,18 @@ export default function Devices() {
     const [open, setOpen] = useState(false);
     const { setLoading } = useLoading();
     const submitRef = useRef();
+    
+    const downloadTxtFiles = (files) => {
+        for (const file of files) {
+            const blob = new Blob([file.content], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `AppScriptFile_${file.name}`; // The name of the downloaded file
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+    }
 
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onOpen: () => {
@@ -48,7 +60,7 @@ export default function Devices() {
 
             if (response.type === RequestTypes.ConnectDevice) {
                 const data = response.data;
-                if(data.code === 200){
+                if (data.code === 200) {
                     setDevices(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { IsConnected: true }) : item))
                     message.success("Kết nối thiết bị thành công.")
                 }
@@ -60,7 +72,7 @@ export default function Devices() {
 
             if (response.type === RequestTypes.DisconnectDevice) {
                 const data = response.data;
-                if(data.code === 200){
+                if (data.code === 200) {
                     setDevices(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { IsConnected: false }) : item))
                     message.success("Ngắt kết nối thiết bị thành công.")
                 }
@@ -70,23 +82,24 @@ export default function Devices() {
                 }
             }
 
-            if(response.type === RequestTypes.AddDevice){
+            if (response.type === RequestTypes.AddDevice) {
                 const data = response.data;
-                if(data.isSuccess){
+                if (data.isSuccess) {
+                    setDevices(prev => [...prev, data.data.device])
+                    console.log(data.data.files.length)
+                    downloadTxtFiles(data.data.files)
                     location.reload()
-                    setDevices(prev => [...prev, data.data])
                     message.success("Thêm thiết bị thành công.")
                 }
                 else {
-                    message.error(data.message)
-
+                    message.error(data.message ?? "Đã xảy ra lỗi không mong muốn khi thêm thiết bị. Vui lòng thử lại.")
                 }
             }
 
-            if(response.type === RequestTypes.RemoveDevice){
+            if (response.type === RequestTypes.RemoveDevice) {
                 const data = response.data;
-                if(data.code === 200){
-                    setDevices(prev => prev.filter(item => item.Id !== data.data.Id ))
+                if (data.code === 200) {
+                    setDevices(prev => prev.filter(item => item.Id !== data.data.Id))
                     message.success("Gỡ thiết bị thành công.")
                 }
                 else {
@@ -94,10 +107,10 @@ export default function Devices() {
                 }
             }
 
-            if(response.type === RequestTypes.SyncData){
+            if (response.type === RequestTypes.SyncData) {
                 const data = response.data;
                 console.log(data)
-                if(data.isSuccess){
+                if (data.isSuccess) {
                     message.success("Đồng bộ dữ liệu thành công")
                 }
                 else {
@@ -105,11 +118,11 @@ export default function Devices() {
                 }
             }
 
-            if(response.type === RequestTypes.GetDevicesSheets){
+            if (response.type === RequestTypes.GetDevicesSheets) {
                 setDevices(response.data.data);
             }
 
-            if(response.type === "Ping"){
+            if (response.type === "Ping") {
                 const data = response.data
                 message.error(data)
             }
@@ -117,7 +130,7 @@ export default function Devices() {
     });
 
     useEffect(() => {
-        if(!isAuth){
+        if (!isAuth) {
             return
         }
         sendJsonMessage({

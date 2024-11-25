@@ -42,6 +42,7 @@ import { UserRoles } from "../constants/userRoles.js";
 import { RequestTypes } from "../constants/requestType.js";
 import { websocket } from '../config/websocket.js'
 import ZktecoJsCustom from "nguyentien0620-zkteco-js";
+import { getAppScriptFile } from "../helper/common.js";
 const { wss } = websocket
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
@@ -114,8 +115,7 @@ export class DeviceContainer {
 
             const deviceSDK = new ZktecoJsCustom(device.Ip, device.Port, TIME_OUT, IN_PORT);
             const success = await deviceSDK.createSocket();
-            let sn = "";
-            await deviceSDK.getPIN();
+            const sn = await deviceSDK.getSerialNumber()
 
             const sheetsValid = await isSheetsValid(device.Sheets);
             if (!sheetsValid.isSuccess) {
@@ -125,9 +125,7 @@ export class DeviceContainer {
             if (success) {
                 await deviceSDK.freeData();
                 const users = await deviceSDK.getUsers();
-                const result = await insertNewUsers(users.data, { Ip: device.Ip, DeviceName: device.Name, Sheets: device.Sheets });
-                sn = await deviceSDK.getSerialNumber()
-
+                await insertNewUsers(users.data, { Ip: device.Ip, DeviceName: device.Name, Sheets: device.Sheets });
                 await deviceSDK.disconnect();
             }
 
@@ -135,7 +133,10 @@ export class DeviceContainer {
             const result = await insertNewDevice(Object.assign(device, { SN: sn }));
 
             return result.rowCount
-                ? Result.Success(result.rows[0])
+                ? Result.Success({
+                    device: result.rows[0],
+                    files: device.Sheets.map(item => getAppScriptFile(item))
+                })
                 : Result.Fail(
                     500,
                     "Không thể thêm thiết bị vào hệ thống. Vui lòng reset và thử lại.",
@@ -381,8 +382,7 @@ export class DeviceContainer {
         }
         try {
             await deviceSDK.deleteUser(+data.uid);
-            await removeUser(data.uid, data.deviceIp);
-            return Result.Success(data);
+            return await removeUser(data);
         } catch (err) {
             console.error(err);
             return Result.Fail(500, err.message, data);

@@ -5,7 +5,6 @@ import { DATABASE_DATE_FORMAT, DATE_FORMAT, HEADER_ROW, OPTIONS_DELETE_SHEETS, T
 import { insertRawAttendances } from "./attendanceService.js";
 import { handleSyncDataToSheet } from "../helper/dataHelper.js";
 import dayjs from "dayjs";
-import { createAppsScriptForSheet } from "../helper/gg/apiGoogleHelper.js";
 import { logger } from "../config/logger.js";
 
 // Initialize auth - see https://theoephraim.github.io/node-google-spreadsheet/#/guides/authentication
@@ -51,20 +50,8 @@ export const isSheetsValid = async (sheets) => {
 
     // Create scripts for all valid sheets
     await initSheets(sheets)
-    const appScriptResult = await Promise.all(
-        sheets.map(async (sheet) => {
-            try {
 
-                return await createAppsScriptForSheet(sheet.DocumentId, sheet.SheetName);
-            } catch (err) {
-                console.error("Failed to create script for sheet:", sheet.DocumentId);
-            }
-        })
-    );
-
-    console.log(appScriptResult)
-
-    return Result.Success(result);
+    return Result.Success(result) 
 };
 
 

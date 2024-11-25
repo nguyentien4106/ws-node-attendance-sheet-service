@@ -17,16 +17,21 @@ function removeDuplicatesAndSort() {
 
   // Add or refresh the 'onChange' trigger
   const triggers = ScriptApp.getProjectTriggers();
+  let hasTrigger = false;
   for (var i = 0; i < triggers.length; i++) {
       if (triggers[i].getHandlerFunction() === 'removeDuplicatesAndSort') {
-          ScriptApp.deleteTrigger(triggers[i]); // Remove any existing trigger to avoid duplication
+        //   ScriptApp.deleteTrigger(triggers[i]); // Remove any existing trigger to avoid duplication
+          hasTrigger = true;
       }
   }
 
-  ScriptApp.newTrigger('removeDuplicatesAndSort')
-      .forSpreadsheet(spreadsheet)
-      .onChange()
-      .create();
+  if(!hasTrigger){
+    ScriptApp.newTrigger('removeDuplicatesAndSort')
+    .forSpreadsheet(spreadsheet)
+    .onChange()
+    .create();
+  }
+  
 }
 
 function processSheet(sheet, includeDuplicatesRule) {

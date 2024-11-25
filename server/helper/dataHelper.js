@@ -2,34 +2,34 @@ import dayjs from "dayjs";
 import { Result } from "../models/common.js";
 import { insertAttendance, setUploadStatus } from "../dbServices/attendanceService.js";
 import { appendRow, initSheets } from "../dbServices/dataService.js";
-import { getSheets } from "../dbServices/sheetService.js";
-import { DATE_FORMAT, HEADER_ROW, OPTIONS_DELETE_SHEETS, TIME_FORMAT } from "../constants/common.js";
+import { getSheets, getSheetsByDeviceIp } from "../dbServices/sheetService.js";
+import { DATE_FORMAT, EMPLOYEE_DATA, HEADER_ROW, OPTIONS_DELETE_SHEETS, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
 import { websocket } from '../config/websocket.js'
 import { RequestTypes } from "../constants/requestType.js";
 import { getResponse } from "../models/response.js";
 import { getDeviceBySN } from "../dbServices/deviceService.js";
 
 export const handleRealTimeDataBySN = async (log, sn) => {
-    try{
+    try {
         const query = await getDeviceBySN(sn)
-        if(!query.rowCount){
+        if (!query.rowCount) {
             return Result.Fail(500, `Không tìm thấy thiết bị nào có số Serial: ${sn} trong hệ thống`)
         }
 
         const device = query.rows[0]
         return await handleRealTimeData(log, device.Id)
     }
-    catch(err){
+    catch (err) {
 
         return Result.Fail(500, err.message, { log })
     }
 };
 
 export const handleRealTimeData = async (log, deviceId) => {
-    try{
+    try {
         const dbRow = await insertDB(log, deviceId)
 
-        if(!dbRow.length){
+        if (!dbRow.length) {
             return Result.Fail(500, "Đã xảy ra lỗi khi thêm dữ liệu attendance mới.", { log, deviceId })
         }
         const sheetRows = dbRow.map(item => {
@@ -37,9 +37,9 @@ export const handleRealTimeData = async (log, deviceId) => {
             return [item.Id, item.DeviceId, item.DeviceName, item.UserId, item.UserName, item.Name, time.format(DATE_FORMAT), time.format(TIME_FORMAT)]
         })
 
-        const sheetRow =  await insertToGGSheet(sheetRows, deviceId);
+        const sheetRow = await insertToGGSheet(sheetRows, deviceId);
 
-        if(!sheetRow.isSuccess){
+        if (!sheetRow.isSuccess) {
             setUploadStatus(dbRow[0].Id)
             return Result.Fail(500, `Data chưa được đẩy lển sheet. ${sheetRow.message}`)
         }
@@ -55,7 +55,7 @@ export const handleRealTimeData = async (log, deviceId) => {
 
         return Result.Success(dbRow)
     }
-    catch(err){
+    catch (err) {
 
         return Result.Fail(500, err.message, { log, deviceId })
     }
@@ -71,7 +71,7 @@ export const insertToGGSheet = async (rows, deviceId) => {
         const sheets = await getSheets();
         const sheetServices = await initSheets(sheets.rows);
         await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), rows);
-        for(const row of rows){
+        for (const row of rows) {
             setUploadStatus(row[0], true)
         }
         return Result.Success({ rows, deviceId })
@@ -87,29 +87,50 @@ export const handleSyncDataToSheet = async (rows, deviceId, opts) => {
         const sheetServices = await initSheets(sheets.rows);
         const services = sheetServices.filter(item => item.isSuccess).map(item => item.data)
 
-        if(opts.type === OPTIONS_DELETE_SHEETS.ByDeviceId){
-            for(const sheet of services){
+        if (opts.type === OPTIONS_DELETE_SHEETS.ByDeviceId) {
+            for (const sheet of services) {
                 const rows = await sheet.getRows()
-                for(const row of rows){
-                    if(+row.get(HEADER_ROW[1]) === opts.deviceId){
+                for (const row of rows) {
+                    if (+row.get(HEADER_ROW[1]) === opts.deviceId) {
                         await row.delete()
                     }
                 }
-            } 
+            }
         }
-        else if(opts.type === OPTIONS_DELETE_SHEETS.All){
-            for(const sheet of services){
+        else if (opts.type === OPTIONS_DELETE_SHEETS.All) {
+            for (const sheet of services) {
                 await sheet.clearRows()
-            } 
+            }
         }
 
         await appendRow(services, rows);
-        for(const row of rows){
+        for (const row of rows) {
             setUploadStatus(row[0], true)
         }
         return Result.Success({ rows, deviceId })
     } catch (err) {
         console.error("insert to gg sheet error: ", err.message);
         return Result.Fail(500, err.message, { rows, deviceId });
+    }
+}
+
+export const removeUserOnSheet = async (deviceIp, user) => {
+    try {
+        const sheets = (await getSheetsByDeviceIp(deviceIp)).rows
+        const sheetServices = await initSheets(sheets.map(item => ({ DocumentId: item.DocumentId, SheetName: EMPLOYEE_DATA })))
+        // await appendRow(sheetServices.filter(item => item.isSuccess).map(item => item.data), [[user[0].Id, "deleted"]])
+        const services = sheetServices.filter(item => item.isSuccess).map(item => item.data)
+        for (const service of services) {
+            const rows = await service.getRows()
+            for (const row of rows) {
+                if (+row.get(USER_HEADER_ROW[1]) === user.Id) {
+                    await row.delete()
+                }
+            }
+        }
+        return Result.Success("Đã xoá User trên Sheets thành công.")
+    }
+    catch (err) {
+        return Result.Fail(500, err.message)
     }
 }

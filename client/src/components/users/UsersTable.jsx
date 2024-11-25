@@ -1,4 +1,4 @@
-import { Button, Space, Table, Popconfirm, Modal } from "antd";
+import { Button, Space, Table, Popconfirm, Modal, Checkbox } from "antd";
 import React, { useRef, useState } from "react";
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
@@ -78,8 +78,8 @@ export default function UsersTable({
                     <Button onClick={() => setUser(record)} style={{ backgroundColor: "#C3C7F4" }}>Sửa</Button>
 
                     <Popconfirm
-                        title={`Device: ${record.uid}`}
-                        description={`Bạn có muốn xóa người dùng này khỏi thiết bị ${record.DeviceName}?`}
+                        title={`Device: ${record.DeviceName}`}
+                        description={() => descriptionContent(record)}
                         onConfirm={(e) => {
                             handleDelete(record);
                         }}
@@ -94,6 +94,16 @@ export default function UsersTable({
         },
     ];
 
+    const descriptionContent = (record) => (
+        <Space direction="vertical">
+            <h7>Xoá {record.Name} ({record.EmployeeCode}) khỏi thiết bị {record.DeviceName}?</h7>
+            <Space>
+                <h7>Xoá trên Sheet ? </h7>
+                <Checkbox onClick={() => setDeleteSheet(prev => !prev)}></Checkbox>
+            </Space>
+        </Space>
+    )
+
     const handleDelete = (record) => {
         setLoading(true);
         sendJsonMessage({
@@ -101,13 +111,16 @@ export default function UsersTable({
             data: {
                 uid: record.UID,
                 deviceIp: record.DeviceIp,
+                deleteSheet: deleteSheet
             },
         });
     };
 
     const [user, setUser] = useState(null);
+    const [deleteSheet, setDeleteSheet] = useState(false)
     const { setLoading } = useLoading();
     const submitRef = useRef();
+
     return (
         <>
             <Table
