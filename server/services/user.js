@@ -30,7 +30,7 @@ export const syncUserData = async (data) => {
             const newRows = users.filter(item => !existedRows.includes(item.Id)).map(item => [
                 item.Id,
                 item.UID,
-                item.UserId,
+                item.EmployeeCode,
                 UserRoles[item.Role],
                 item.DeviceIp,
                 item.DeviceName,

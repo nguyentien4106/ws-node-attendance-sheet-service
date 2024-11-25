@@ -60,7 +60,7 @@ const UserInformationForm = ({
             }}
         >
             <Form.Item
-                name="userId"
+                name="employeeCode"
                 label="Mã nhân viên"
                 rules={[
                     {
@@ -69,7 +69,7 @@ const UserInformationForm = ({
                     },
                 ]}
             >
-                <Input maxLength={9} placeholder="Mã nhân viên" />
+                <Input placeholder="Mã nhân viên" />
             </Form.Item>
 
             <Form.Item

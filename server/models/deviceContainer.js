@@ -293,13 +293,13 @@ export class DeviceContainer {
             const query = await getLastUID(deviceSDK.ip);
             const lastUid = query.rowCount ? query.rows[0].UID + 1 : 1;
 
-            const isValidUserId = await validUserId(deviceSDK.ip, user.userId);
-            if (!isValidUserId) {
-                return Result.Fail(
-                    500,
-                    `UserID ${user.userId}: Đã tồn tại trong thiết bị ${deviceSDK.ip}, vui lòng chọn một UserId khác.`
-                );
-            }
+            // const isValidUserId = await validUserId(deviceSDK.ip, user.userId);
+            // if (!isValidUserId) {
+            //     return Result.Fail(
+            //         500,
+            //         `UserID ${user.userId}: Đã tồn tại trong thiết bị ${deviceSDK.ip}, vui lòng chọn một UserId khác.`
+            //     );
+            // }
             await deviceSDK.setUser(
                 lastUid,
                 `${lastUid}`,
@@ -577,7 +577,7 @@ export class DeviceContainer {
             const roleText = row.get(USER_HEADER_ROW[3]);
             const role = UserRoles.indexOf(roleText);
             return {
-                userId: row.get(USER_HEADER_ROW[2]),
+                employeeCode: row.get(USER_HEADER_ROW[2]),
                 role: role === -1 ? 0 : role,
                 deviceIp: row.get(USER_HEADER_ROW[4]),
                 name: row.get(USER_HEADER_ROW[6]),

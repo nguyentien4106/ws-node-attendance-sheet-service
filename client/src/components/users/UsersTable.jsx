@@ -25,8 +25,8 @@ export default function UsersTable({
         },
         {
             title: "Mã nhân viên",
-            dataIndex: "UserId",
-            key: "userId",
+            dataIndex: "EmployeeCode",
+            key: "EmployeeCode",
         },
         {
             title: "Quyền",
