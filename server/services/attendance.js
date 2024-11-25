@@ -11,9 +11,9 @@ export const syncLogData = async (data) => {
     try {
         const sheetRows = [data].map((item) => [
             item.Id,
-            item.DeviceId,
             item.DeviceName,
             item.UserId,
+            item.EmployeeCode,
             item.UserName,
             item.Name,
             dayjs(item.VerifyDate).format(DATE_FORMAT),

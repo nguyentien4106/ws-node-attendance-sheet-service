@@ -2,15 +2,16 @@ import React from 'react';
 import { Button, Form, Input, Space } from 'antd';
 import { RequestTypes } from '../../constants/requestType';
 import { useLoading } from '../../context/LoadingContext';
+import { isAdmin } from '../../helper/common';
 const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
     const [form] = Form.useForm();
     const { setLoading } = useLoading()
-    
+
     const onFinish = (values) => {
         setLoading(true)
         sendJsonMessage({
             type: RequestTypes.ChangePassword,
-            data: Object.assign(values, { email })
+            data: Object.assign(values, { email, isAdmin: isAdmin })
         })
     }
 
@@ -29,26 +30,28 @@ const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
             }}
         >
             <Form.Item
-                label="Mật khẩu hiện tại"
+                label="Tài khoản"
                 name="email"
 
             >
                 <Input disabled />
 
             </Form.Item>
-            <Form.Item
-                label="Mật khẩu hiện tại"
-                name="currentPassword"
-                rules={[
-                    {
-                        required: true,
-                        message: "Vui lòng nhập mật khẩu hiện tại."
-                    },
-                ]}
-            >
-                <Input.Password />
+            {
+                !isAdmin && <Form.Item
+                    label="Mật khẩu hiện tại"
+                    name="currentPassword"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Vui lòng nhập mật khẩu hiện tại."
+                        },
+                    ]}
+                >
+                    <Input.Password />
 
-            </Form.Item>
+                </Form.Item>
+            }
             <Form.Item
                 label="Mật khẩu mới"
                 name="password"
@@ -96,7 +99,7 @@ const ChangePasswordForm = ({ submitRef, sendJsonMessage, email }) => {
                     >
                         Submit
                     </Button>
- 
+
                 </Space>
             </Form.Item>
         </Form>

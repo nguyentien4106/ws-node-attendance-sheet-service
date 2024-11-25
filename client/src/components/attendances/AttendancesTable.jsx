@@ -1,5 +1,5 @@
 import { Button, Space, Table, Popconfirm, Modal } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
 import AttendanceForm from "./AttendanceForm";
@@ -7,13 +7,9 @@ import dayjs from "dayjs";
 import { DATE_FORMAT, DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
 import writeXlsxFile from "write-excel-file"
 
-export default function AttendancesTable({ attendances, sendJsonMessage }) {
-    const deviceNameFilters = [
-        ...new Set(attendances?.map((item) => item.DeviceName)),
-    ].map((item) => ({ text: item, value: item }));
-
-    const userNameFilters = [
-        ...new Set(attendances?.map((item) => item.UserName)),
+export default function AttendancesTable({ attendances, sendJsonMessage, pagination, setPagination, filters, setFilters, totalRow }) {
+    const nameFilter = [
+        ...new Set(attendances?.map((item) => item.Name)),
     ].map((item) => ({ text: item, value: item }));
 
     const columns = [
@@ -24,35 +20,34 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
             fixed: 'left'
         },
         {
-            title: "ID Thiết bị",
-            dataIndex: "DeviceId",
-            key: "DeviceId",
-        },
-        {
-            title: "Tên thiết bị",
+            title: "Thiết bị",
             dataIndex: "DeviceName",
             key: "DeviceName",
-            filters: deviceNameFilters,
-            onFilter: (value, record) => record.DeviceName?.startsWith(value),
             filterSearch: true,
         },
         {
-            title: "UserId",
+            title: "User ID",
             dataIndex: "UserId",
             key: "UserId",
+        },
+        {
+            title: "Mã nhân viên",
+            dataIndex: "EmployeeCode",
+            key: "EmployeeCode",
+            
         },
         {
             title: "Tên trong máy",
             dataIndex: "UserName",
             key: "UserName",
-            filters: userNameFilters,
-            onFilter: (value, record) => record.UserName?.startsWith(value),
-            filterSearch: true,
         },
         {
             title: "Tên nhân viên",
             dataIndex: "Name",
             key: "Name",
+            filters: nameFilter,
+            onFilter: (value, record) => record.Name === (value),
+            filterSearch: true,
         },
         {
             title: "Ngày (DD/MM/YYYY)",
@@ -125,21 +120,6 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
         },
     ];
 
-    const syncLog = (rc) => {
-        setLoading(true);
-        sendJsonMessage({
-            type: RequestTypes.SyncLogData,
-            data: Object.assign(rc, { VerifyDate: dayjs(rc.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT) }),
-        });
-    };
-
-    const handleDelete = (rc) => {
-        setLoading(true);
-        sendJsonMessage({
-            type: RequestTypes.DeleteLog,
-            data: rc,
-        });
-    };
     const [editItem, setEditItem] = useState(null);
     const { setLoading } = useLoading();
     const submitRef = useRef();
@@ -152,11 +132,6 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                 value: att => att.Id
             },
             {
-                column: 'ID Thiết bị',
-                type: Number,
-                value: att => att.DeviceId
-            },
-            {
                 column: 'Tên thiết bị',
                 type: String,
                 value: att => att.DeviceName
@@ -165,6 +140,11 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                 column: 'User Id',
                 type: String,
                 value: att => att.UserId
+            },
+            {
+                column: 'Mã nhân viên',
+                type: String,
+                value: att => att.EmployeeCode
             },
             {
                 column: 'Tên trong máy',
@@ -193,6 +173,32 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
         })
     }
 
+    const handleTableChange = (pag, ft) => {
+        if(JSON.stringify(pag) !== JSON.stringify(pagination)){
+            setPagination(prev => ({ ...prev, current: pag.current, pageSize: pag.pageSize }));
+        }
+
+        if(JSON.stringify(filters) !== JSON.stringify(ft)){
+            setFilters(ft)
+        }
+    };
+    
+    const syncLog = (rc) => {
+        setLoading(true);
+        sendJsonMessage({
+            type: RequestTypes.SyncLogData,
+            data: Object.assign(rc, { VerifyDate: dayjs(rc.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT) }),
+        });
+    };
+
+    const handleDelete = (rc) => {
+        setLoading(true);
+        sendJsonMessage({
+            type: RequestTypes.DeleteLog,
+            data: rc,
+        });
+    };
+
     return (
         <>
             <div
@@ -216,10 +222,9 @@ export default function AttendancesTable({ attendances, sendJsonMessage }) {
                 rowKey={"Id"}
                 dataSource={attendances}
                 columns={columns}
-                pagination={{
-                    pageSize: 100,
-                    pageSizeOptions: [50, 100, 500],
-                }}
+                pagination={{ ...pagination, total: totalRow }}
+                onChange={handleTableChange}
+                loading={false}
             ></Table>
 
             {editItem && (

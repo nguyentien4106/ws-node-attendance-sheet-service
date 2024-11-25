@@ -21,6 +21,23 @@ const OPEN_TYPES = {
 };
 
 export default function Attendances() {
+    const { setLoading } = useLoading();
+    const [attendances, setAttendances] = useState([]);
+    const [dateRange, setDateRange] = useState([dayjs().add(-3, "M"), dayjs().add(1, "days")]);
+    const [devices, setDevices] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [deviceId, setDeviceId] = useState("All");
+    const [open, setOpen] = useState(OPEN_TYPES.CLOSE);
+    const [sheets, setSheets] = useState([])
+    const submitRef = useRef();
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10,
+        pageSizeOptions: [10, 50, 100],
+    });
+    const [filters, setFilters] = useState({ Name: [] })
+    const [totalRow, setTotalRow] = useState(0)
+
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onOpen: () => {
             console.log("WebSocket connection established.");
@@ -38,7 +55,9 @@ export default function Attendances() {
             setLoading(false);
             const data = response.data;
             if (response.type === RequestTypes.GetAttendances) {
+                console.log(response)
                 setAttendances(response.data);
+                setTotalRow(response.data.length)
             }
 
             if (response.type === RequestTypes.GetDevices) {
@@ -127,13 +146,17 @@ export default function Attendances() {
         if(!isAuth){
             return;
         }
+
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.GetAttendances,
             data: {
                 deviceId: deviceId,
-                fromDate: dateRange[0].toDate(),
-                toDate: dateRange[1].toDate(),
+                fromDate: dateRange[0].format(DATE_FORMAT),
+                toDate: dateRange[1].format(DATE_FORMAT),
+                tableParams: {
+                    pagination
+                }
             },
         });
 
@@ -146,6 +169,21 @@ export default function Attendances() {
         });
     }, []);
 
+    useEffect(() => {
+        sendJsonMessage({
+            type: RequestTypes.GetAttendances,
+            data: {
+                deviceId: deviceId,
+                fromDate: dateRange[0].format(DATE_FORMAT),
+                toDate: dateRange[1].format(DATE_FORMAT),
+                tableParams: {
+                    pagination, 
+                    filters
+                }
+            },
+        });
+    }, [pagination, deviceId, dateRange, filters])
+
     const submit = () => {
         sendJsonMessage({
             type: RequestTypes.GetAttendances,
@@ -153,19 +191,13 @@ export default function Attendances() {
                 deviceId: deviceId,
                 fromDate: dateRange[0].format(DATE_FORMAT),
                 toDate: dateRange[1].format(DATE_FORMAT),
+                tableParams: {
+                    pagination,
+                    filters
+                }
             },
         });
     };
-
-    const { setLoading } = useLoading();
-    const [attendances, setAttendances] = useState([]);
-    const [dateRange, setDateRange] = useState([dayjs().add(-3, "M"), dayjs().add(1, "days")]);
-    const [devices, setDevices] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [deviceId, setDeviceId] = useState("All");
-    const [open, setOpen] = useState(OPEN_TYPES.CLOSE);
-    const [sheets, setSheets] = useState([])
-    const submitRef = useRef();
 
     return (
         <Auth>
@@ -200,7 +232,11 @@ export default function Attendances() {
             <AttendancesTable
                 attendances={attendances}
                 sendJsonMessage={sendJsonMessage}
-                devices={devices}
+                setPagination={setPagination}
+                pagination={pagination}
+                filters={filters}
+                setFilters={setFilters}
+                totalRow={totalRow}
             ></AttendancesTable>
             <Modal
                 open={open}

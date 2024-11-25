@@ -114,8 +114,8 @@ const AppLayout = () => {
 				{!collapsed && (
 					<img
 						src={logo}
-						height={70}
-						width={210}
+						height={100}
+						width={200}
 						className="pointer"
 						style={{ cursor: "pointer" }}
 						onClick={() => {

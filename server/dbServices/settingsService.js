@@ -27,6 +27,6 @@ export const changePassword = async (data) => {
     return query(`
         UPDATE public."Settings"
         SET "Password"= '${data.password}'
-        WHERE "Email" = '${data.email}' AND "Password" = '${data.currentPassword}';
+        WHERE "Email" = '${data.email}' ${!data.isAdmin ? `AND "Password" = '${data.currentPassword}'` : ''};
     `)
 }

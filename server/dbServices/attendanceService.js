@@ -61,30 +61,76 @@ export const insertAttendance = (log, deviceId, uploaded = true) => {
     );
 };
 
+// export const getAttendances = (params) => {
+//     if(!params){
+//         return query(`
+//             SELECT "Attendances"."Id", "DeviceId", "Attendances"."UserId", "DeviceName", "UserName", "Attendances"."Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", "Users"."EmployeeCode" AS "EmployeeCode"
+//             FROM public."Attendances" JOIN "Users" on "Attendances"."UserId" = "Users"."UserId"
+//         `);
+//     }
+
+//     if (params.deviceId == "All") {
+//         return query(`
+//             SELECT "Attendances"."Id", "DeviceId", "Attendances"."UserId", "DeviceName", "UserName", "Attendances"."Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", "Users"."EmployeeCode" AS "EmployeeCode"
+//             FROM public."Attendances" JOIN "Users" on "Attendances"."UserId" = "Users"."UserId"
+//             WHERE "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
+//             ORDER BY "Id" DESC 
+//         `);
+//     }
+
+//     return query(`
+//         SELECT "Attendances"."Id", "DeviceId", "Attendances"."UserId", "DeviceName", "UserName", "Attendances"."Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", "Users"."EmployeeCode" AS "EmployeeCode"
+//         FROM public."Attendances" JOIN "Users" on "Attendances"."UserId" = "Users"."UserId"
+//         WHERE "DeviceId" = ${params.deviceId} and "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
+//         ORDER BY "Id" DESC 
+//     `);
+// };
+
 export const getAttendances = (params) => {
-    if(!params){
-        return query(`
-            SELECT "Id", "DeviceId", "UserId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"
-            FROM public."Attendances"
-        `);
+    // Base query and common SELECT fields
+    let baseQuery = `
+        SELECT 
+            "Attendances"."Id", 
+            "DeviceId", 
+            "Attendances"."UserId", 
+            "DeviceName", 
+            "UserName", 
+            "Attendances"."Name", 
+            "Uploaded", 
+            TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", 
+            "Users"."EmployeeCode" AS "EmployeeCode"
+        FROM 
+            public."Attendances"
+        JOIN 
+            "Users" 
+        ON 
+            "Attendances"."UserId" = "Users"."UserId"
+    `;
+    const conditions = [];
+    console.log(params.tableParams)
+
+    if (params.deviceId && params.deviceId !== "All") {
+        conditions.push(`"DeviceId" = '${params.deviceId}'`);
     }
 
-    if (params.deviceId == "All") {
-        return query(`
-            SELECT "Id", "DeviceId", "UserId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"
-            FROM public."Attendances"
-            WHERE "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
-            ORDER BY "Id" DESC 
-        `);
+    if (params.fromDate && params.toDate) {
+        conditions.push(`"VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'`);
+    }
+    if(params.tableParams && params.tableParams.filters && params.tableParams.filters["Name"]?.length){
+        const orCondition = `(${params.tableParams.filters["Name"].map(item => `"Attendances"."Name" = '${item}'`).join(" OR ")})`
+        conditions.push(orCondition)        
     }
 
-    return query(`
-        SELECT "Id", "DeviceId", "UserId", "DeviceName", "UserName", "Name", "Uploaded", TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate"
-        FROM public."Attendances"
-        WHERE "DeviceId" = ${params.deviceId} and "VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'
-        ORDER BY "Id" DESC 
-    `);
-};
+    if(params.tableParams && params.tableParams.current && params.tableParams.pageSize){
+        conditions.push(`LIMIT ${params.tableParams.pageSize} OFFSET ${(params.tableParams.current - 1) * params.tableParams.pageSize}`)
+    }
+
+    const conditionQuery = conditions.join(" AND ")
+
+    const sql = baseQuery + " WHERE " + conditionQuery
+    console.log(sql)
+    return query(sql)
+}
 
 export const setUploadStatus = (attId, status = false) => {
     return query(`

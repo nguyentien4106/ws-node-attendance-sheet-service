@@ -113,10 +113,6 @@ export const appendRow = async (sheetServices, rows) => {
     return Result.Success();
 };
 
-export const removeRows = async (services, rows) => {
-
-}
-
 export const syncDataFromSheet = async (sheet) => {
     const doc = new GoogleSpreadsheet(sheet.DocumentId, serviceAccountAuth);
     await doc.loadInfo(); // loads document properties and worksheets
