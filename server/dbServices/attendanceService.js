@@ -181,7 +181,7 @@ export const handleSyncAttendancesDB = async (attendances, users, deviceId) => {
     return result.rows
 };
 
-export const insertRawAttendances = async (values, isDeleteAll = true) => {
+export const insertRawAttendances = async (values, isDeleteAll = false) => {
 
     if(isDeleteAll){
         await query('DELETE FROM public."Attendances";')
@@ -190,15 +190,23 @@ export const insertRawAttendances = async (values, isDeleteAll = true) => {
     if(values?.length === 0) {
         return []
     }
-
+    const devices = (await getAllDevices()).rows
+    const getDeviceId = deviceName => devices.find(item => item.Name == deviceName)?.Id
+    
+    values = values.map(row => [getDeviceId(row[0]), ...row])
+    const deniedItems = values.filter(row => !row[0])
+    const acceptItems = values.filter(row => row[0])
     const result = await queryFormat(
         `
             INSERT INTO public."Attendances"("DeviceId", "DeviceName", "UserId", "Name", "UserName", "VerifyDate", "Uploaded")
         `,
-        values
+        acceptItems
     );
 
-    return result.rows
+    return Result.Success({
+        accepts: result.rows,
+        denieds: deniedItems
+    })
 }
 
 export const updateAttendance = async ({ logId, date }) => {

@@ -132,20 +132,20 @@ export const syncDataFromSheet = async (sheet) => {
         ]
     });
     console.log('data', data)
-    const attendances = await insertRawAttendances(data);
+    const result = await insertRawAttendances(data);
 
-    // const rowsData = attendances?.map((item) => [
-    //     item.Id,
-    //     item.DeviceId,
-    //     item.DeviceName,
-    //     item.UserId,
-    //     item.UserName,
-    //     item.Name,
-    //     dayjs(item.VerifyDate).format(DATE_FORMAT),
-    //     dayjs(item.VerifyDate).format(TIME_FORMAT),
-    // ]);
+    const rowsData = result.data.accepts?.map((item) => [
+        item.Id,
+        item.DeviceName,
+        item.UserId,
+        item.EmployeeCode,
+        item.UserName,
+        item.Name,
+        dayjs(item.VerifyDate).format(DATE_FORMAT),
+        dayjs(item.VerifyDate).format(TIME_FORMAT),
+    ]);
 
-    // const result = await handleSyncDataToSheet(rowsData, null, { type: OPTIONS_DELETE_SHEETS.All });
+    const sheetResult = await handleSyncDataToSheet(rowsData);
 
-    // return Result.Success(result);
+    return Result.Success(result);
 };
