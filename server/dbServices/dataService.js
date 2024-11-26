@@ -116,13 +116,13 @@ export const syncDataFromSheet = async (sheet) => {
         offset: 1
     });
 
-    const data = rows.map((row) => {
+    const data = rows.filter(row => row.get(HEADER_ROW[0]).trim() === "").map((row) => {
         const date = row.get(HEADER_ROW[6]).split("/").reverse().join("-")
         const time = row.get(HEADER_ROW[7])
         const newDate = dayjs(date + " " + time)
 
         return [
-            +row.get(HEADER_ROW[1]),
+            row.get(HEADER_ROW[1]),
             row.get(HEADER_ROW[2]),
             row.get(HEADER_ROW[3]),
             row.get(HEADER_ROW[4]),
@@ -131,20 +131,21 @@ export const syncDataFromSheet = async (sheet) => {
             true,
         ]
     });
+    console.log('data', data)
     const attendances = await insertRawAttendances(data);
 
-    const rowsData = attendances?.map((item) => [
-        item.Id,
-        item.DeviceId,
-        item.DeviceName,
-        item.UserId,
-        item.UserName,
-        item.Name,
-        dayjs(item.VerifyDate).format(DATE_FORMAT),
-        dayjs(item.VerifyDate).format(TIME_FORMAT),
-    ]);
+    // const rowsData = attendances?.map((item) => [
+    //     item.Id,
+    //     item.DeviceId,
+    //     item.DeviceName,
+    //     item.UserId,
+    //     item.UserName,
+    //     item.Name,
+    //     dayjs(item.VerifyDate).format(DATE_FORMAT),
+    //     dayjs(item.VerifyDate).format(TIME_FORMAT),
+    // ]);
 
-    const result = await handleSyncDataToSheet(rowsData, null, { type: OPTIONS_DELETE_SHEETS.All });
+    // const result = await handleSyncDataToSheet(rowsData, null, { type: OPTIONS_DELETE_SHEETS.All });
 
-    return Result.Success(result);
+    // return Result.Success(result);
 };

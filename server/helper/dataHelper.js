@@ -55,12 +55,12 @@ export const handleRealTimeData = async (log, deviceId) => {
             client.send(
                 getResponse({
                     type: RequestTypes.AddLog,
-                    data: Result.Success(dbRow),
+                    data: Result.Success(logRow),
                 })
             );
         });
 
-        return Result.Success(dbRow)
+        return Result.Success(logRow)
     }
     catch (err) {
 

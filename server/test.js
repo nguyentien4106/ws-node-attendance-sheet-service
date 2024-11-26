@@ -1,6 +1,6 @@
 import { TEMPLATE_USER_HEADER_ROW, USER_HEADER_ROW } from "./constants/common.js";
 import { getAttendances } from "./dbServices/attendanceService.js";
-import { initSheet } from "./dbServices/dataService.js";
+import { initSheet, syncDataFromSheet } from "./dbServices/dataService.js";
 import { getDeviceByIp } from "./dbServices/deviceService.js";
 import { getSheetsByDeviceIp } from "./dbServices/sheetService.js";
 import { getLastUID } from "./dbServices/userService.js";
@@ -31,4 +31,6 @@ const manageZktecoDevice = async () => {
     }
 };
 
-manageZktecoDevice();
+// manageZktecoDevice();
+
+syncDataFromSheet({ DocumentId: '1Ns7Lrror50-O-P7nKsrdgLCp9cwm2X1af_HayYeqK8M', SheetName: 'DATA CHẤM CÔNG' })

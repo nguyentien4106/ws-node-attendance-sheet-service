@@ -108,7 +108,7 @@ export const getAttendances = (params) => {
     `;
 
     if(!params){
-        return query(baseQuery)
+        return query(baseQuery + ` ORDER BY "Id" DESC`)
     }
 
     const conditions = [];
@@ -142,12 +142,10 @@ export const setUploadStatus = (attId, status = false) => {
     `);
 };
 
-export const syncAttendancesData = async (attendances, users, deviceId) => {
-    const queryDevices = await getAllDevices();
+export const handleSyncAttendancesDB = async (attendances, users, deviceId) => {
+    const devices = (await getAllDevices()).rows;
 
     const getUser = (userId) => users.find((item) => item.UserId === userId);
-
-    const devices = queryDevices.rows;
     const getDevice = (ip) => devices.find((item) => item.Ip == ip)
 
     const values = attendances?.map((item) => {

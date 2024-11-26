@@ -17,7 +17,7 @@ import {
 } from "../dbServices/dataService.js";
 import {
 	getAttendances,
-	syncAttendancesData,
+	handleSyncAttendancesDB,
 } from "../dbServices/attendanceService.js";
 import {
 	getAllUsers,
@@ -435,7 +435,7 @@ export class DeviceContainer {
 			};
 
 			const deviceId = isDeleteAll ? data?.value?.Id : null;
-			await syncAttendancesData(getAttendanceData(), users, deviceId);
+			await handleSyncAttendancesDB(getAttendanceData(), users, deviceId);
 
 			const attendances = await getAttendances();
 
@@ -443,7 +443,7 @@ export class DeviceContainer {
 				item.Id,
 				item.DeviceName,
 				item.UserId,
-				item.employeeCode,
+				item.EmployeeCode,
 				item.UserName,
 				item.Name,
 				dayjs(item.VerifyDate).format(DATE_FORMAT),

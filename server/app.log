@@ -7478,3 +7478,40 @@
 {"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-25T18:15:42.768Z"}
 {"level":"info","message":"Added successfully device 192.168.1.100 into container","timestamp":"2024-11-25T18:15:42.818Z"}
 {"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-25T18:15:42.824Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-11-26T02:39:11.755Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-26T02:39:11.765Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-26T02:39:11.771Z"}
+{"level":"error","message":"Sai tên đăng nhập hoặc mật khẩu.","timestamp":"2024-11-26T02:41:05.967Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T02:41:08.101Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T02:54:01.142Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:02:56.047Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:06:01.188Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:25:55.761Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:26:17.960Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:26:35.594Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:28:31.851Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:30:10.633Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:30:36.097Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:30:37.334Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:30:38.220Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T03:30:39.284Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-11-26T08:07:44.512Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-11-26T08:07:44.520Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-11-26T08:07:44.524Z"}
+{"level":"error","message":"Sai tên đăng nhập hoặc mật khẩu.","timestamp":"2024-11-26T08:07:46.625Z"}
+{"level":"error","message":"Sai tên đăng nhập hoặc mật khẩu.","timestamp":"2024-11-26T08:07:47.616Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:12:12.374Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:13:03.402Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:24:44.885Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:25:40.743Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:26:50.260Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:30:04.239Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:30:13.131Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:31:26.330Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.200","timestamp":"2024-11-26T08:34:39.117Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:34:42.548Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:36:41.009Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:37:14.186Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:37:16.210Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:54:36.371Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-11-26T08:54:41.952Z"}
