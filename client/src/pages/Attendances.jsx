@@ -7,7 +7,6 @@ import { Button, DatePicker, message, Modal, Select, Space } from "antd";
 import dayjs from "dayjs";
 import { DATE_FORMAT, TIME_FORMAT } from "../constants/common";
 import AttendanceForm from "../components/attendances/AttendanceForm";
-import SheetSyncForm from "../components/attendances/SheetSyncForm";
 import { getHostUrl, isAuth } from "../helper/common";
 import Auth from "../layout/Auth";
 
@@ -170,6 +169,10 @@ export default function Attendances() {
     }, []);
 
     useEffect(() => {
+        if(!isAuth){
+            return
+        }
+        
         sendJsonMessage({
             type: RequestTypes.GetAttendances,
             data: {
@@ -223,10 +226,7 @@ export default function Attendances() {
                     Submit
                 </Button>
                 <Button onClick={() => setOpen(OPEN_TYPES.ADD)}>
-                    Thêm thủ công
-                </Button>
-                <Button onClick={() => setOpen(OPEN_TYPES.SYNC)}>
-                    Đồng bộ từ sheet
+                    Chấm công thủ công
                 </Button>
             </Space>
             <AttendancesTable
@@ -245,20 +245,13 @@ export default function Attendances() {
                     submitRef.current.click();
                 }}
             >
-                {open === OPEN_TYPES.ADD ? (
+                {open === OPEN_TYPES.ADD && (
                     <AttendanceForm
                         devices={devices}
                         users={users}
                         sendJsonMessage={sendJsonMessage}
                         submitRef={submitRef}
                     ></AttendanceForm>
-                ) : (
-                    <SheetSyncForm
-                        sendJsonMessage={sendJsonMessage}
-                        submitRef={submitRef}
-                        sheets={sheets}
-                    >
-                    </SheetSyncForm>
                 )}
             </Modal>
         </Auth>

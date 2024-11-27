@@ -180,7 +180,7 @@ export default function Users() {
     }, []);
 
     useEffect(() => {
-        if (!deviceSelected) {
+        if (!deviceSelected || !isAuth) {
             return;
         }
 

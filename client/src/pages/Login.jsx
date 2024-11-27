@@ -70,8 +70,8 @@ const Login = () => {
                 <Input.Password />
             </Form.Item>
     
-            <Form.Item label={null}>
-                <Button type="primary" htmlType="submit">
+            <Form.Item label={""} name={"a"}>
+                <Button type="primary" htmlType="submit" style={{ marginLeft: "80px"}}>
                     Submit
                 </Button>
             </Form.Item>
