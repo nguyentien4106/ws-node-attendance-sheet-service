@@ -604,12 +604,9 @@ export class DeviceContainer {
 		for (const user of newUsers) {
 			const addResult = await this.addUserToDevice(user, sdk, data.DeviceName);
 			if (addResult.isSuccess) {
-				await newUsersToAdd[index].delete();
-
-				await newUsersToAdd[index].assign({
-					[USER_HEADER_ROW[0]]: addResult.data.Id,
-					[USER_HEADER_ROW[1]]: addResult.data.UID,
-				});
+                newUsersToAdd[index].set(USER_HEADER_ROW[0], addResult.data.Id)
+                newUsersToAdd[index].set(USER_HEADER_ROW[1], addResult.data.UID)
+				await newUsersToAdd[index].save()
 			}
 			result.push(addResult);
 			index++;
