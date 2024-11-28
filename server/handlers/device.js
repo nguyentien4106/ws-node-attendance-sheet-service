@@ -3,7 +3,6 @@ import { getAllUsers } from "../dbServices/userService.js";
 import { getResponse } from "../models/response.js";
 import * as DeviceService from "../dbServices/deviceService.js";
 import { addDevice, connectDevice, disconnectDevice, removeDevice } from "../services/device.js";
-import { syncDataFromSheet } from "../dbServices/dataService.js";
 import { Result } from "../models/common.js";
 
 export const deviceHandlers = (request, ws, deviceContainer) => {
@@ -97,17 +96,6 @@ export const deviceHandlers = (request, ws, deviceContainer) => {
                     getResponse({
                         type: request.type,
                         data: res,
-                    })
-                );
-            });
-            break;
-
-        case RequestTypes.SyncDataFromSheet:
-            syncDataFromSheet(request.data).then((res) => {
-                ws.send(
-                    getResponse({
-                        type: request.type,
-                        data: Result.Success(res.rows),
                     })
                 );
             });

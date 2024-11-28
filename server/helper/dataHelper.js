@@ -88,17 +88,16 @@ export const insertToGGSheet = async (rows, deviceId) => {
     }
 };
 
-export const handleSyncDataToSheet = async (rows, deviceId, opts) => {
+export const handleSyncDataToSheet = async (rows, opts) => {
     try {
         const sheets = await getSheets();
         const sheetServices = await initSheets(sheets.rows);
         const services = sheetServices.filter(item => item.isSuccess).map(item => item.data)
-
         if (opts.type === OPTIONS_DELETE_SHEETS.ByDeviceId) {
             for (const sheet of services) {
                 const rows = await sheet.getRows()
                 for (const row of rows) {
-                    if (+row.get(HEADER_ROW[1]) === opts.deviceId) {
+                    if (+row.get(HEADER_ROW[1]) === opts.deviceName) {
                         await row.delete()
                     }
                 }
@@ -114,10 +113,10 @@ export const handleSyncDataToSheet = async (rows, deviceId, opts) => {
         for (const row of rows) {
             setUploadStatus(row[0], true)
         }
-        return Result.Success({ rows, deviceId })
+        return Result.Success({ rows, opts })
     } catch (err) {
         console.error("insert to gg sheet error: ", err.message);
-        return Result.Fail(500, err.message, { rows, deviceId });
+        return Result.Fail(500, err.message, { rows, opts });
     }
 }
 

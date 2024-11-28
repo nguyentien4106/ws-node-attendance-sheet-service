@@ -128,8 +128,8 @@ const SyncForm = ({
                                     style={{ cursor: "pointer" }}
                                     width="16" height="16"
                                     src="https://img.icons8.com/ios/50/copy.png"
-                                    alt="Copy AppScript file"
-                                    title='Copy AppScript file'
+                                    alt={`Sao chép '${item.text}' vào bộ nhớ tạm`}
+                                    title={`Sao chép '${item.text}' vào bộ nhớ tạm`}
                                 />
                             </div>
                         </List.Item>

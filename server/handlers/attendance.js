@@ -3,7 +3,6 @@ import { deleteAttendance, getAttendances, insertAttendance, updateAttendance } 
 import { getResponse } from "../models/response.js";
 import { syncLogData } from "../services/attendance.js";
 import { Result } from "../models/common.js";
-import { syncDataFromSheet } from "../dbServices/dataService.js";
 
 export const attendanceHandlers = (request, ws, deviceContainer) => {
     switch (request.type) {
@@ -37,17 +36,6 @@ export const attendanceHandlers = (request, ws, deviceContainer) => {
                 );
             });
 
-            break;
-
-        case RequestTypes.SyncDataFromSheet:
-            syncDataFromSheet(request.data).then((res) => {
-                ws.send(
-                    getResponse({
-                        type: request.type,
-                        data: Result.Success(res.rows),
-                    })
-                );
-            });
             break;
 
         case RequestTypes.AddLog:

@@ -80,10 +80,14 @@ export const initSheet = async (documentId, sheetName, headers) => {
 
 export const initSheets = async (sheets, headers) => {
     const sheetServices = [];
-
+    const documentIds = new Map()
     for (const { DocumentId, SheetName } of sheets) {
-        const result = await initSheet(DocumentId, SheetName, headers)
-        sheetServices.push(result)
+        if(!documentIds.has(DocumentId)){
+            const result = await initSheet(DocumentId, SheetName, headers)
+            sheetServices.push(result)
+            documentIds.set(DocumentId, SheetName)
+        }
+        
     }
 
     return sheetServices;
@@ -98,54 +102,4 @@ export const appendRow = async (sheetServices, rows) => {
     }
 
     return Result.Success();
-};
-
-export const syncDataFromSheet = async (sheet) => {
-    const doc = new GoogleSpreadsheet(sheet.DocumentId, serviceAccountAuth);
-    await doc.loadInfo(); // loads document properties and worksheets
-
-    if (!(sheet.SheetName in doc.sheetsByTitle)) {
-        return Result.Fail(
-            500,
-            `Không tìm thấy ${sheet.SheetName} trong Document: ${sheet.DocumentId}`
-        );
-    }
-
-    const service = doc.sheetsByTitle[sheet.SheetName];
-    const rows = await service.getRows({
-        offset: 1
-    });
-
-    const data = rows.filter(row => row.get(HEADER_ROW[0]).trim() === "").map((row) => {
-        const date = row.get(HEADER_ROW[6]).split("/").reverse().join("-")
-        const time = row.get(HEADER_ROW[7])
-        const newDate = dayjs(date + " " + time)
-
-        return [
-            row.get(HEADER_ROW[1]),
-            row.get(HEADER_ROW[2]),
-            row.get(HEADER_ROW[3]),
-            row.get(HEADER_ROW[4]),
-            row.get(HEADER_ROW[5]),
-            newDate.format(DATABASE_DATE_FORMAT + " " + TIME_FORMAT),
-            true,
-        ]
-    });
-    console.log('data', data)
-    const result = await insertRawAttendances(data);
-
-    const rowsData = result.data.accepts?.map((item) => [
-        item.Id,
-        item.DeviceName,
-        item.UserId,
-        item.EmployeeCode,
-        item.UserName,
-        item.Name,
-        dayjs(item.VerifyDate).format(DATE_FORMAT),
-        dayjs(item.VerifyDate).format(TIME_FORMAT),
-    ]);
-
-    const sheetResult = await handleSyncDataToSheet(rowsData);
-
-    return Result.Success(result);
 };

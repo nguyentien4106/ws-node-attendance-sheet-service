@@ -20,6 +20,11 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             fixed: 'left'
         },
         {
+            title: "ID Thiết bị",
+            dataIndex: "DeviceId",
+            key: "DeviceId",
+        },
+        {
             title: "Thiết bị",
             dataIndex: "DeviceName",
             key: "DeviceName",

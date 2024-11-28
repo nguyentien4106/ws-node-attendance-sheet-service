@@ -169,7 +169,7 @@ export default function Attendances() {
     }, []);
 
     useEffect(() => {
-        if(!isAuth){
+        if(!isAuth || !dateRange){
             return
         }
         

@@ -32,5 +32,3 @@ const manageZktecoDevice = async () => {
 };
 
 // manageZktecoDevice();
-
-syncDataFromSheet({ DocumentId: '1Ns7Lrror50-O-P7nKsrdgLCp9cwm2X1af_HayYeqK8M', SheetName: 'DATA CHẤM CÔNG' })

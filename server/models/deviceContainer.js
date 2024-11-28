@@ -437,7 +437,7 @@ export class DeviceContainer {
 			const deviceId = isDeleteAll ? data?.value?.Id : null;
 			await handleSyncAttendancesDB(getAttendanceData(), users, deviceId);
 
-			const attendances = await getAttendances();
+			const attendances = await getAttendances({ deviceId });
 
 			const rowsData = attendances.rows.map((item) => [
 				item.Id,
@@ -450,9 +450,9 @@ export class DeviceContainer {
 				dayjs(item.VerifyDate).format(TIME_FORMAT),
 			]);
 
-			const result = await handleSyncDataToSheet(rowsData, data.Id, {
-				type: OPTIONS_DELETE_SHEETS.All,
-				deviceId: deviceId,
+			const result = await handleSyncDataToSheet(rowsData, {
+				type: OPTIONS_DELETE_SHEETS.ByDeviceId,
+				deviceName: data?.value?.Name,
 			});
 
 			return result;
