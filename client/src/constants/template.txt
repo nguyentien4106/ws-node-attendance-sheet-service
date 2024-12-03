@@ -1,96 +1,73 @@
-function processSheet() {
-    // Mở sheet hiện tại
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("#SHEET_NAME");
-    const data = sheet.getDataRange().getValues(); // Lấy toàn bộ dữ liệu
-    const lastRow = data.length; // Số dòng cuối cùng
-    const lastRowData = data[lastRow - 1]; // Dòng cuối cùng
-  
-    // Kiểm tra giá trị ô thứ 2 dòng cuối cùng
-    const secondColValue = lastRowData[1]; 
-  
-    if (secondColValue === "CLEAR") {
-      clearSheet(sheet, data);
-    } else if (secondColValue === "DELETED") {
-      deleteMatchingRows(sheet, data);
+function handle(){
+  const sheetNames = [#SHEET_NAMES]
+  for(const name of sheetNames){
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+    Logger.log(sheet);
+    if(sheet){
+      processSheet(sheet);
     }
-  
-    // Loại bỏ các dòng bị trùng lặp
-    removeDuplicates(sheet);
   }
-  
-  function clearSheet(sheet, data) {
-    const rowsToKeep = [data[0]]; // Luôn giữ lại dòng tiêu đề (header)
-  
-    
-    // Duyệt qua từng dòng
-    for (let i = 1; i < data.length - 1; i++) {
-      const row = data[i];
-      const firstCol = row[0]; // Cột đầu tiên
-      const eighthCol = row[8]; // Cột thứ 8
-  
-      // Giữ lại dòng nếu cột đầu tiên trống hoặc cột thứ 8 có giá trị "X"
-      if (!firstCol || eighthCol === "X") {
-        rowsToKeep.push(row);
-      }
+  setupTrigger();
+}
+
+function processSheet(sheet) {
+  const data = sheet.getDataRange().getValues(); // Lấy toàn bộ dữ liệu từ sheet
+  const header = data[0]; // Lấy dòng tiêu đề
+  const rows = data.slice(1); // Lấy dữ liệu (bỏ dòng tiêu đề)
+
+  const deletedKeys = new Set(); // Lưu trữ các giá trị ô đầu tiên có "DELETED"
+
+  // Bước 1: Tìm tất cả các giá trị ô đầu tiên của dòng có "DELETED"
+  rows.forEach(row => {
+    if (row[1] === "DELETED") {
+      deletedKeys.add(row[0]); // Thêm giá trị ô đầu tiên vào danh sách
     }
-  
-    // Xóa toàn bộ sheet
-    sheet.clear();
-  
-    // Ghi lại các dòng cần giữ
-    sheet.getRange(1, 1, rowsToKeep.length, rowsToKeep[0].length).setValues(rowsToKeep);
-  }
-  
-  function deleteMatchingRows(sheet, data) {
-    const rowsToDelete = new Set();
-  
-    // Duyệt qua từng dòng và tìm cặp giá trị trùng khớp
-    for (let i = 0; i < data.length; i++) {
-      const valueToFind = data[i][0]; // Cột đầu tiên
-      if (valueToFind) {
-        for (let j = i + 1; j < data.length; j++) {
-          if (data[j][0] === valueToFind) {
-            rowsToDelete.add(i);
-            rowsToDelete.add(j);
-          }
-        }
-      }
+  });
+
+  // Bước 2: Loại bỏ các dòng có giá trị ô đầu tiên nằm trong deletedKeys
+  const filteredRows = rows.filter(row => !deletedKeys.has(row[0]));
+
+  // Bước 3: Loại bỏ trùng lặp, giữ lại dòng mới nhất
+  const latestRows = new Map();
+  filteredRows.forEach(row => {
+    const key = row[0]; // Lấy giá trị ô đầu tiên
+    if (key) {
+      latestRows.set(key, row); // Ghi đè giá trị cũ nếu trùng
     }
-  
-    // Loại bỏ các dòng
-    const remainingRows = data.filter((_, index) => !rowsToDelete.has(index));
-  
-    // Xóa toàn bộ sheet
-    sheet.clear();
-  
-    // Ghi lại dữ liệu sau khi loại bỏ
-    sheet.getRange(1, 1, remainingRows.length, remainingRows[0].length).setValues(remainingRows);
-  }
-  
-  function removeDuplicates(sheet) {
-    const data = sheet.getDataRange().getValues();
-    const header = data[0]; // Lấy dòng tiêu đề
-    const rows = data.slice(1); // Lấy dữ liệu (bỏ dòng tiêu đề)
-  
-    const latestRows = new Map();
-  
-    // Duyệt qua từng dòng
-    rows.forEach(row => {
-      const rowKey = row[0]; // Giá trị ở cột đầu tiên
-      if (rowKey) {
-        // Ghi đè giá trị cũ nếu trùng (Map luôn giữ giá trị cuối cùng)
-        latestRows.set(rowKey, row);
-      }
-    });
-  
-    // Chuyển Map thành mảng dữ liệu (giữ thứ tự như Map)
-    const uniqueData = [header, ...Array.from(latestRows.values())];
-  
-    // Xóa toàn bộ sheet
-    sheet.clear();
-  
-    // Ghi lại dữ liệu đã loại bỏ trùng lặp
-    sheet.getRange(1, 1, uniqueData.length, uniqueData[0].length).setValues(uniqueData);
-  }
-  
-  
+  });
+
+  // Bước 4: Chuyển Map thành mảng và sắp xếp lại theo cột đầu tiên
+  const sortedRows = Array.from(latestRows.values()).sort((a, b) => {
+    if (a[0] === b[0]) return 0;
+    return a[0] < b[0] ? -1 : 1;
+  });
+
+  // Kết hợp dòng tiêu đề với các dòng đã sắp xếp
+  const finalData = [header, ...sortedRows];
+
+  // Xóa toàn bộ sheet
+  sheet.clear();
+
+  // Ghi lại dữ liệu đã xử lý vào sheet
+  sheet.getRange(1, 1, finalData.length, finalData[0].length).setValues(finalData);
+
+}
+
+function setupTrigger() {
+  const triggers = ScriptApp.getProjectTriggers(); // Lấy danh sách tất cả các trigger hiện tại
+  const functionName = "handle"; // Tên hàm cần gắn trigger
+
+  // Kiểm tra xem trigger đã tồn tại chưa
+  const existingTrigger = triggers.find(trigger => trigger.getHandlerFunction() === functionName);
+
+  if (!existingTrigger) {
+    // Nếu chưa có trigger, tạo mới trigger
+    ScriptApp.newTrigger(functionName)
+      .forSpreadsheet(SpreadsheetApp.getActiveSpreadsheet()) // Liên kết với bảng tính hiện tại
+      .onChange() // Kích hoạt trigger khi bảng tính được chỉnh sửa
+      .create();
+
+    Logger.log("Trigger added for function: " + functionName);
+  } 
+}
+

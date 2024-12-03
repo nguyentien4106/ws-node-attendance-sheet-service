@@ -243,6 +243,7 @@ export default function Attendances() {
                 onCancel={() => setOpen(OPEN_TYPES.CLOSE)}
                 onOk={() => {
                     submitRef.current.click();
+                    setOpen(OPEN_TYPES.CLOSE)
                 }}
             >
                 {open === OPEN_TYPES.ADD && (

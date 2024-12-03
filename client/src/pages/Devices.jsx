@@ -26,7 +26,8 @@ export default function Devices() {
     const [open, setOpen] = useState(false);
     const { setLoading } = useLoading();
     const submitRef = useRef();
-    
+    const [sheets, setSheets] = useState({})
+
     const downloadTxtFiles = (files) => {
         for (const file of files) {
             const blob = new Blob([file.content], { type: "text/plain" });
@@ -85,11 +86,8 @@ export default function Devices() {
             if (response.type === RequestTypes.AddDevice) {
                 const data = response.data;
                 if (data.isSuccess) {
-                    setDevices(prev => [...prev, data.data.device])
-                    console.log(data.data.files.length)
-                    downloadTxtFiles(data.data.files)
-                    location.reload()
                     message.success("Thêm thiết bị thành công.")
+                    location.reload();
                 }
                 else {
                     message.error(data.message ?? "Đã xảy ra lỗi không mong muốn khi thêm thiết bị. Vui lòng thử lại.")
@@ -122,6 +120,10 @@ export default function Devices() {
                 setDevices(response.data.data);
             }
 
+            if (response.type === RequestTypes.GetSheets) {
+                setSheets(Object.groupBy(response.data.data, item => item.DocumentId))
+            }
+
             if (response.type === "Ping") {
                 const data = response.data
                 message.error(data)
@@ -136,6 +138,9 @@ export default function Devices() {
         sendJsonMessage({
             type: RequestTypes.GetDevicesSheets,
         });
+        sendJsonMessage({
+            type: RequestTypes.GetSheets,
+        });
     }, []);
 
     return (
@@ -144,7 +149,7 @@ export default function Devices() {
                 <h3>Thiết bị</h3>
                 <Button onClick={() => setOpen(true)} type="primary">Thêm thiết bị</Button>
             </div>
-            <DevicesTable source={devices} sendJsonMessage={sendJsonMessage} />
+            <DevicesTable source={devices} sendJsonMessage={sendJsonMessage} sheets={sheets}/>
             <Modal
                 title={
                     <div className="d-flex justify-content-center">

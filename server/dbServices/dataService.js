@@ -82,10 +82,10 @@ export const initSheets = async (sheets, headers) => {
     const sheetServices = [];
     const documentIds = new Map()
     for (const { DocumentId, SheetName } of sheets) {
-        if(!documentIds.has(DocumentId)){
+        if(!documentIds.has(`${DocumentId}-${SheetName}`)){
             const result = await initSheet(DocumentId, SheetName, headers)
             sheetServices.push(result)
-            documentIds.set(DocumentId, SheetName)
+            documentIds.set(`${DocumentId}-${SheetName}`, 1)
         }
         
     }

@@ -27,7 +27,7 @@ const OPEN_TYPES = {
     SYNC_DATA_FORM: 2,
 };
 
-export default function DevicesTable({ sendJsonMessage, source }) {
+export default function DevicesTable({ sendJsonMessage, source, sheets }) {
     const columns = [
         {
             title: "Id",
@@ -50,8 +50,8 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                         style={{ cursor: "pointer" }}
                         width="18" height="18"
                         src="https://img.icons8.com/ios/50/copy.png"
-                        alt="Copy AppScript file"
-                        title='Copy AppScript file'
+                        alt="Sao chép tên thiết bị"
+                        title='Sao chép tên thiết bị'
                     />
                 </div>
             )
@@ -154,7 +154,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                     color="#108ee9"
                 >
                     <Popconfirm
-                        title={<p>Đồng bộ dữ liệu từ thiết bị: <u><i>{record.Name}</i></u></p>}
+                        title={<p>Đồng bộ dữ liệu từ thiết bị: <u><i>{record?.Name}</i></u></p>}
                         description={<p style={{ maxWidth: 500 }}>{SYNC_ALL_ATTENDANCES_TEXT}</p>}
                         onConfirm={(e) => {
                             handleSyncData(record);
@@ -199,7 +199,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                     color="#108ee9"
                 >
                     <Popconfirm
-                        title={<p>Xóa toàn bộ dữ liệu trong thiết bị: <u><i>{record.Name}</i></u></p>}
+                        title={<p>Xóa toàn bộ dữ liệu trong thiết bị: <u><i>{record?.Name}</i></u></p>}
                         description={<p style={{ maxWidth: 500 }}>{DELETE_ATTENDANCES_TEXT}</p>}
                         onConfirm={(e) => {
                             handleClearDataAttendance(record);
@@ -236,7 +236,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
         sendJsonMessage({
             type: RequestTypes.SyncData,
             data: {
-                Ip: record.Ip,
+                Ip: record?.Ip,
                 type: "All",
                 value: record
             },
@@ -246,7 +246,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
     const handleStatus = (record) => {
         setLoading(true);
         sendJsonMessage({
-            type: record.IsConnected
+            type: record?.IsConnected
                 ? RequestTypes.DisconnectDevice
                 : RequestTypes.ConnectDevice,
             data: record,
@@ -334,7 +334,7 @@ export default function DevicesTable({ sendJsonMessage, source }) {
                 dataSource={source}
                 rowKey={"Id"}
                 expandable={{
-                    expandedRowRender: (record) => <SheetTable record={record} />,
+                    expandedRowRender: (record) => <SheetTable record={record} sheets={sheets}/>,
                     showExpandColumn: false,
                     defaultExpandAllRows: true,
                 }}

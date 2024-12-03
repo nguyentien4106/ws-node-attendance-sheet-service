@@ -2,13 +2,16 @@ import { message } from 'antd'
 import React from 'react'
 import templateRaw from '../../constants/template.txt'
 
-export default function SheetTable({ record }) {
+export default function SheetTable({ record, sheets }) {
     const getAppsCriptFile = sheet => {
         fetch(templateRaw)
             .then(r => r.text())
             .then(text => {
-                
-                navigator.clipboard.writeText(text.replaceAll("#SHEET_NAME", sheet.SheetName))
+                console.log(sheets)
+                console.log(sheets[sheet.DocumentId]?.map(item => item.SheetName))
+                const a = [... new Set(sheets[sheet.DocumentId]?.map(item => `"${item.SheetName}"`))]
+                console.log(a.join(", "))
+                navigator.clipboard.writeText(text.replaceAll("#SHEET_NAMES", a))
                 message.success("Đã copy file AppScript vào bộ nhớ tạm.")
 
             }).catch(err => {

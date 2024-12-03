@@ -118,7 +118,7 @@ export class DeviceContainer {
 		try {
 			const existed = this.deviceSDKs.some((item) => item.ip === device.Ip);
 			if (existed) {
-				return new Result(200, "Thiết bị đã có trong hệ thống.", device);
+				return new Result(500, "Thiết bị đã có trong hệ thống.", device);
 			}
 
 			const deviceSDK = new ZktecoJsCustom(
@@ -127,33 +127,31 @@ export class DeviceContainer {
 				TIME_OUT,
 				IN_PORT
 			);
-			const success = await deviceSDK.createSocket();
-			const sn = await deviceSDK.getSerialNumber();
+			// const success = await deviceSDK.createSocket();
+			// const sn = await deviceSDK.getSerialNumber();
 
-			const sheetsValid = await isSheetsValid(device.Sheets);
-			if (!sheetsValid.isSuccess) {
-				return sheetsValid;
-			}
+			// const sheetsValid = await isSheetsValid(device.Sheets);
+			// if (!sheetsValid.isSuccess) {
+			// 	return sheetsValid;
+			// }
 
-			if (success) {
-				await deviceSDK.freeData();
-				const users = await deviceSDK.getUsers();
-				await insertNewUsers(users.data, {
-					Ip: device.Ip,
-					DeviceName: device.Name,
-					Sheets: device.Sheets,
-				});
-				await deviceSDK.disconnect();
-			}
+			// if (success) {
+			// 	await deviceSDK.freeData();
+			// 	const users = await deviceSDK.getUsers();
+			// 	await insertNewUsers(users.data, {
+			// 		Ip: device.Ip,
+			// 		DeviceName: device.Name,
+			// 		Sheets: device.Sheets,
+			// 	});
+			// 	await deviceSDK.disconnect();
+			// }
 
 			this.deviceSDKs.push(deviceSDK);
-			const result = await insertNewDevice(Object.assign(device, { SN: sn }));
+			// const result = await insertNewDevice(Object.assign(device, { SN: sn }));
+			const result = await insertNewDevice(Object.assign(device, { SN: "123" }));
 
 			return result.rowCount
-				? Result.Success({
-						device: result.rows[0],
-						files: device.Sheets.map((item) => getAppScriptFile(item)),
-				  })
+				? Result.Success(result.rows[0])
 				: Result.Fail(
 						500,
 						"Không thể thêm thiết bị vào hệ thống. Vui lòng reset và thử lại.",
@@ -161,7 +159,7 @@ export class DeviceContainer {
 				  );
 		} catch (err) {
 			console.log(err);
-			if (err.err.toString().includes("TIMEOUT_ON_WRITING_MESSAGE")) {
+			if (err.err.toString().includes("TIMEOUT")) {
 				return Result.Fail(
 					500,
 					"Thiết bị đang bị quá tải hoặc đang được kết nối bởi một tác vụ khác. Vui lòng reset lại MCC và thử lại!"

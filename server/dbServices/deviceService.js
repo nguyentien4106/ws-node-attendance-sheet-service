@@ -47,6 +47,7 @@ export const insertNewDevice = device => {
     
         INSERT INTO "Sheets"("DeviceId", "SheetName", "DocumentId") 
         ${sheetQuery};
+
     `)
 }
 

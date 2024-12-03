@@ -35,7 +35,8 @@ CREATE TABLE public."Attendances" (
     "UserName" text,
     "UserId" text,
     "Name" text,
-    "Uploaded" boolean
+    "Uploaded" boolean,
+    "Manual" boolean
 );
 
 
