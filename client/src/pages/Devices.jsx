@@ -90,7 +90,7 @@ export default function Devices() {
                     location.reload();
                 }
                 else {
-                    message.error(data.message ?? "Đã xảy ra lỗi không mong muốn khi thêm thiết bị. Vui lòng thử lại.")
+                    message.error(data.message?.trim() ?? "Đã xảy ra lỗi không mong muốn khi thêm thiết bị. Vui lòng thử lại.")
                 }
             }
 
