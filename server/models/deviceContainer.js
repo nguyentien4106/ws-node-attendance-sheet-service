@@ -437,23 +437,20 @@ export class DeviceContainer {
 			const deviceId = isDeleteAll ? data?.value?.Id : null;
 			await handleSyncAttendancesDB(getAttendanceData(), users, deviceId);
 
-			const attendances = await getAttendances({ deviceId });
+			// const attendances = await getAttendances({ deviceId });
 
-			const rowsData = attendances.rows.map((item) => [
-				item.Id,
-				item.DeviceName,
-				item.UserId,
-				item.EmployeeCode,
-				item.UserName,
-				item.Name,
-				dayjs(item.VerifyDate).format(DATE_FORMAT),
-				dayjs(item.VerifyDate).format(TIME_FORMAT),
-			]);
+			// const rowsData = attendances.rows.map((item) => [
+			// 	item.Id,
+			// 	item.DeviceName,
+			// 	item.UserId,
+			// 	item.EmployeeCode,
+			// 	item.UserName,
+			// 	item.Name,
+			// 	dayjs(item.VerifyDate).format(DATE_FORMAT),
+			// 	dayjs(item.VerifyDate).format(TIME_FORMAT),
+			// ]);
 
-			const result = await handleSyncDataToSheet(rowsData, {
-				type: OPTIONS_DELETE_SHEETS.ByDeviceId,
-				deviceName: data?.value?.Name,
-			});
+			const result = await handleSyncDataToSheet(deviceId);
 
 			return result;
 		} catch (err) {
@@ -587,7 +584,7 @@ export class DeviceContainer {
 
 		const newUsers = newUsersToAdd.map((row) => {
 			const roleText = row.get(USER_HEADER_ROW[3]);
-			const role = UserRoles.indexOf(roleText);
+			const role = +Object.entries(UserRoles).find(item => item[1] === roleText)?.[0];
 			return {
 				employeeCode: row.get(USER_HEADER_ROW[2]),
 				role: role === -1 ? 0 : role,

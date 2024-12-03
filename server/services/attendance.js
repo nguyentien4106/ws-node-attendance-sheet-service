@@ -14,6 +14,7 @@ export const syncLogData = async (data) => {
             item.Name,
             dayjs(item.VerifyDate).format(DATE_FORMAT),
             dayjs(item.VerifyDate).format(TIME_FORMAT),
+            item.Manual ? "X" : ""
         ]);
 
         const result = await insertToGGSheet(sheetRows, data.DeviceId);

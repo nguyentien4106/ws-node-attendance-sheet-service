@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import { Result } from "../models/common.js";
-import { getAttendancesById, insertAttendance, setUploadStatus } from "../dbServices/attendanceService.js";
+import { getAttendances, getAttendancesById, insertAttendance, setUploadStatus } from "../dbServices/attendanceService.js";
 import { appendRow, initSheets } from "../dbServices/dataService.js";
 import { getSheets, getSheetsByDeviceIp } from "../dbServices/sheetService.js";
-import { DATE_FORMAT, EMPLOYEE_DATA, HEADER_ROW, OPTIONS_DELETE_SHEETS, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
+import { DATE_FORMAT, EMPLOYEE_DATA, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
 import { websocket } from '../config/websocket.js'
 import { RequestTypes } from "../constants/requestType.js";
 import { getResponse } from "../models/response.js";
@@ -35,6 +35,7 @@ export const handleRealTimeData = async (log, deviceId) => {
 
         const rows = (await getAttendancesById(logRow[0].Id)).rows
 
+        console.log(rows)
         if (!rows.length) {
             return Result.Fail(500, "Đã xảy ra lỗi khi thêm dữ liệu attendance mới.", { log, deviceId })
         }
@@ -88,35 +89,36 @@ export const insertToGGSheet = async (rows, deviceId) => {
     }
 };
 
-export const handleSyncDataToSheet = async (rows, opts) => {
+export const handleSyncDataToSheet = async () => {
     try {
         const sheets = await getSheets();
         const sheetServices = await initSheets(sheets.rows);
         const services = sheetServices.filter(item => item.isSuccess).map(item => item.data)
-        if (opts.type === OPTIONS_DELETE_SHEETS.ByDeviceId) {
-            for (const sheet of services) {
-                const rows = await sheet.getRows()
-                for (const row of rows) {
-                    if (+row.get(HEADER_ROW[1]) === opts.deviceName) {
-                        await row.delete()
-                    }
-                }
-            }
+        for (const sheet of services) {
+            await sheet.clearRows()
         }
-        else if (opts.type === OPTIONS_DELETE_SHEETS.All) {
-            for (const sheet of services) {
-                await sheet.clearRows()
-            }
-        }
+        const attendances = await getAttendances();
+        const rowsData = attendances.rows.map((item) => [
+            item.Id,
+            item.DeviceName,
+            item.UserId,
+            item.EmployeeCode,
+            item.UserName,
+            item.Name,
+            dayjs(item.VerifyDate).format(DATE_FORMAT),
+            dayjs(item.VerifyDate).format(TIME_FORMAT),
+            item.Manual ? "X" : ""
+        ]);
 
-        await appendRow(services, rows);
-        for (const row of rows) {
+        await appendRow(services, rowsData);
+        for (const row of rowsData) {
             setUploadStatus(row[0], true)
         }
-        return Result.Success({ rows, opts })
+
+        return Result.Success()
     } catch (err) {
         console.error("insert to gg sheet error: ", err.message);
-        return Result.Fail(500, err.message, { rows, opts });
+        return Result.Fail(500, err.message);
     }
 }
 

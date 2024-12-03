@@ -1,94 +1,96 @@
-function removeDuplicatesAndSort() {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const specificSheet = spreadsheet.getSheetByName("#SHEET_NAME");
-  const sheets = spreadsheet.getSheets();
-
-  // Rule for #SHEET_NAME
-  if (specificSheet) {
-      processSheet(specificSheet, true); // Process old rule and "deleted"
-  }
-
-  // Rule for all sheets: only process "deleted"
-  sheets.forEach(sheet => {
-      if (sheet.getName() !== "#SHEET_NAME") {
-          processSheet(sheet, false); // Only process "deleted"
-      }
-  });
-
-  // Add or refresh the 'onChange' trigger
-  const triggers = ScriptApp.getProjectTriggers();
-  let hasTrigger = false;
-  for (var i = 0; i < triggers.length; i++) {
-      if (triggers[i].getHandlerFunction() === 'removeDuplicatesAndSort') {
-        //   ScriptApp.deleteTrigger(triggers[i]); // Remove any existing trigger to avoid duplication
-          hasTrigger = true;
-      }
-  }
-
-  if(!hasTrigger){
-    ScriptApp.newTrigger('removeDuplicatesAndSort')
-    .forSpreadsheet(spreadsheet)
-    .onChange()
-    .create();
+function processSheet() {
+    // Mở sheet hiện tại
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("#SHEET_NAME");
+    const data = sheet.getDataRange().getValues(); // Lấy toàn bộ dữ liệu
+    const lastRow = data.length; // Số dòng cuối cùng
+    const lastRowData = data[lastRow - 1]; // Dòng cuối cùng
+  
+    // Kiểm tra giá trị ô thứ 2 dòng cuối cùng
+    const secondColValue = lastRowData[1]; 
+  
+    if (secondColValue === "CLEAR") {
+      clearSheet(sheet, data);
+    } else if (secondColValue === "DELETED") {
+      deleteMatchingRows(sheet, data);
+    }
+  
+    // Loại bỏ các dòng bị trùng lặp
+    removeDuplicates(sheet);
   }
   
-}
-
-function processSheet(sheet, includeDuplicatesRule) {
-  const data = sheet.getDataRange().getValues();
-  const rowsToDelete = [];
-  const valueIndexMap = new Map();
-
-  // Iterate from the last row to the first row (reverse order)
-  const ilength = data.length - 1;
-  for (var i = ilength; i >= 1; i--) { // Skip the header row
-      const firstCellValue = data[i][0];
-      const secondCellValue = data[i][1];
-
-      if (includeDuplicatesRule && valueIndexMap.has(firstCellValue)) {
-          // If a duplicate row is found, mark it for deletion
-          rowsToDelete.push(i + 1);
-      } else {
-          if (includeDuplicatesRule) {
-              // Store the last occurrence of each unique first cell value
-              valueIndexMap.set(firstCellValue, i + 1);
-          }
-
-          // If the second cell contains "deleted," mark all rows with this value for deletion
-          if (secondCellValue === "deleted") {
-              // Mark the last occurrence for deletion
-              rowsToDelete.push(i + 1);
-
-              // Look upwards to find any previous rows with the same first cell value
-              const jlength = i - 1;
-              for (var j = jlength; j >= 1; j--) {
-                  if (data[j][0] === firstCellValue) {
-                      rowsToDelete.push(j + 1);
-                  }
-              }
-          }
+  function clearSheet(sheet, data) {
+    const rowsToKeep = [data[0]]; // Luôn giữ lại dòng tiêu đề (header)
+  
+    
+    // Duyệt qua từng dòng
+    for (let i = 1; i < data.length - 1; i++) {
+      const row = data[i];
+      const firstCol = row[0]; // Cột đầu tiên
+      const eighthCol = row[8]; // Cột thứ 8
+  
+      // Giữ lại dòng nếu cột đầu tiên trống hoặc cột thứ 8 có giá trị "X"
+      if (!firstCol || eighthCol === "X") {
+        rowsToKeep.push(row);
       }
-  }
-
-  // Delete rows marked for deletion from bottom to top to prevent shifting issues
-  rowsToDelete.sort((a, b) => b - a);
-  const rowsToDeleteLength = rowsToDelete.length;
-  for (var i = 0; i < rowsToDeleteLength; i++) {
-      sheet.deleteRow(rowsToDelete[i]);
-  }
-
-  if(sheet.getLastRow() <= 1){
-    return;
+    }
+  
+    // Xóa toàn bộ sheet
+    sheet.clear();
+  
+    // Ghi lại các dòng cần giữ
+    sheet.getRange(1, 1, rowsToKeep.length, rowsToKeep[0].length).setValues(rowsToKeep);
   }
   
-  // Sort the sheet by the first column in ascending order (only for the specific sheet)
-  if (includeDuplicatesRule && sheet.getLastRow() > 1) { // Ensure there's data to sort
-      sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn())
-          .sort({ column: 1, ascending: true });
+  function deleteMatchingRows(sheet, data) {
+    const rowsToDelete = new Set();
+  
+    // Duyệt qua từng dòng và tìm cặp giá trị trùng khớp
+    for (let i = 0; i < data.length; i++) {
+      const valueToFind = data[i][0]; // Cột đầu tiên
+      if (valueToFind) {
+        for (let j = i + 1; j < data.length; j++) {
+          if (data[j][0] === valueToFind) {
+            rowsToDelete.add(i);
+            rowsToDelete.add(j);
+          }
+        }
+      }
+    }
+  
+    // Loại bỏ các dòng
+    const remainingRows = data.filter((_, index) => !rowsToDelete.has(index));
+  
+    // Xóa toàn bộ sheet
+    sheet.clear();
+  
+    // Ghi lại dữ liệu sau khi loại bỏ
+    sheet.getRange(1, 1, remainingRows.length, remainingRows[0].length).setValues(remainingRows);
   }
-
-  // Format column 7 as "DD/MM/YYYY"
-  if (sheet.getLastColumn() >= 7) {
-      sheet.getRange(2, 7, sheet.getLastRow() - 1).setNumberFormat("DD/MM/YYYY");
+  
+  function removeDuplicates(sheet) {
+    const data = sheet.getDataRange().getValues();
+    const header = data[0]; // Lấy dòng tiêu đề
+    const rows = data.slice(1); // Lấy dữ liệu (bỏ dòng tiêu đề)
+  
+    const latestRows = new Map();
+  
+    // Duyệt qua từng dòng
+    rows.forEach(row => {
+      const rowKey = row[0]; // Giá trị ở cột đầu tiên
+      if (rowKey) {
+        // Ghi đè giá trị cũ nếu trùng (Map luôn giữ giá trị cuối cùng)
+        latestRows.set(rowKey, row);
+      }
+    });
+  
+    // Chuyển Map thành mảng dữ liệu (giữ thứ tự như Map)
+    const uniqueData = [header, ...Array.from(latestRows.values())];
+  
+    // Xóa toàn bộ sheet
+    sheet.clear();
+  
+    // Ghi lại dữ liệu đã loại bỏ trùng lặp
+    sheet.getRange(1, 1, uniqueData.length, uniqueData[0].length).setValues(uniqueData);
   }
-}
+  
+  

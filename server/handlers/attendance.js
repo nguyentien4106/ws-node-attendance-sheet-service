@@ -45,7 +45,8 @@ export const attendanceHandlers = (request, ws, deviceContainer) => {
                     attTime: request.data.DateTime,
                 },
                 request.data.DeviceId,
-                false
+                false,
+                true
             ).then((res) => {
                 ws.send(
                     getResponse({

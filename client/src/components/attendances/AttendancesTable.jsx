@@ -99,6 +99,23 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
 
         },
         {
+            title: "Thêm thủ công",
+            dataIndex: "Manual",
+            key: "Manual",
+            fixed: 'right',
+            render: (value, rc) =>
+                value ? (
+                    <img
+                        width="32"
+                        height="32"
+                        src="https://img.icons8.com/color/48/checkmark--v1.png"
+                        alt="checkmark--v1"
+                    />
+                ) : (
+                    ""
+                ),
+        },
+        {
             title: "Action",
             key: "Action",
             render: (record) => (

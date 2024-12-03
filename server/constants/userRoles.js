@@ -1,1 +1,7 @@
-export const UserRoles = ["Người dùng", "Khách", "Quản trị viên", "Chủ sở hữu"]
+export const UserRoles = 
+{
+    0: "Người dùng",
+    2: "Khách",
+    6: "Quản trị viên",
+    14: "Chủ sở hữu"
+}

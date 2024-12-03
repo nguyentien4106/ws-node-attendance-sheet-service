@@ -37,7 +37,7 @@ export default function UsersTable({
                 if (role.length) {
                     return <p>{role[0].text}</p>;
                 }
-                return <p>{"Nguời dùng"}</p>;
+                return <p>{value}</p>;
             },
         },
         {

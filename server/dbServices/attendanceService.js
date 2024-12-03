@@ -44,19 +44,36 @@ export const insertAttendances = (attendances, users) => {
     );
 };
 
-export const insertAttendance = (log, deviceId, uploaded = true) => {
+export const insertAttendance = (log, deviceId, uploaded = true, manual = false) => {
     return query(
         `
-        WITH display_name as (
-            SELECT "Users"."Name" as "UserName", "Users"."DisplayName" as "Name", "Devices"."Name" as "DeviceName", "Devices"."Id" as "DeviceId" 
-            FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip" 
-            WHERE "Users"."UserId" = '${log.userId}' AND "Devices"."Id" = '${deviceId}'
-        )
- 
-        INSERT INTO public."Attendances"(
-            "UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name", "Uploaded")
+        WITH 
+            display_name AS (
+            SELECT 
+                "Users"."Name" AS "UserName", 
+                "Users"."DisplayName" AS "Name", 
+                "Devices"."Name" AS "DeviceName", 
+                "Devices"."Id" AS "DeviceId" 
+            FROM public."Users" 
+            JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip" 
+            WHERE "Users"."UserId" = '${log.userId}' AND "Devices"."Id" = ${deviceId}
+            ),
+            a_1 AS (
+            INSERT INTO public."Attendances"("UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name", "Uploaded", "Manual")
+            SELECT 
+                '${log.userId}', 
+                "DeviceId", 
+                '${dayjs(log.attTime).format(DATABASE_DATE_FORMAT + " " + TIME_FORMAT)}', 
+                "DeviceName", 
+                "UserName", 
+                "Name", 
+                ${uploaded},
+                ${manual}
+            FROM display_name 
+            RETURNING *
+            ) 
+            SELECT a_1.*, "Users"."EmployeeCode" FROM a_1 JOIN "Users" ON "Users"."UserId" = a_1."UserId";
 
-            SELECT '${log.userId}', "DeviceId", '${dayjs(log.attTime).format(DATABASE_DATE_FORMAT + " " + TIME_FORMAT)}', "DeviceName", "UserName", "Name", ${uploaded} from display_name RETURNING *
         `
     );
 };
@@ -97,6 +114,7 @@ export const getAttendances = (params) => {
             "UserName", 
             "Attendances"."Name", 
             "Uploaded", 
+            "Manual",
             TO_CHAR("VerifyDate", 'YYYY-MM-DD HH24:MI:SS') AS "VerifyDate", 
             "Users"."EmployeeCode" AS "EmployeeCode"
         FROM 
@@ -232,7 +250,7 @@ export const deleteAttendance = async (log) => {
         `;
         const result = await query(sql);
         if(result.rowCount){
-            await insertToGGSheet([[log.Id, "deleted"]], log.DeviceId)
+            await insertToGGSheet([[log.Id, "DELETED"]], log.DeviceId)
             return Result.Success(log)
         }
 
