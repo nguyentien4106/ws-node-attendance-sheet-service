@@ -19,6 +19,12 @@ const OPEN_TYPES = {
     SYNC: 2,
 };
 
+const defaultPagination = {
+    current: 1,
+    pageSize: 10,
+    pageSizeOptions: [10, 50, 100],
+}
+
 export default function Attendances() {
     const { setLoading } = useLoading();
     const [attendances, setAttendances] = useState([]);
@@ -27,15 +33,19 @@ export default function Attendances() {
     const [users, setUsers] = useState([]);
     const [deviceId, setDeviceId] = useState("All");
     const [open, setOpen] = useState(OPEN_TYPES.CLOSE);
-    const [sheets, setSheets] = useState([])
     const submitRef = useRef();
-    const [pagination, setPagination] = useState({
-        current: 1,
-        pageSize: 10,
-        pageSizeOptions: [10, 50, 100],
-    });
+    const [pagination, setPagination] = useState(defaultPagination);
     const [filters, setFilters] = useState({ Name: [] })
     const [totalRow, setTotalRow] = useState(0)
+    const [usersFilter, setUsersFilter] = useState([])
+    const [params, setParams] = useState({
+        deviceId: deviceId,
+        fromDate: dateRange??[0]?.format(DATE_FORMAT),
+        toDate: dateRange??[1]?.format(DATE_FORMAT),
+        tableParams: {
+            pagination
+        }
+    })
 
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onOpen: () => {
@@ -45,7 +55,6 @@ export default function Attendances() {
             console.log("on closed");
         },
         onError: (err) => {
-            console.log(err)
             message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
 
         },
@@ -54,9 +63,9 @@ export default function Attendances() {
             setLoading(false);
             const data = response.data;
             if (response.type === RequestTypes.GetAttendances) {
-                console.log(response)
-                setAttendances(response.data);
-                setTotalRow(response.data.length)
+                console.log(data)
+                setAttendances(Array.isArray(data) ? data : []);
+                setTotalRow(data.length ? +data[0]?.count : 0 )
             }
 
             if (response.type === RequestTypes.GetDevices) {
@@ -94,9 +103,9 @@ export default function Attendances() {
                         prev.map((item) =>
                             item.Id === data.data.logId
                                 ? Object.assign(item, {
-                                      VerifyDate: data.data.date,
-                                      Uploaded: false,
-                                  })
+                                    VerifyDate: data.data.date,
+                                    Uploaded: false,
+                                })
                                 : item
                         )
                     );
@@ -123,11 +132,14 @@ export default function Attendances() {
                         value: user.UserId,
                     }))
                 );
+
+                setUsersFilter(data)
             }
 
-            if(response.type === RequestTypes.AddLog){
-                if(data.isSuccess){
+            if (response.type === RequestTypes.AddLog) {
+                if (data.isSuccess) {
                     message.success("Đã thêm một dữ liệu chấm công mới.")
+                    console.log(data.data[0])
                     setAttendances(prev => {
                         prev.unshift(data.data[0])
                         return prev
@@ -135,28 +147,20 @@ export default function Attendances() {
                 }
             }
 
-            if(response.type === RequestTypes.GetSheets){
-                setSheets(data.data)
+            if(response.type === RequestTypes.GetUsers){
             }
         },
     });
 
     useEffect(() => {
-        if(!isAuth){
+        if (!isAuth || !dateRange) {
             return;
         }
 
         setLoading(true);
         sendJsonMessage({
             type: RequestTypes.GetAttendances,
-            data: {
-                deviceId: deviceId,
-                fromDate: dateRange[0].format(DATE_FORMAT),
-                toDate: dateRange[1].format(DATE_FORMAT),
-                tableParams: {
-                    pagination
-                }
-            },
+            data: params,
         });
 
         sendJsonMessage({
@@ -164,41 +168,66 @@ export default function Attendances() {
         });
 
         sendJsonMessage({
-            type: RequestTypes.GetSheets,
-        });
+            type: RequestTypes.GetUsersByDeviceId,
+            data: null
+        })
     }, []);
 
     useEffect(() => {
-        if(!isAuth || !dateRange){
+        if (!isAuth || !dateRange) {
             return
         }
-        
-        sendJsonMessage({
-            type: RequestTypes.GetAttendances,
-            data: {
-                deviceId: deviceId,
-                fromDate: dateRange[0].format(DATE_FORMAT),
-                toDate: dateRange[1].format(DATE_FORMAT),
+
+        setParams(prev => Object.assign(prev, {
+            fromDate: dateRange[0].format(DATE_FORMAT),
+            toDate: dateRange[1].format(DATE_FORMAT),
+            tableParams: {
+                pagination,
+                filters
+            }
+        }))
+    }, [dateRange])
+
+    useEffect(() => {
+        if (!isAuth || !dateRange) {
+            return
+        }
+
+        setParams(prev => {
+            const newParams = Object.assign(prev, {
                 tableParams: {
-                    pagination, 
-                    filters
+                    pagination: pagination,
+                    filters: filters
                 }
-            },
-        });
-    }, [pagination, deviceId, dateRange, filters])
+            })
+            sendJsonMessage({
+                type: RequestTypes.GetAttendances,
+                data: newParams,
+            });
+
+            return newParams
+        })
+        
+    }, [filters, pagination])
+
+    useEffect(() => {
+        if (!isAuth || !dateRange) {
+            return
+        }
+        setParams(prev => ({ ...prev, deviceId: deviceId }))
+        sendJsonMessage({
+            type: RequestTypes.GetUsersByDeviceId,
+            data: deviceId
+        })
+    }, [deviceId])
 
     const submit = () => {
+        if (!isAuth || !dateRange) {
+            return
+        }
         sendJsonMessage({
             type: RequestTypes.GetAttendances,
-            data: {
-                deviceId: deviceId,
-                fromDate: dateRange[0].format(DATE_FORMAT),
-                toDate: dateRange[1].format(DATE_FORMAT),
-                tableParams: {
-                    pagination,
-                    filters
-                }
-            },
+            data: params,
         });
     };
 
@@ -237,6 +266,7 @@ export default function Attendances() {
                 filters={filters}
                 setFilters={setFilters}
                 totalRow={totalRow}
+                usersFilter={usersFilter}
             ></AttendancesTable>
             <Modal
                 open={open}

@@ -309,13 +309,13 @@ export class DeviceContainer {
 			const query = await getLastUID(deviceSDK.ip);
 			const lastUid = query.rowCount ? query.rows[0].UID + 1 : 1;
 
-			// const isValidUserId = await validUserId(deviceSDK.ip, user.userId);
-			// if (!isValidUserId) {
-			//     return Result.Fail(
-			//         500,
-			//         `UserID ${user.userId}: Đã tồn tại trong thiết bị ${deviceSDK.ip}, vui lòng chọn một UserId khác.`
-			//     );
-			// }
+			const isValidUserId = await validUserId(deviceSDK.ip, user.userId);
+			if (!isValidUserId) {
+			    return Result.Fail(
+			        500,
+			        `UserID ${user.userId}: Đã tồn tại trong thiết bị ${deviceSDK.ip}, vui lòng chọn một UserId khác.`
+			    );
+			}
 			await deviceSDK.setUser(
 				lastUid,
 				`${lastUid}`,
@@ -434,23 +434,7 @@ export class DeviceContainer {
 
 			const deviceId = isDeleteAll ? data?.value?.Id : null;
 			await handleSyncAttendancesDB(getAttendanceData(), users, deviceId);
-
-			// const attendances = await getAttendances({ deviceId });
-
-			// const rowsData = attendances.rows.map((item) => [
-			// 	item.Id,
-			// 	item.DeviceName,
-			// 	item.UserId,
-			// 	item.EmployeeCode,
-			// 	item.UserName,
-			// 	item.Name,
-			// 	dayjs(item.VerifyDate).format(DATE_FORMAT),
-			// 	dayjs(item.VerifyDate).format(TIME_FORMAT),
-			// ]);
-
-			const result = await handleSyncDataToSheet(deviceId);
-
-			return result;
+			return await handleSyncDataToSheet(deviceId);
 		} catch (err) {
 			return Result.Fail(500, err.message, data);
 		}
@@ -466,7 +450,7 @@ export class DeviceContainer {
 				);
 				result.push(Result.Success(device.ip));
 			} catch (err) {
-				result.push(Result.Fail(500, ``, device.ip));
+				result.push(Result.Fail(500, err.message, device.ip));
 			}
 		}
 		return result;

@@ -7820,3 +7820,428 @@
 {"level":"info","message":"Client disconnected","timestamp":"2024-12-03T08:31:52.011Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-12-03T08:31:53.313Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-12-03T08:31:55.751Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-03T09:13:58.023Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-03T09:14:01.976Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-03T09:43:32.490Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T03:28:54.581Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T03:28:54.591Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T03:28:54.596Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:29:12.677Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:29:18.706Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:31:44.390Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:33:18.501Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:33:20.285Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:35:42.479Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:38:58.005Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:39:08.430Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:39:38.601Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:39:53.440Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:47:34.152Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:48:55.076Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:48:55.626Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T03:56:24.377Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T04:18:36.605Z"}
+{"level":"error","message":"missing FROM-clause entry for table \"Users\"","timestamp":"2024-12-04T06:27:00.896Z"}
+{"level":"error","message":"column Users.DeviceId does not exist","timestamp":"2024-12-04T06:31:15.559Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'Id')","timestamp":"2024-12-04T07:01:42.329Z"}
+{"level":"error","message":"Cannot access 'log' before initialization","timestamp":"2024-12-04T07:02:15.906Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:04:40.667Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:17:14.828Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:24:20.601Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:24:33.828Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:25:20.559Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:25:38.336Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:26:24.155Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:26:38.127Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T07:26:50.544Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T07:26:50.550Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T07:26:50.553Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:27:04.495Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:27:14.264Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:41:21.462Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:42:55.221Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:42:58.209Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:43:44.191Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:43:52.227Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:43:54.839Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T07:50:36.114Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T07:50:36.120Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T07:50:36.123Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:52:27.583Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:52:55.165Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:52:55.214Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:20.270Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:20.403Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:26.173Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:26.220Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:29.161Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:29.205Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:33.176Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:33.231Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:53:35.977Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:54:29.173Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:54:29.219Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:54:57.225Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:54:57.370Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:55:00.170Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:55:00.237Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:55:01.298Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:55:48.202Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:55:48.254Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.357Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.380Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.381Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.384Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.385Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.387Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.389Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.391Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.393Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.394Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.395Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.408Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.411Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.427Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.431Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.437Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.438Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.440Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.441Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.442Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.445Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.497Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.510Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.512Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Resource has been exhausted (e.g. check quota).","timestamp":"2024-12-04T07:57:49.519Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.660Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.666Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.678Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.681Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.685Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.706Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.715Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.736Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:51.964Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:52.002Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:52.009Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:52.016Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:52.052Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T07:57:52.057Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T07:58:17.556Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:38:21.261Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:38:21.496Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:21.695Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:21.699Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:21.721Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:21.726Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:38:22.016Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:38:22.046Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:23.588Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:23.594Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:23.627Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:23.633Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:38:24.047Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:38:24.073Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:32.589Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:32.596Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:32.636Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:38:32.641Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:39:24.225Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:39:24.375Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:39:24.711Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:39:24.838Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:39:53.226Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:39:53.394Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:39:53.712Z"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'startsWith')","timestamp":"2024-12-04T08:39:53.803Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:28.263Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:28.383Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:28.456Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:28.465Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:44.218Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:44.373Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:48.240Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:48.386Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:55.230Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:40:55.376Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:41:41.255Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:41:41.439Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:42:01.383Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:43:15.256Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:43:15.409Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:43:27.254Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:43:27.487Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:43:39.234Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:43:39.386Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:43:47.582Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:46:27.259Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:46:27.416Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:46:30.507Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:46:37.785Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:48:32.918Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:49:32.223Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:49:32.387Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T08:51:56.463Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T08:51:56.471Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T08:51:56.474Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T08:53:37.141Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T08:53:37.149Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T08:53:37.153Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T08:54:15.806Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T08:54:15.814Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T08:54:15.817Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T08:57:19.458Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T08:57:19.465Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T08:57:19.468Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:57:59.318Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:59:38.815Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T08:59:54.726Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:00:29.182Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:00:39.193Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:02:07.249Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:10:27.722Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:11:33.403Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:13:30.187Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:14:11.253Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:17:50.224Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:17:53.672Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:17:55.257Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:18:29.214Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:18:29.371Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:21:13.265Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:21:13.393Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:22:03.221Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:22:03.372Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:22:05.300Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:22:05.398Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:22:07.155Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:23:58.218Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:23:58.370Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T09:31:13.747Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T09:31:13.756Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T09:31:13.760Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T09:32:42.227Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T09:32:42.233Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T09:32:42.235Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:32:48.262Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T09:36:05.859Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T09:36:05.866Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T09:36:05.869Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:36:11.554Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T09:36:28.007Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T09:36:28.016Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T09:36:28.020Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:36:31.483Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T09:36:42.303Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T09:36:42.310Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T09:36:42.313Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:39:04.495Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:40:18.251Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:40:18.411Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:40:24.829Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:40:30.074Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:40:30.259Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:40:31.977Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:40:32.282Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-04T09:40:36.997Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-04T09:40:37.005Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-04T09:40:37.009Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:40:59.442Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:41:08.612Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:41:09.346Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:41:31.235Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:41:31.420Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:42:00.234Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:42:00.385Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:42:04.242Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:42:04.419Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:42:10.247Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:42:10.403Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:42:14.694Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:43:40.160Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:13.254Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:32.233Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:32.363Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:34.219Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:34.314Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:36.224Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:36.332Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:39.233Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:39.382Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:40.922Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:44:42.913Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:45:19.287Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:45:19.553Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:45:20.165Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:45:29.561Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:45:29.615Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:45:32.308Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:45:50.200Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:47:25.958Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:47:31.850Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:47:33.323Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:28.170Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:29.101Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:29.463Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:29.860Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:30.214Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:30.582Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:30.924Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:31.283Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:31.640Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:32.094Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:32.542Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:32.921Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:33.289Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:33.653Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:34.030Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:34.478Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:34.841Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:35.236Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:35.602Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:36.062Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:36.412Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:36.777Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:37.129Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:37.490Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:37.952Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:38.317Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:38.659Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:39.026Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:39.375Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:39.756Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:40.106Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:40.453Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:40.887Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:41.236Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:41.601Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:41.976Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:42.333Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:42.789Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:43.137Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:43.494Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:43.847Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:44.223Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:44.572Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:45.025Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:45.397Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:45.799Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:46.160Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:46.539Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:46.912Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:47.333Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:47.728Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:48.084Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:48.431Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:48.781Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:49.126Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:49.479Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:49.842Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:50.204Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:50.555Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:50.920Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:51.256Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:51.632Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:51.975Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:52.320Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:52.795Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:53.157Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T09:49:53.508Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T09:50:06.404Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:43.658Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:45.046Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:45.373Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:45.731Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:46.104Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:46.444Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:46.777Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:47.116Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:47.463Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:47.818Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:48.160Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:48.495Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:48.831Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:49.193Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:49.516Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:49.868Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:50.225Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:50.580Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:50.994Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:51.360Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:51.701Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:52.035Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:52.358Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:52.704Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:53.031Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:53.391Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:53.742Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:54.107Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:54.458Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:54.803Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:55.126Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:55.477Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:55.810Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:56.162Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:56.529Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:56.878Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:57.249Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:57.608Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:58.001Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:58.355Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:58.683Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:59.025Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:59.353Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:14:59.712Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:00.055Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:00.503Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:00.835Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:01.190Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:01.514Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:01.856Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:02.199Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:02.530Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:02.882Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:03.220Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:03.572Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:03.988Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:04.352Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:04.710Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:05.057Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:05.408Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:05.729Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:06.067Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:06.393Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:06.759Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:07.106Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:07.499Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:07.840Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:08.206Z"}
+{"level":"error","message":"Document - 1_CZctrYKIk9VkLabXs4Zu3cJ_AP5fkLUY0a1d6L2tQ8: Google API error - [429] Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:15:08.530Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:17:47.738Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:17:48.109Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:18:26.439Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:19:15.959Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:19:16.445Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:19:16.799Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:19:17.182Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:19:17.649Z"}
+{"level":"error","message":"Xảy ra lỗi khi thêm dòng mới vào sheet: Google API error - [429] Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:589516828690'.","timestamp":"2024-12-04T10:19:18.080Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:21:37.489Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:21:37.729Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:22:18.058Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:27:43.295Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:27:44.306Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:27:49.447Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:27:50.117Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:28:15.282Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:28:17.464Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:28:18.281Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:29:54.258Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:29:55.692Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:29:58.217Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:29:59.292Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:30:24.141Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:30:24.856Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:30:35.101Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:30:51.514Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-04T10:31:13.786Z"}

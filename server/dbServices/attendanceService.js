@@ -45,40 +45,43 @@ export const insertAttendances = (attendances, users) => {
 };
 
 export const insertAttendance = (log, deviceId, uploaded = true, manual = false) => {
-    return query(
-        `
+    const sql = `
         WITH 
             display_name AS (
-            SELECT 
-                "Users"."Name" AS "UserName", 
-                "Users"."DisplayName" AS "Name", 
-                "Devices"."Name" AS "DeviceName", 
-                "Devices"."Id" AS "DeviceId" 
-            FROM public."Users" 
-            JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip" 
-            WHERE "Users"."UserId" = '${log.userId}' AND "Devices"."Id" = ${deviceId}
+                SELECT
+                    "Users"."Name" AS "UserName",
+                    "Users"."UserId" AS "UserId",
+                    "Users"."EmployeeCode" AS "EmployeeCode",
+                    "Users"."DisplayName" AS "Name",
+                    "Devices"."Name" AS "DeviceName",
+                    "Devices"."Id" AS "DeviceId",
+                    "Devices"."Ip" AS "DeviceIp"
+                FROM public."Users"
+                JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
+                WHERE "Users"."UserId" = '${log.userId}' AND "Devices"."Id" = ${deviceId}
             ),
             a_1 AS (
-            INSERT INTO public."Attendances"("UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name", "Uploaded", "Manual")
-            SELECT 
-                '${log.userId}', 
-                "DeviceId", 
-                '${dayjs(log.attTime).format(DATABASE_DATE_FORMAT + " " + TIME_FORMAT)}', 
-                "DeviceName", 
-                "UserName", 
-                "Name", 
-                ${uploaded},
-                ${manual}
-            FROM display_name 
-            RETURNING *
-            ) 
-            SELECT a_1.*, "Users"."EmployeeCode" FROM a_1 JOIN "Users" ON "Users"."UserId" = a_1."UserId";
+                INSERT INTO public."Attendances"("UserId", "DeviceId", "VerifyDate", "DeviceName", "UserName", "Name", "Uploaded", "Manual")
+                SELECT
+                    '${log.userId}', 
+                    "DeviceId",
+                    '${dayjs(log.attTime).format(DATABASE_DATE_FORMAT + " " + TIME_FORMAT)}', 
+                    "DeviceName",
+                    "UserName",
+                    "Name",
+                    ${uploaded},
+                    ${manual}
+                FROM display_name
+                RETURNING *
+            )
 
+            SELECT a_1.*, display_name."EmployeeCode" 
+            FROM a_1 JOIN display_name ON display_name."UserId" = a_1."UserId" AND a_1."DeviceId" = display_name."DeviceId"
         `
-    );
+    return query(sql);
 };
 
-export const getAttendancesById = async id => {
+export const getAttendancesById = async (id, deviceId) => {
     const sql = `
         SELECT 
             "Attendances"."Id", 
@@ -95,7 +98,7 @@ export const getAttendancesById = async id => {
         JOIN 
             "Users" 
         ON 
-            "Attendances"."UserId" = "Users"."UserId"
+            "Attendances"."UserId" = "Users"."UserId" AND "Users"."DeviceId" = ${deviceId}
 
         WHERE "Attendances"."Id" = ${id}
     `;
@@ -104,9 +107,9 @@ export const getAttendancesById = async id => {
 }
 
 export const getAttendances = (params) => {
-    // Base query and common SELECT fields
     let baseQuery = `
         SELECT 
+            count(*) OVER() AS Count,
             "Attendances"."Id", 
             "DeviceId", 
             "Attendances"."UserId", 
@@ -123,6 +126,10 @@ export const getAttendances = (params) => {
             "Users" 
         ON 
             "Attendances"."UserId" = "Users"."UserId"
+        JOIN 
+	        "Devices"
+        ON 
+            "Devices"."Id" = "Attendances"."DeviceId" AND "Devices"."Ip" = "Users"."DeviceIp"
     `;
 
     if(!params){
@@ -143,15 +150,18 @@ export const getAttendances = (params) => {
         conditions.push(orCondition)        
     }
 
-    if(params.tableParams && params.tableParams.current && params.tableParams.pageSize){
-        conditions.push(`LIMIT ${params.tableParams.pageSize} OFFSET ${(params.tableParams.current - 1) * params.tableParams.pageSize}`)
-    }
+    console.log(params.tableParams)
+
 
     const conditionQuery = conditions.join(" AND ")
 
-    const sql = baseQuery + " WHERE " + conditionQuery + ` ORDER BY "Id" DESC`
-    console.log(sql)
-    return query(sql)
+    baseQuery = baseQuery + " WHERE " + conditionQuery + ` ORDER BY "Id" DESC`
+    const tableParams = params.tableParams
+    if(tableParams && tableParams.pagination?.current && tableParams.pagination?.pageSize){
+        baseQuery += ` LIMIT ${tableParams.pagination?.pageSize} OFFSET ${(params.tableParams.pagination?.current - 1) * tableParams.pagination?.pageSize}`
+    }
+    console.log(baseQuery)
+    return query(baseQuery)
 }
 
 export const setUploadStatus = (attId, status = false) => {

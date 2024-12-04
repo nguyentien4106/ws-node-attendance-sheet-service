@@ -24,6 +24,13 @@ export default function UsersTable({
             width: "80px"
         },
         {
+            title: "User ID",
+            dataIndex: "UserId",
+            key: "UserId",
+            render: (text) => <a>{text}</a>,
+            width: "80px"
+        },
+        {
             title: "Mã nhân viên",
             dataIndex: "EmployeeCode",
             key: "EmployeeCode",

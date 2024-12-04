@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { Result } from "../models/common.js";
-import { getAttendances, getAttendancesById, insertAttendance, setUploadStatus } from "../dbServices/attendanceService.js";
+import { getAttendances, insertAttendance, setUploadStatus } from "../dbServices/attendanceService.js";
 import { appendRow, initSheets } from "../dbServices/dataService.js";
 import { getSheets, getSheetsByDeviceIp } from "../dbServices/sheetService.js";
 import { DATE_FORMAT, EMPLOYEE_DATA, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
@@ -27,20 +27,13 @@ export const handleRealTimeDataBySN = async (log, sn) => {
 
 export const handleRealTimeData = async (log, deviceId) => {
     try {
-        const logRow = await insertDB(log, deviceId)
+        const query = await insertDB(log, deviceId)
 
-        if (!logRow.length) {
+        if (!query.rowCount) {
             return Result.Fail(500, "Đã xảy ra lỗi khi thêm dữ liệu attendance mới.", { log, deviceId })
         }
 
-        const rows = (await getAttendancesById(logRow[0].Id)).rows
-
-        console.log(rows)
-        if (!rows.length) {
-            return Result.Fail(500, "Đã xảy ra lỗi khi thêm dữ liệu attendance mới.", { log, deviceId })
-        }
-
-        const sheetRows = rows.map(item => {
+        const sheetRows = query.rows.map(item => {
             const time = dayjs(item.VerifyDate)
             return [item.Id, item.DeviceName, item.UserId, item.EmployeeCode, item.UserName, item.Name, time.format(DATE_FORMAT), time.format(TIME_FORMAT)]
         })
@@ -48,7 +41,7 @@ export const handleRealTimeData = async (log, deviceId) => {
         const sheetRow = await insertToGGSheet(sheetRows, deviceId);
 
         if (!sheetRow.isSuccess) {
-            setUploadStatus(logRow[0].Id)
+            setUploadStatus(query.rows[0].Id)
             return Result.Fail(500, `Data chưa được đẩy lển sheet. ${sheetRow.message}`)
         }
 
@@ -56,12 +49,12 @@ export const handleRealTimeData = async (log, deviceId) => {
             client.send(
                 getResponse({
                     type: RequestTypes.AddLog,
-                    data: Result.Success(logRow),
+                    data: Result.Success(query.rows),
                 })
             );
         });
 
-        return Result.Success(logRow)
+        return Result.Success(query.rows)
     }
     catch (err) {
 
@@ -70,8 +63,7 @@ export const handleRealTimeData = async (log, deviceId) => {
 };
 
 const insertDB = async (log, deviceId) => {
-    const result = await insertAttendance(log, deviceId)
-    return result.rows
+    return await insertAttendance(log, deviceId)
 };
 
 export const insertToGGSheet = async (rows, deviceId) => {

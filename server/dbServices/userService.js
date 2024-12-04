@@ -39,24 +39,34 @@ export const insertNewUsers = async (users, device, displayName) => {
 };
 
 export const getAllUsers = (deviceIp = "All") => {
-    const text = `SELECT "Users".*, "Devices"."Name" as "DeviceName" 
-        FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
+    const sql = `
+        SELECT 
+            "Users".*, 
+            "Devices"."Name" as "DeviceName" 
+        FROM 
+            public."Users" 
+        JOIN 
+            "Devices"
+        ON 
+            "Users"."DeviceIp" = "Devices"."Ip"
         ${deviceIp !== "All" ? `WHERE "Users"."DeviceIp" = '${deviceIp}'` : ""}
-        ORDER BY "Users"."Id" DESC`;
-        
-    return query(text);
-};
-
-export const getUsersByDeviceId = deviceId => {
-    if(!deviceId) return null
-    const text = `
-        SELECT "Users".*, "Devices"."Name" as "DeviceName" 
-        FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
-        WHERE "Devices"."Id" = ${deviceId}
         ORDER BY "Users"."Id" DESC
     `;
         
-    return query(text);
+    return query(sql);
+};
+
+export const getUsersByDeviceId = deviceId => {
+    const sql = `
+        SELECT "Users".*, "Devices"."Name" as "DeviceName" 
+        FROM public."Users" JOIN "Devices" ON "Users"."DeviceIp" = "Devices"."Ip"
+        ${deviceId && deviceId !== "All"? `WHERE "Devices"."Id" = ${deviceId}` : ""}
+        ORDER BY "Users"."Id" DESC
+    `;
+
+    console.log(sql)
+        
+    return query(sql);
 }
 
 export const getLastUID = (deviceIp) =>

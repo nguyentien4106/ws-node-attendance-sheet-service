@@ -19,6 +19,12 @@ const serviceAccountAuth = new JWT({
     ],
 });
 
+const sheetServiceMap = new Map()
+
+export const getSheetServices = id => {
+
+}
+
 export const isSheetsValid = async (sheets) => {
     const result = [];
     let success = true;
@@ -80,12 +86,14 @@ export const initSheet = async (documentId, sheetName, headers) => {
 
 export const initSheets = async (sheets, headers) => {
     const sheetServices = [];
-    const documentIds = new Map()
     for (const { DocumentId, SheetName } of sheets) {
-        if(!documentIds.has(`${DocumentId}-${SheetName}`)){
+        if(!sheetServiceMap.has(`${DocumentId}-${SheetName}`)){
             const result = await initSheet(DocumentId, SheetName, headers)
             sheetServices.push(result)
-            documentIds.set(`${DocumentId}-${SheetName}`, 1)
+            sheetServiceMap.set(`${DocumentId}-${SheetName}`, result)
+        }
+        else {
+            sheetServices.push(sheetServiceMap.get(`${DocumentId}-${SheetName}`))
         }
         
     }

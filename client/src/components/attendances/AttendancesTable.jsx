@@ -1,5 +1,5 @@
 import { Button, Space, Table, Popconfirm, Modal } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
 import AttendanceForm from "./AttendanceForm";
@@ -7,11 +7,8 @@ import dayjs from "dayjs";
 import { DATE_FORMAT, DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
 import writeXlsxFile from "write-excel-file"
 
-export default function AttendancesTable({ attendances, sendJsonMessage, pagination, setPagination, filters, setFilters, totalRow }) {
-    const nameFilter = [
-        ...new Set(attendances?.map((item) => item.Name)),
-    ].map((item) => ({ text: item, value: item }));
-
+export default function AttendancesTable({ attendances, sendJsonMessage, pagination, setPagination, filters, setFilters, totalRow, usersFilter }) {
+    const nameFilter = [... new Set(usersFilter?.map(item => item.DisplayName))].map(item => ({ text: item, value: item }))
     const columns = [
         {
             title: "Id",

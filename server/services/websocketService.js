@@ -2,9 +2,6 @@ import { getResponse } from "../models/response.js";
 import { RequestTypes } from "../constants/requestType.js";
 import { Result } from "../models/common.js";
 import {
-	getAttendances,
-} from "../dbServices/attendanceService.js";
-import {
 	changePassword,
 	getSettings,
 	updateSettings,

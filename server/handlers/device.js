@@ -55,18 +55,6 @@ export const deviceHandlers = (request, ws, deviceContainer) => {
                 .catch((err) => { });
             break;
 
-        case RequestTypes.GetUsers:
-            getAllUsers(request.data).then((res) => {
-                ws.send(
-                    getResponse({
-                        type: request.type,
-                        data: res.rows,
-                    })
-                );
-            });
-
-            break;
-
         case RequestTypes.GetDevices:
             DeviceService.getAllDevices().then((res) => {
                 const { rows } = res;
