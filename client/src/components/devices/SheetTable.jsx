@@ -20,12 +20,13 @@ export default function SheetTable({ record, sheets }) {
     }
 
     return (
-        <table className='table table-hover' style={{ maxWidth: "50%" }}>
+        <table className='table table-hover' style={{ maxWidth: "80%" }}>
             <thead>
                 <tr>
                     <th scope='col'>Sheet Name</th>
                     <th scope='col'>Document ID</th>
                     <th scope='col'>AppScript</th>
+                    <th scope='col'>Google Sheet</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +45,9 @@ export default function SheetTable({ record, sheets }) {
                                 alt="Copy AppScript file"
                                 title='Copy AppScript file'
                             />
+                        </td>
+                        <td>
+                            <a target='_blank' href={`https://docs.google.com/spreadsheets/d/${sheet.DocumentId}/edit?gid=0#gid=0`}>Go to Sheet</a>
                         </td>
                     </tr>
                 ))}

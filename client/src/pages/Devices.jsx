@@ -128,6 +128,17 @@ export default function Devices() {
                 const data = response.data
                 message.error(data)
             }
+
+            
+            if(response.type === RequestTypes.DeviceClearAttendances){
+                console.log(response)
+                if(response.data.isSuccess){
+                    message.success("Đã xóa toàn bộ dữ liệu trong máy thành công.")
+                }
+                else {
+                    message.error(response.data.message)
+                }
+             }
         },
     });
 

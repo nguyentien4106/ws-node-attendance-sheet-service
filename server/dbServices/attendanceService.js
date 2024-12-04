@@ -150,9 +150,6 @@ export const getAttendances = (params) => {
         conditions.push(orCondition)        
     }
 
-    console.log(params.tableParams)
-
-
     const conditionQuery = conditions.join(" AND ")
 
     baseQuery = baseQuery + " WHERE " + conditionQuery + ` ORDER BY "Id" DESC`
@@ -160,7 +157,7 @@ export const getAttendances = (params) => {
     if(tableParams && tableParams.pagination?.current && tableParams.pagination?.pageSize){
         baseQuery += ` LIMIT ${tableParams.pagination?.pageSize} OFFSET ${(params.tableParams.pagination?.current - 1) * tableParams.pagination?.pageSize}`
     }
-    console.log(baseQuery)
+
     return query(baseQuery)
 }
 

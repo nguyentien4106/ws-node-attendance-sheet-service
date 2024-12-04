@@ -5,10 +5,11 @@ import { RequestTypes } from "../constants/requestType";
 import AttendancesTable from "../components/attendances/AttendancesTable";
 import { Button, DatePicker, message, Modal, Select, Space } from "antd";
 import dayjs from "dayjs";
-import { DATE_FORMAT, TIME_FORMAT } from "../constants/common";
+import { DATE_FORMAT, DATE_SHOW_FORMAT, TIME_FORMAT } from "../constants/common";
 import AttendanceForm from "../components/attendances/AttendanceForm";
 import { getHostUrl, isAuth } from "../helper/common";
 import Auth from "../layout/Auth";
+import writeXlsxFile from "write-excel-file"
 
 const { RangePicker } = DatePicker;
 const WS_URL = getHostUrl();
@@ -40,8 +41,8 @@ export default function Attendances() {
     const [usersFilter, setUsersFilter] = useState([])
     const [params, setParams] = useState({
         deviceId: deviceId,
-        fromDate: dateRange??[0]?.format(DATE_FORMAT),
-        toDate: dateRange??[1]?.format(DATE_FORMAT),
+        fromDate: dateRange ? dateRange[0]?.format(DATE_FORMAT) : "",
+        toDate: dateRange ? dateRange[1]?.format(DATE_FORMAT) : "",
         tableParams: {
             pagination
         }
@@ -56,14 +57,12 @@ export default function Attendances() {
         },
         onError: (err) => {
             message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
-
         },
         onMessage: (event) => {
             const response = JSON.parse(event.data);
             setLoading(false);
             const data = response.data;
             if (response.type === RequestTypes.GetAttendances) {
-                console.log(data)
                 setAttendances(Array.isArray(data) ? data : []);
                 setTotalRow(data.length ? +data[0]?.count : 0 )
             }
@@ -147,13 +146,69 @@ export default function Attendances() {
                 }
             }
 
-            if(response.type === RequestTypes.GetUsers){
+            if(response.type === RequestTypes.ExportExcel){
+                const schema = [
+                    {
+                        column: 'Id',
+                        type: Number,
+                        value: att => att.Id
+                    },
+                    {
+                        column: 'Tên thiết bị',
+                        type: String,
+                        value: att => att.DeviceName
+                    },
+                    {
+                        column: 'User Id',
+                        type: String,
+                        value: att => att.UserId
+                    },
+                    {
+                        column: 'Mã nhân viên',
+                        type: String,
+                        value: att => att.EmployeeCode
+                    },
+                    {
+                        column: 'Tên trong máy',
+                        type: String,
+                        value: att => att.UserName
+                    },
+                    {
+                        column: 'Tên nhân viên',
+                        type: String,
+                        value: att => att.Name
+                    },
+                    {
+                        column: 'Ngày (DD/MM/YYYY)',
+                        type: String,
+                        value: att => dayjs(new Date(att.VerifyDate)).format(DATE_SHOW_FORMAT)
+                    },
+                    {
+                        column: 'Giờ',
+                        type: String,
+                        value: att => dayjs(new Date(att.VerifyDate)).format(TIME_FORMAT)
+                    },
+                    {
+                        column: 'Thêm thủ công',
+                        type: String,
+                        value: att => att.Manual ? "X" : ""
+                    },
+                ]
+                
+                writeXlsxFile(data, {
+                    schema, // (optional) column widths, etc.
+                    fileName: `Attendances_Report.xlsx`
+                }).then(res => {
+                    console.log(res)
+                })
             }
+
         },
     });
 
     useEffect(() => {
         if (!isAuth || !dateRange) {
+            message.error("Vui lòng chọn DateRange")
             return;
         }
 
@@ -190,6 +245,8 @@ export default function Attendances() {
 
     useEffect(() => {
         if (!isAuth || !dateRange) {
+            message.error("Vui lòng chọn DateRange")
+
             return
         }
 
@@ -223,6 +280,7 @@ export default function Attendances() {
 
     const submit = () => {
         if (!isAuth || !dateRange) {
+            message.error("Vui lòng chọn DateRange")
             return
         }
         sendJsonMessage({
@@ -267,6 +325,7 @@ export default function Attendances() {
                 setFilters={setFilters}
                 totalRow={totalRow}
                 usersFilter={usersFilter}
+                params={params}
             ></AttendancesTable>
             <Modal
                 open={open}

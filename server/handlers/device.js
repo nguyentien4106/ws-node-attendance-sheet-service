@@ -90,11 +90,13 @@ export const deviceHandlers = (request, ws, deviceContainer) => {
             break;
 
         case RequestTypes.DeviceClearAttendances:
+            console.log(request.type)
             deviceContainer.clearAttendances(request.data).then((res) => {
+                console.log('res', res)
                 ws.send(
                     getResponse({
                         type: request.type,
-                        data: Result.Success(res.rows),
+                        data: res,
                     })
                 );
             });

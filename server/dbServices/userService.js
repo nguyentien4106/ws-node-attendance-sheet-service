@@ -6,7 +6,7 @@ import { Result } from "../models/common.js";
 import { appendRow, initSheets } from "./dataService.js";
 import { getSheetsByDeviceIp } from "./sheetService.js";
 
-export const insertNewUsers = async (users, device, displayName) => {
+export const insertNewUsers = async (users, device, displayName, pushToSheet = true) => {
     const values = users.map((item) => [
         item.uid,
         item.name,
@@ -24,6 +24,10 @@ export const insertNewUsers = async (users, device, displayName) => {
         values
     );
 
+    if(!pushToSheet){
+        return result
+    }
+    
     const usersToSheet = result.rows.map(item => [item.Id, item.UID, item.EmployeeCode, UserRoles[item.Role], item.DeviceIp, device.DeviceName, item.Name, item.DisplayName, item.Password, item.CardNo])
     
     let sheets = device.Sheets
@@ -64,8 +68,6 @@ export const getUsersByDeviceId = deviceId => {
         ORDER BY "Users"."Id" DESC
     `;
 
-    console.log(sql)
-        
     return query(sql);
 }
 

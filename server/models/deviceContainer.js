@@ -127,28 +127,28 @@ export class DeviceContainer {
 				TIME_OUT,
 				IN_PORT
 			);
-			// const success = await deviceSDK.createSocket();
-			// const sn = await deviceSDK.getSerialNumber();
+			const success = await deviceSDK.createSocket();
+			const sn = await deviceSDK.getSerialNumber();
 
-			// const sheetsValid = await isSheetsValid(device.Sheets);
-			// if (!sheetsValid.isSuccess) {
-			// 	return sheetsValid;
-			// }
+			const sheetsValid = await isSheetsValid(device.Sheets);
+			if (!sheetsValid.isSuccess) {
+				return sheetsValid;
+			}
 
-			// if (success) {
-			// 	await deviceSDK.freeData();
-			// 	const users = await deviceSDK.getUsers();
-			// 	await insertNewUsers(users.data, {
-			// 		Ip: device.Ip,
-			// 		DeviceName: device.Name,
-			// 		Sheets: device.Sheets,
-			// 	});
-			// 	await deviceSDK.disconnect();
-			// }
+			if (success) {
+				await deviceSDK.freeData();
+				const users = await deviceSDK.getUsers();
+				await insertNewUsers(users.data, {
+					Ip: device.Ip,
+					DeviceName: device.Name,
+					Sheets: device.Sheets,
+				});
+				await deviceSDK.disconnect();
+			}
 
 			this.deviceSDKs.push(deviceSDK);
-			// const result = await insertNewDevice(Object.assign(device, { SN: sn }));
-			const result = await insertNewDevice(Object.assign(device, { SN: "123" }));
+			const result = await insertNewDevice(Object.assign(device, { SN: sn }));
+			// const result = await insertNewDevice(Object.assign(device, { SN: "123" }));
 
 			return result.rowCount
 				? Result.Success(result.rows[0])
@@ -176,7 +176,8 @@ export class DeviceContainer {
 
 			const connect = async () => {
 				success = await deviceSDK.createSocket();
-				await deviceSDK.getPIN();
+				const pin = await deviceSDK.getPIN();
+				console.log('pin', pin)
 				await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
 					await handleRealTimeData(realTimeLog, device.Id);
 				});
@@ -211,7 +212,7 @@ export class DeviceContainer {
 
 			const deviceSDK = this.deviceSDKs.find((item) => item.ip === device.Ip);
 
-			if (deviceSDK.ztcp.socket) {
+			if (deviceSDK?.ztcp?.socket) {
 				await deviceSDK.disconnect();
 				return Result.Success(device);
 			}
@@ -303,7 +304,7 @@ export class DeviceContainer {
 		return true;
 	}
 
-	async addUserToDevice(user, deviceSDK, deviceName) {
+	async addUserToDevice(user, deviceSDK, deviceName, pushToSheet = true) {
 		try {
 			// const users = await deviceSDK.getUsers();
 			const query = await getLastUID(deviceSDK.ip);
@@ -328,7 +329,8 @@ export class DeviceContainer {
 			const addDBResult = await insertNewUsers(
 				[Object.assign(user, { uid: lastUid })],
 				{ Ip: deviceSDK.ip, DeviceName: deviceName },
-				user.displayName
+				user.displayName,
+				pushToSheet
 			);
 
 			return Result.Success(
@@ -337,7 +339,7 @@ export class DeviceContainer {
 						? { ...addDBResult.rows[0], DeviceName: deviceName }
 						: null,
 				},
-				`Thiết bị: ${deviceSDK.ip}: Thêm thành công. User ID: ${user.userId} - Tên: ${user.name}`
+				`Thiết bị: ${deviceSDK.ip}: Thêm thành công. Mã nhân viên: ${user.employeeCode} - Tên: ${user.name}`
 			);
 		} catch (err) {
 			console.log(err);
@@ -552,6 +554,7 @@ export class DeviceContainer {
 			EMPLOYEE_DATA,
 			USER_HEADER_ROW
 		);
+
 		if (!initResult.isSuccess) {
 			return [initResult];
 		}
@@ -560,11 +563,7 @@ export class DeviceContainer {
 
 		const rows = await sheet.getRows();
 
-		const newUsersToAdd = rows.filter(
-			(row) => row.get(USER_HEADER_ROW[0]).trim() === ""
-		);
-
-		const newUsers = newUsersToAdd.map((row) => {
+		const getUserObjectFromRow = (row) => {
 			const roleText = row.get(USER_HEADER_ROW[3]);
 			const role = +Object.entries(UserRoles).find(item => item[1] === roleText)?.[0];
 			return {
@@ -576,21 +575,26 @@ export class DeviceContainer {
 				password: row.get(USER_HEADER_ROW[8]),
 				cardno: row.get(USER_HEADER_ROW[9]),
 			};
-		});
-
-		const result = [];
-		let index = 0;
-		for (const user of newUsers) {
-			const addResult = await this.addUserToDevice(user, sdk, data.DeviceName);
-			if (addResult.isSuccess) {
-                newUsersToAdd[index].set(USER_HEADER_ROW[0], addResult.data.Id)
-                newUsersToAdd[index].set(USER_HEADER_ROW[1], addResult.data.UID)
-				await newUsersToAdd[index].save()
-			}
-			result.push(addResult);
-			index++;
 		}
+		const result = [];
 
+		for(const row of rows){
+			if(row.get(USER_HEADER_ROW[0]).trim() !== ""){
+				continue;
+			}
+
+			const newUser = getUserObjectFromRow(row)
+			const addResult = await this.addUserToDevice(newUser, sdk, data.DeviceName, false)
+
+			if(addResult.isSuccess){
+				row.set(USER_HEADER_ROW[0], addResult.data.user.Id)
+				row.set(USER_HEADER_ROW[1], addResult.data.user.UID)
+				await row.save()
+			}
+			
+			result.push(addResult)
+		}
+		
 		return result;
 	}
 
@@ -633,7 +637,6 @@ export class DeviceContainer {
 			if (!sdk || !sdk.connectionType || !sdk.ztcp?.socket) {
 				return [Result.Fail(500, UNCONNECTED_ERR_MSG + sdk?.ip)];
 			}
-
 			await sdk.clearAttendanceLog();
 			return Result.Success(data, "Đã xóa toàn bộ dữ liệu thành công.");
 		} catch (err) {

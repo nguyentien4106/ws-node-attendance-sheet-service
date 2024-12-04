@@ -22,6 +22,7 @@ export const RequestTypes = {
     DeleteLog: "Attendance.Delete",
     AddLog: "Attendance.Add",
     SyncDataFromSheet: "Attendance.SyncDataFromSheet",
+    ExportExcel: "Attendance.ExportExcel",
     GetSheets: "GetSheets",
     UpdateEmail: "UpdateEmail",
     GetSettings: "GetSettings",

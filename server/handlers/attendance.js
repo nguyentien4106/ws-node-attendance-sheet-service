@@ -91,5 +91,26 @@ export const attendanceHandlers = (request, ws, deviceContainer) => {
                 );
             });
             break;
+
+        case RequestTypes.ExportExcel:
+            getAttendances(request.data)
+                .then((res) => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: res.rows,
+                        })
+                    );
+                })
+                .catch((err) => {
+                    ws.send(
+                        getResponse({
+                            type: request.type,
+                            data: err,
+                        })
+                    );
+                });
+            break;
+            break;
     }
 };

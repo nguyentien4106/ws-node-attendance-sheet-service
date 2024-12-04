@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { DATE_FORMAT, DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/common";
 import writeXlsxFile from "write-excel-file"
 
-export default function AttendancesTable({ attendances, sendJsonMessage, pagination, setPagination, filters, setFilters, totalRow, usersFilter }) {
+export default function AttendancesTable({ attendances, sendJsonMessage, pagination, setPagination, filters, setFilters, totalRow, usersFilter, params }) {
     const nameFilter = [... new Set(usersFilter?.map(item => item.DisplayName))].map(item => ({ text: item, value: item }))
     const columns = [
         {
@@ -144,51 +144,59 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
     const submitRef = useRef();
 
     const exportExcel = async () => {
-        const schema = [
-            {
-                column: 'Id',
-                type: Number,
-                value: att => att.Id
-            },
-            {
-                column: 'Tên thiết bị',
-                type: String,
-                value: att => att.DeviceName
-            },
-            {
-                column: 'User Id',
-                type: String,
-                value: att => att.UserId
-            },
-            {
-                column: 'Mã nhân viên',
-                type: String,
-                value: att => att.EmployeeCode
-            },
-            {
-                column: 'Tên trong máy',
-                type: String,
-                value: att => att.UserName
-            },
-            {
-                column: 'Tên nhân viên',
-                type: String,
-                value: att => att.Name
-            },
-            {
-                column: 'Ngày (DD/MM/YYYY)',
-                type: String,
-                value: att => dayjs(new Date(att.VerifyDate)).format(DATE_SHOW_FORMAT)
-            },
-            {
-                column: 'Giờ',
-                type: String,
-                value: att => dayjs(new Date(att.VerifyDate)).format(TIME_FORMAT)
-            },
-        ]
-        await writeXlsxFile(attendances, {
-            schema, // (optional) column widths, etc.
-            fileName: `Attendances_Report.xlsx`
+        // const schema = [
+        //     {
+        //         column: 'Id',
+        //         type: Number,
+        //         value: att => att.Id
+        //     },
+        //     {
+        //         column: 'Tên thiết bị',
+        //         type: String,
+        //         value: att => att.DeviceName
+        //     },
+        //     {
+        //         column: 'User Id',
+        //         type: String,
+        //         value: att => att.UserId
+        //     },
+        //     {
+        //         column: 'Mã nhân viên',
+        //         type: String,
+        //         value: att => att.EmployeeCode
+        //     },
+        //     {
+        //         column: 'Tên trong máy',
+        //         type: String,
+        //         value: att => att.UserName
+        //     },
+        //     {
+        //         column: 'Tên nhân viên',
+        //         type: String,
+        //         value: att => att.Name
+        //     },
+        //     {
+        //         column: 'Ngày (DD/MM/YYYY)',
+        //         type: String,
+        //         value: att => dayjs(new Date(att.VerifyDate)).format(DATE_SHOW_FORMAT)
+        //     },
+        //     {
+        //         column: 'Giờ',
+        //         type: String,
+        //         value: att => dayjs(new Date(att.VerifyDate)).format(TIME_FORMAT)
+        //     },
+        // ]
+
+        // await writeXlsxFile(attendances, {
+        //     schema, // (optional) column widths, etc.
+        //     fileName: `Attendances_Report.xlsx`
+        // })
+        setLoading(true)
+        const excelParams = JSON.parse(JSON.stringify(params))
+        excelParams.tableParams.pagination = null;
+        sendJsonMessage({
+            type: RequestTypes.ExportExcel,
+            data: excelParams
         })
     }
 
