@@ -49,7 +49,7 @@ export const handleRealTimeData = async (log, deviceId) => {
             client.send(
                 getResponse({
                     type: RequestTypes.AddLog,
-                    data: Result.Success(query.rows),
+                    data: Result.Success(query.rows.map(item => Object.assign(item, { VerifyDate: dayjs(item.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT) }))),
                 })
             );
         });

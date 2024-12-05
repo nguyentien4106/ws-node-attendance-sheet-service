@@ -8,18 +8,15 @@ import { DATE_FORMAT, DATE_SHOW_FORMAT, TIME_FORMAT } from "../../constants/comm
 import writeXlsxFile from "write-excel-file"
 
 export default function AttendancesTable({ attendances, sendJsonMessage, pagination, setPagination, filters, setFilters, totalRow, usersFilter, params }) {
-    const nameFilter = [... new Set(usersFilter?.map(item => item.DisplayName))].map(item => ({ text: item, value: item }))
+    const employeeCodeFilter = [... new Set(usersFilter?.map(item => item.EmployeeCode))].map(item => ({ text: item, value: item }))
+    const nameInDeviceFilter = [... new Set(usersFilter?.map(item => item.Name))].map(item => ({ text: item, value: item }))
+
     const columns = [
         {
             title: "Id",
             dataIndex: "Id",
             key: "Id",
             fixed: 'left'
-        },
-        {
-            title: "ID Thiết bị",
-            dataIndex: "DeviceId",
-            key: "DeviceId",
         },
         {
             title: "Thiết bị",
@@ -36,20 +33,22 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             title: "Mã nhân viên",
             dataIndex: "EmployeeCode",
             key: "EmployeeCode",
-            
+            filters: employeeCodeFilter,
+            onFilter: (value, record) => record.EmployeeCode === (value),
+            filterSearch: true,
         },
         {
             title: "Tên trong máy",
             dataIndex: "UserName",
             key: "UserName",
+            filters: nameInDeviceFilter,
+            onFilter: (value, record) => record.UserName === value,
+            filterSearch: true,
         },
         {
             title: "Tên nhân viên",
             dataIndex: "Name",
             key: "Name",
-            filters: nameFilter,
-            onFilter: (value, record) => record.Name === (value),
-            filterSearch: true,
         },
         {
             title: "Ngày (DD/MM/YYYY)",
@@ -91,7 +90,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
                             Đồng bộ ngay
                         </Button>
                     </Space>
-                ),
+            ),
             fixed: 'right'
 
         },
@@ -110,7 +109,9 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
                     />
                 ) : (
                     ""
-                ),
+            ),
+            filters: [{ text: "Yes", value: true}, { text: "No", value: false }],
+            onFilter: (value, record) => record.Manual === value
         },
         {
             title: "Action",
@@ -144,53 +145,6 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
     const submitRef = useRef();
 
     const exportExcel = async () => {
-        // const schema = [
-        //     {
-        //         column: 'Id',
-        //         type: Number,
-        //         value: att => att.Id
-        //     },
-        //     {
-        //         column: 'Tên thiết bị',
-        //         type: String,
-        //         value: att => att.DeviceName
-        //     },
-        //     {
-        //         column: 'User Id',
-        //         type: String,
-        //         value: att => att.UserId
-        //     },
-        //     {
-        //         column: 'Mã nhân viên',
-        //         type: String,
-        //         value: att => att.EmployeeCode
-        //     },
-        //     {
-        //         column: 'Tên trong máy',
-        //         type: String,
-        //         value: att => att.UserName
-        //     },
-        //     {
-        //         column: 'Tên nhân viên',
-        //         type: String,
-        //         value: att => att.Name
-        //     },
-        //     {
-        //         column: 'Ngày (DD/MM/YYYY)',
-        //         type: String,
-        //         value: att => dayjs(new Date(att.VerifyDate)).format(DATE_SHOW_FORMAT)
-        //     },
-        //     {
-        //         column: 'Giờ',
-        //         type: String,
-        //         value: att => dayjs(new Date(att.VerifyDate)).format(TIME_FORMAT)
-        //     },
-        // ]
-
-        // await writeXlsxFile(attendances, {
-        //     schema, // (optional) column widths, etc.
-        //     fileName: `Attendances_Report.xlsx`
-        // })
         setLoading(true)
         const excelParams = JSON.parse(JSON.stringify(params))
         excelParams.tableParams.pagination = null;

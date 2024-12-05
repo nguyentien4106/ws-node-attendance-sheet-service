@@ -447,9 +447,12 @@ export class DeviceContainer {
 		const result = [];
 		for (const device of devices) {
 			try {
-				await device.setTime(
-					new Date(new Date().getTime() + 7 * 60 * 60 * 1000)
-				);
+				const date = new Date(); // Current UTC time
+				const gmt7Offset = 7 * 60; // Offset in minutes for GMT+7
+				const localDate = new Date(date.getTime() + gmt7Offset * 60 * 1000);
+
+				console.log('localDate', localDate)
+				await device.setTime(localDate);
 				result.push(Result.Success(device.ip));
 			} catch (err) {
 				result.push(Result.Fail(500, err.message, device.ip));
@@ -580,6 +583,10 @@ export class DeviceContainer {
 
 		for(const row of rows){
 			if(row.get(USER_HEADER_ROW[0]).trim() !== ""){
+				continue;
+			}
+
+			if(row.get(USER_HEADER_ROW[4]).trim() !== sdk.ip){
 				continue;
 			}
 

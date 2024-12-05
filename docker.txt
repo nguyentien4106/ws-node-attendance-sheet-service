@@ -25,6 +25,7 @@ services:
       - postgres
     ports:
       - "3002:3002"
+      - "8081:8081"
     volumes:
       - ./server:/app
     restart: on-failure

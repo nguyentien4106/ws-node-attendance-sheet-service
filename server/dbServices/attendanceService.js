@@ -145,8 +145,24 @@ export const getAttendances = (params) => {
     if (params.fromDate && params.toDate) {
         conditions.push(`"VerifyDate" BETWEEN SYMMETRIC '${params.fromDate}' AND '${params.toDate}'`);
     }
+
     if(params.tableParams && params.tableParams.filters && params.tableParams.filters["Name"]?.length){
         const orCondition = `(${params.tableParams.filters["Name"].map(item => `"Attendances"."Name" = '${item}'`).join(" OR ")})`
+        conditions.push(orCondition)        
+    }
+
+    if(params.tableParams && params.tableParams.filters && params.tableParams.filters["EmployeeCode"]?.length){
+        const orCondition = `(${params.tableParams.filters["EmployeeCode"].map(item => `"Users"."EmployeeCode" = '${item}'`).join(" OR ")})`
+        conditions.push(orCondition)        
+    }
+
+    if(params.tableParams && params.tableParams.filters && params.tableParams.filters["UserName"]?.length){
+        const orCondition = `(${params.tableParams.filters["UserName"].map(item => `"Attendances"."UserName" = '${item}'`).join(" OR ")})`
+        conditions.push(orCondition)        
+    }
+
+    if(params.tableParams && params.tableParams.filters && params.tableParams.filters["Manual"]?.length){
+        const orCondition = `(${params.tableParams.filters["Manual"].map(item => `"Attendances"."Manual" = ${item}`).join(" OR ")})`
         conditions.push(orCondition)        
     }
 

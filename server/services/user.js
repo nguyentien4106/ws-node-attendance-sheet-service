@@ -31,7 +31,7 @@ export const syncUserData = async (data) => {
                 item.Id,
                 item.UID,
                 item.EmployeeCode,
-                UserRoles[item.Role],
+                UserRoles[item.Role] ?? UserRoles[item.Role > 0 ? 6 : 0 ],
                 item.DeviceIp,
                 item.DeviceName,
                 item.Name,
