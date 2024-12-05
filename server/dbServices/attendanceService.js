@@ -206,7 +206,7 @@ export const handleSyncAttendancesDB = async (attendances, users, deviceId) => {
     });
 
     if(deviceId){
-        await query(`DELETE FROM public."Attendances" WHERE "DeviceId" = ${deviceId};`)
+        await query(`DELETE FROM public."Attendances" WHERE "DeviceId" = ${deviceId} AND ( "Manual" IS NULL OR "Manual" = false );`)
     }
     
     if(values?.length == 0){

@@ -16,13 +16,13 @@ export default function UsersTable({
             key: "Id",
             render: (text) => <a>{text}</a>,
         },
-        {
-            title: "UID",
-            dataIndex: "UID",
-            key: "UID",
-            render: (text) => <a>{text}</a>,
-            width: "80px"
-        },
+        // {
+        //     title: "UID",
+        //     dataIndex: "UID",
+        //     key: "UID",
+        //     render: (text) => <a>{text}</a>,
+        //     width: "80px"
+        // },
         {
             title: "User ID",
             dataIndex: "UserId",
