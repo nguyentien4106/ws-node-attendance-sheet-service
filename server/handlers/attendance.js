@@ -113,6 +113,5 @@ export const attendanceHandlers = (request, ws, deviceContainer) => {
                     );
                 });
             break;
-            break;
     }
 };
