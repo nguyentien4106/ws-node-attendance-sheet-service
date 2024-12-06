@@ -1,23 +1,13 @@
 import React, { useState } from "react";
-import {
-	DesktopOutlined,
-	FileOutlined,
-	PieChartOutlined,
-	TeamOutlined,
-	UserOutlined,
-} from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, message, theme } from "antd";
-import Devices from "../pages/Devices";
+import { Layout, Menu, message, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-import devicePng from "../assets/logo.png";
-
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 
 const AppLayout = () => {
 	const [collapsed, setCollapsed] = useState(false);
 	const {
-		token: { colorBgContainer, borderRadiusLG },
+		token: { colorBgContainer },
 	} = theme.useToken();
 
 	const navigate = useNavigate();
@@ -94,8 +84,8 @@ const AppLayout = () => {
 			},
 		},
 	];
-
     const bgColor = "#B6C99B"
+
 	return (
 		<Layout
 			style={{

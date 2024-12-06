@@ -20,7 +20,7 @@ export const notifyToSheets = async (ip, deviceName, message) => {
             SheetName: "THÔNG BÁO",
             DocumentId: item.DocumentId,
         })),
-        ["ID", "IP", "Tên thiết bị", "Lỗi", "Ngày", "Giờ"]
+        ["ID", "IP", "Tên thiết bị", "Thông báo", "Ngày", "Giờ"]
     );
 
     await appendRow(

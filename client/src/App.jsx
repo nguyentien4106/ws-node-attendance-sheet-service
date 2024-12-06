@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import useWebSocket from "react-use-websocket";
-import { RequestTypes } from "./constants/requestType";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import AppLayout from "./layout/AppLayout";
 import Devices from "./pages/Devices";
@@ -15,9 +11,32 @@ import Users from "./pages/Users";
 import Attendances from "./pages/Attendances";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
+import { getHostUrl } from "./helper/common";
+import { RequestTypes } from "./constants/requestType";
+const WS_URL = getHostUrl();
 
 function App() {
     const { loading } = useLoading()
+    
+    useWebSocket(WS_URL, {
+        onError: (err) => {
+            message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
+        },
+        onMessage: (event) => {
+            const response = JSON.parse(event.data);
+
+            const { type, data } = response
+            console.log('response', response)
+            if(type === RequestTypes.DeviceNewADMS){
+                message.success('Đã phát hiện một thiết bị ADMS có SerialNumber: ' + data)
+            }
+
+            if(type === "Ping"){
+                message.info('Tín hiệu: ' + data)
+            }
+        }
+    });
+
     return (
         <>
             {

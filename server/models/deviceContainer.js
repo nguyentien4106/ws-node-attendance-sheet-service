@@ -504,7 +504,7 @@ export class DeviceContainer {
                     data: `${deviceSDK.ip} đã bị mất kết nối. Vui lòng kiểm tra lại.`,
                 }))
 
-                await notifyToSheets(deviceSDK.ip, deviceName, 'Mất kết nối')
+                await notifyToSheets(deviceSDK.ip, deviceName, 'Bị mất kết nối.')
 			}
 		}
 	}

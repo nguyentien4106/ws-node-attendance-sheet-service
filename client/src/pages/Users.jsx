@@ -20,14 +20,7 @@ const OPEN_TYPE = {
 
 export default function Users() {
     const { sendJsonMessage } = useWebSocket(WS_URL, {
-        onOpen: () => {
-            console.log("WebSocket connection established.");
-        },
-        onClose: () => {
-            console.log("on closed");
-        },
         onError: (err) => {
-            console.log(err);
             message.error(
                 "Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. "
             );

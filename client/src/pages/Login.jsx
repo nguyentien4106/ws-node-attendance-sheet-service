@@ -16,7 +16,6 @@ const Login = () => {
           })
         .then(res => res.json())
         .then(res => {
-            console.log(res.data)
             if(res.isSuccess){
                 sessionStorage.setItem("auth", res.data.email)
                 navigate(window.location.pathname)

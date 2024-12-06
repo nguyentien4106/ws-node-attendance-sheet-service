@@ -25,7 +25,7 @@ const EditUserForm = ({
 }) => {
     const [form] = Form.useForm();
     const { setLoading } = useLoading();
-    console.log(user)
+
     const onFinish = (values) => {
         setLoading(true)
         sendJsonMessage({

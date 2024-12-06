@@ -6,16 +6,15 @@ import { handleRealTimeDataBySN } from '../../helper/dataHelper.js'
 import { sendMessageToClients } from '../websocket.js'
 import { getResponse } from '../../models/response.js'
 import { RequestTypes } from '../../constants/requestType.js'
+import { notifyToSheets } from '../../helper/common.js'
 
 const parseQueryString = (URL) => {
     return url.parse(URL, true).query
 }
 
 export const handShake = async (req, res) => {
-    console.log(`${req.method} request ${req.url}`)
     const params = parseQueryString(req.url)
     const response = `GET OPTION FROM: ${params["SN"]}\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None`
-    console.log('handshake response', response)
     logger.info(`handshake response ${response}`)
     res.setHeader("Date", new Date().toUTCString())
     res.send(response)
@@ -25,6 +24,7 @@ export const handShake = async (req, res) => {
             data: params["SN"]
         })
     )
+    await notifyToSheets(req.ip, "Device ADMS", "Thiết bị ADMS được phát hiện: " + params["SN"])
     return response
 }
 

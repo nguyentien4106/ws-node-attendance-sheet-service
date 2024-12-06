@@ -60,12 +60,6 @@ export default function Attendances() {
     });
 
     const { sendJsonMessage } = useWebSocket(WS_URL, {
-        onOpen: () => {
-            console.log("WebSocket connection established.");
-        },
-        onClose: () => {
-            console.log("on closed");
-        },
         onError: (err) => {
             message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
         },
@@ -165,7 +159,6 @@ export default function Attendances() {
                     schema,
                     fileName: `Attendances_Report.xlsx`,
                 }).then((res) => {
-                    console.log(res);
                 });
                 break;
 

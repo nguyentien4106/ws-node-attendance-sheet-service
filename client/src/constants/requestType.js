@@ -7,6 +7,7 @@ export const RequestTypes = {
     GetDevicesSheets: "Device.GetAllWithSheets",
     DisconnectDevice: "Device.Disconnect",    
     DeviceClearAttendances: "Device.ClearAttendances",
+    DeviceNewADMS: "Device.NewADMS",
     GetUsers: "User.GetUsers",
     AddUser: "User.Add",
     DeleteUser: "User.Delete",

@@ -8654,3 +8654,43 @@
 {"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T04:54:54.526Z"}
 {"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T04:54:54.531Z"}
 {"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T04:54:54.535Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:32:05.677Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:32:05.685Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:32:05.688Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 123456789\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-12-06T07:32:11.211Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 123456789\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-12-06T07:32:22.297Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:32:53.396Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:32:53.409Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:32:53.412Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 123456789\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-12-06T07:33:04.407Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:34:12.825Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:34:12.840Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:34:12.844Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:35:02.907Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:35:02.921Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:35:02.924Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:35:15.330Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:35:15.336Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:35:15.339Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:35:42.420Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:35:42.426Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:35:42.431Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:36:08.227Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:36:08.232Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:36:08.236Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:38:05.602Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:38:05.616Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:38:05.622Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:40:45.748Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:40:45.772Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:40:45.775Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 123456789\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-12-06T07:40:59.371Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 123456789\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-12-06T07:42:12.363Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 123456789\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-12-06T07:42:41.548Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T07:43:57.298Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T07:43:57.311Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T07:43:57.314Z"}
+{"level":"info","message":"handshake response GET OPTION FROM: 123456789\r\nATTLOGStamp=9999\r\nOPERLOGStamp=9999\r\nATTPHOTOStamp=None\r\nErrorDelay=15\r\nDelay=5\r\nTransTimes=00:00;08:00;09:00;10:00;11:00;12:00;13:00;14:00;15:00;16:00\r\nTransinterval=1\r\nTransFlag=1000000000\r\nServerVer=2.2.1\r\nRealtime=1\r\nEncrypt=None","timestamp":"2024-12-06T07:44:05.468Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T08:05:31.081Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T08:05:31.089Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T08:05:31.092Z"}
