@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import DevicesTable from "../components/devices/DevicesTable";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
@@ -28,18 +28,6 @@ export default function Devices() {
     const submitRef = useRef();
     const [sheets, setSheets] = useState({})
 
-    const downloadTxtFiles = (files) => {
-        for (const file of files) {
-            const blob = new Blob([file.content], { type: "text/plain" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `AppScriptFile_${file.name}`; // The name of the downloaded file
-            link.click();
-            URL.revokeObjectURL(url);
-        }
-    }
-
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onOpen: () => {
             console.log("WebSocket connection established.");
@@ -52,95 +40,106 @@ export default function Devices() {
             message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
 
         },
-        onMessage: (event) => {
-            const response = JSON.parse(event.data);
-            setLoading(false)
-            if (response.type === RequestTypes.GetDevices) {
-                setDevices(response.data);
-            }
-
-            if (response.type === RequestTypes.ConnectDevice) {
-                const data = response.data;
-                if (data.code === 200) {
-                    setDevices(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { IsConnected: true }) : item))
-                    message.success("Kết nối thiết bị thành công.")
-                }
-                else {
-                    const { syscall, code } = data.message.err.err
-                    message.error(`${syscall} ${code}! Vui lòng thử lại`)
-                }
-            }
-
-            if (response.type === RequestTypes.DisconnectDevice) {
-                const data = response.data;
-                if (data.code === 200) {
-                    setDevices(prev => prev.map(item => item.Id === data.data.Id ? Object.assign(item, { IsConnected: false }) : item))
-                    message.success("Ngắt kết nối thiết bị thành công.")
-                }
-                else {
-                    const { syscall, code } = data.message.err.err
-                    message.error(`${syscall} ${code}! Đã có lỗi xảy ra vui lòng thử lại hoặc liên hệ quản trị để xử lý.`)
-                }
-            }
-
-            if (response.type === RequestTypes.AddDevice) {
-                const data = response.data;
-                if (data.isSuccess) {
-                    message.success("Thêm thiết bị thành công.")
-                    location.reload();
-                }
-                else {
-                    message.error(data.message?.trim() ?? "Đã xảy ra lỗi không mong muốn khi thêm thiết bị. Vui lòng thử lại.")
-                }
-            }
-
-            if (response.type === RequestTypes.RemoveDevice) {
-                const data = response.data;
-                if (data.code === 200) {
-                    setDevices(prev => prev.filter(item => item.Id !== data.data.Id))
-                    message.success("Gỡ thiết bị thành công.")
-                }
-                else {
-                    message.error(data.message)
-                }
-            }
-
-            if (response.type === RequestTypes.SyncData) {
-                const data = response.data;
-                console.log(data)
-                if (data.isSuccess) {
-                    message.success("Đồng bộ dữ liệu thành công")
-                }
-                else {
-                    message.error(data.message)
-                }
-            }
-
-            if (response.type === RequestTypes.GetDevicesSheets) {
-                setDevices(response.data.data);
-            }
-
-            if (response.type === RequestTypes.GetSheets) {
-                setSheets(Object.groupBy(response.data.data, item => item.DocumentId))
-            }
-
-            if (response.type === "Ping") {
-                const data = response.data
-                message.error(data)
-            }
-
-            
-            if(response.type === RequestTypes.DeviceClearAttendances){
-                console.log(response)
-                if(response.data.isSuccess){
-                    message.success("Đã xóa toàn bộ dữ liệu trong máy thành công.")
-                }
-                else {
-                    message.error(response.data.message)
-                }
-             }
-        },
+        onMessage: useCallback(event => handleWebSocketMessage(event), []),
     });
+
+    const handleWebSocketMessage = (event) => {
+        const response = JSON.parse(event.data);
+        const { type, data } = response;
+    
+        setLoading(false);
+    
+        const handleError = (error) => {
+            const { syscall, code } = error?.err?.err || {};
+            message.error(`${syscall} ${code}! Vui lòng thử lại`);
+        };
+    
+        switch (type) {
+            case RequestTypes.GetDevices:
+                setDevices(data);
+                break;
+    
+            case RequestTypes.ConnectDevice:
+                if (data.code === 200) {
+                    setDevices((prev) =>
+                        prev.map((item) =>
+                            item.Id === data.data.Id
+                                ? { ...item, IsConnected: true }
+                                : item
+                        )
+                    );
+                    message.success("Kết nối thiết bị thành công.");
+                } else {
+                    handleError(data.message);
+                }
+                break;
+    
+            case RequestTypes.DisconnectDevice:
+                if (data.code === 200) {
+                    setDevices((prev) =>
+                        prev.map((item) =>
+                            item.Id === data.data.Id
+                                ? { ...item, IsConnected: false }
+                                : item
+                        )
+                    );
+                    message.success("Ngắt kết nối thiết bị thành công.");
+                } else {
+                    handleError(data.message);
+                }
+                break;
+    
+            case RequestTypes.AddDevice:
+                if (data.isSuccess) {
+                    message.success("Thêm thiết bị thành công.");
+                    location.reload();
+                } else {
+                    message.error(data.message?.trim() || "Đã xảy ra lỗi không mong muốn khi thêm thiết bị. Vui lòng thử lại.");
+                }
+                break;
+    
+            case RequestTypes.RemoveDevice:
+                if (data.code === 200) {
+                    setDevices((prev) => prev.filter((item) => item.Id !== data.data.Id));
+                    message.success("Gỡ thiết bị thành công.");
+                } else {
+                    message.error(data.message);
+                }
+                break;
+    
+            case RequestTypes.SyncData:
+                if (data.isSuccess) {
+                    message.success("Đồng bộ dữ liệu thành công.");
+                } else {
+                    message.error(data.message);
+                }
+                break;
+    
+            case RequestTypes.GetDevicesSheets:
+                setDevices(data.data);
+                break;
+    
+            case RequestTypes.GetSheets:
+                setSheets(Object.groupBy(data.data, (item) => item.DocumentId));
+                break;
+    
+            case "Ping":
+                message.error(data);
+                break;
+    
+            case RequestTypes.DeviceClearAttendances:
+                if (data.isSuccess) {
+                    message.success("Đã xóa toàn bộ dữ liệu trong máy thành công.");
+                } else {
+                    message.error(data.message);
+                }
+                break;
+    
+            default:
+                console.warn(`Unhandled response type: ${type}`);
+        }
+    };
+    
 
     useEffect(() => {
         if (!isAuth) {

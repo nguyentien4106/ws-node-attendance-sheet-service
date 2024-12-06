@@ -149,17 +149,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
     const [editItem, setEditItem] = useState(null);
     const { setLoading } = useLoading();
     const submitRef = useRef();
-
-    const exportExcel = async () => {
-        setLoading(true)
-        const excelParams = JSON.parse(JSON.stringify(params))
-        excelParams.tableParams.pagination = null;
-        sendJsonMessage({
-            type: RequestTypes.ExportExcel,
-            data: excelParams
-        })
-    }
-
+   
     const handleTableChange = (pag, ft) => {
         if(JSON.stringify(pag) !== JSON.stringify(pagination)){
             setPagination(prev => ({ ...prev, current: pag.current, pageSize: pag.pageSize }));
@@ -185,6 +175,16 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             data: rc,
         });
     };
+
+    const exportExcel = async () => {
+        setLoading(true)
+        const excelParams = JSON.parse(JSON.stringify(params))
+        excelParams.tableParams.pagination = null;
+        sendJsonMessage({
+            type: RequestTypes.ExportExcel,
+            data: excelParams
+        })
+    }
 
     return (
         <>

@@ -1,7 +1,6 @@
 import React from "react";
 import qr from '../assets/qr.jpg'
 import { Space } from "antd";
-import Paragraph from "antd/es/skeleton/Paragraph";
 import { Link } from "react-router-dom";
 
 export default function Home() {

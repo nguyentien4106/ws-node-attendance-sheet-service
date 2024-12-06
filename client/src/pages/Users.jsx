@@ -1,5 +1,5 @@
 import { Button, message, Modal, Popconfirm, Select, Space, Table, Tooltip } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
 import { useLoading } from "../context/LoadingContext";
@@ -32,11 +32,39 @@ export default function Users() {
                 "Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. "
             );
         },
-        onMessage: (event) => {
-            const response = JSON.parse(event.data);
-            setLoading(false);
-            if (response.type === RequestTypes.GetDevices) {
-                const options = response.data.map((item) => ({
+        onMessage: useCallback(event => handleWebSocketMessage(event), []),
+    });
+
+    const handleWebSocketMessage = (event) => {
+        const response = JSON.parse(event.data);
+        const { type, data } = response;
+        setLoading(false);
+        // Helper function for success and error messages
+        const handleMessages = (items, isSuccess = true) => (
+            <Space direction="vertical">
+                {items.map((item) => (
+                    <p key={item.message}>{item.message}</p>
+                ))}
+            </Space>
+        );
+    
+        // Process success and error items
+        const processItems = (items, callback) => {
+            const successes = items.filter((item) => item.isSuccess);
+            const failed = items.filter((item) => !item.isSuccess);
+    
+            if (successes.length) {
+                message.success(handleMessages(successes));
+                callback(successes);
+            }
+            if (failed.length) {
+                message.error(handleMessages(failed));
+            }
+        };
+    
+        switch (type) {
+            case RequestTypes.GetDevices: {
+                const options = data.map((item) => ({
                     label: item.Name,
                     value: item.Ip,
                 }));
@@ -46,116 +74,70 @@ export default function Users() {
                     isSelectOption: true,
                 });
                 setOptions(options);
-                setDevices(response.data);
+                setDevices(data);
+                break;
             }
-
-            if (response.type === RequestTypes.GetUsers) {
-                setUsers(response.data);
-            }
-
-            if (response.type === RequestTypes.DeleteUser) {
-                console.log(response.data)
-                if (response.data.isSuccess) {
+    
+            case RequestTypes.GetUsers:
+                setUsers(data);
+                break;
+    
+            case RequestTypes.DeleteUser:
+                if (data.isSuccess) {
                     message.success("Xóa User thành công");
-                    setUsers((prev) =>
-                        prev.filter(
-                            (item) => item.UID !== response.data.data.UID
-                        )
-                    );
+                    setUsers((prev) => prev.filter((item) => item.UID !== data.data.UID));
                 } else {
-                    message.error(response.data.message);
+                    message.error(data.message);
                 }
-            }
-
-            if (response.type === RequestTypes.SyncUserData) {
-                if (response.data.isSuccess) {
+                break;
+    
+            case RequestTypes.SyncUserData:
+                if (data.isSuccess) {
                     message.success("Đã tải dữ liệu User lên Sheet.");
                 } else {
-                    message.error(response.data.message);
+                    message.error(data.message);
                 }
-            }
-
-            if (response.type === RequestTypes.AddUser) {
-                const successes = response.data.filter(
-                    (item) => item.isSuccess
-                );
-                const failed = response.data.filter(
-                    (item) => !item.isSuccess
-                );
-
-                if (successes.length) {
-                    message.success(
-                        <Space direction="vertical">
-                            {successes.map((item) => (
-                                <p key={item.message}>{item.message}</p>
-                            ))}
-                        </Space>
-                    );
-
-                    setUsers(prev => [ ...successes.map(item => item.data.user), ...prev])
-                }
-                if (failed.length) {
-                    message.error(
-                        <Space direction="vertical">
-                            {failed.map((item) => (
-                                <p key={item.message}>{item.message}</p>
-                            ))}
-                        </Space>
-                    );
-                }
-            }
-
-            if (response.type === RequestTypes.EditUser) {
-                if (response.data.isSuccess) {
-                    message.success(
-                        "Cập nhật thông tin người dùng thành công."
-                    );
+                break;
+    
+            case RequestTypes.AddUser:
+                processItems(data, (successes) => {
+                    setUsers((prev) => [
+                        ...successes.map((item) => item.data.user),
+                        ...prev,
+                    ]);
+                });
+                break;
+    
+            case RequestTypes.EditUser:
+                if (data.isSuccess) {
+                    message.success("Cập nhật thông tin người dùng thành công.");
                     setUsers((prev) =>
                         prev.map((item) =>
-                            item.Id === response.data.data.Id
-                                ? response.data.data
-                                : item
+                            item.Id === data.data.Id ? data.data : item
                         )
                     );
                 } else {
-                    message.error(response.data.message);
+                    message.error(data.message);
                 }
-            }
-
-            if (response.type === RequestTypes.PullUserData) {
-                const successes = response.data.filter(
-                    (item) => item.isSuccess
-                );
-                const failed = response.data.filter(
-                    (item) => !item.isSuccess
-                );
-
-                if (successes.length) {
-                    message.success(
-                        <Space direction="vertical">
-                            {successes.map((item) => (
-                                <p key={item.message}>{item.message}</p>
-                            ))}
-                        </Space>
-                    );
-                    setUsers(prev => [ ...successes.map(item => item.data.user), ...prev])
-                }
-                if (failed.length) {
-                    message.error(
-                        <Space direction="vertical">
-                            {failed.map((item) => (
-                                <p key={item.message}>{item.message}</p>
-                            ))}
-                        </Space>
-                    );
-                }
-            }
-
-            if(response.type === RequestTypes.GetSheets){
-                setSheets(response.data.data)
-            }
-        },
-    });
+                break;
+    
+            case RequestTypes.PullUserData:
+                processItems(data, (successes) => {
+                    setUsers((prev) => [
+                        ...successes.map((item) => item.data.user),
+                        ...prev,
+                    ]);
+                });
+                break;
+    
+            case RequestTypes.GetSheets:
+                setSheets(data.data);
+                break;
+    
+            default:
+                console.warn(`Unhandled response type: ${type}`);
+        }
+    };
 
     const { setLoading } = useLoading();
     const [devices, setDevices] = useState([]);

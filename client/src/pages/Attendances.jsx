@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { useLoading } from "../context/LoadingContext";
 import { RequestTypes } from "../constants/requestType";
@@ -26,27 +26,38 @@ const defaultPagination = {
     pageSizeOptions: [10, 50, 100],
 }
 
+const schema = [
+    { column: "Id", type: Number, value: (att) => att.Id },
+    { column: "Tên thiết bị", type: String, value: (att) => att.DeviceName },
+    { column: "User Id", type: String, value: (att) => att.UserId },
+    { column: "Mã nhân viên", type: String, value: (att) => att.EmployeeCode },
+    { column: "Tên trong máy", type: String, value: (att) => att.UserName },
+    { column: "Tên nhân viên", type: String, value: (att) => att.Name },
+    { column: "Ngày (DD/MM/YYYY)", type: String, value: (att) => dayjs(new Date(att.VerifyDate)).format(DATE_SHOW_FORMAT) },
+    { column: "Giờ", type: String, value: (att) => dayjs(new Date(att.VerifyDate)).format(TIME_FORMAT) },
+    { column: "Thêm thủ công", type: String, value: (att) => (att.Manual ? "X" : "") },
+];
+
 export default function Attendances() {
     const { setLoading } = useLoading();
     const [attendances, setAttendances] = useState([]);
-    const [dateRange, setDateRange] = useState([dayjs().add(-3, "M"), dayjs().add(1, "days")]);
     const [devices, setDevices] = useState([]);
     const [users, setUsers] = useState([]);
-    const [deviceId, setDeviceId] = useState("All");
     const [open, setOpen] = useState(OPEN_TYPES.CLOSE);
     const submitRef = useRef();
     const [pagination, setPagination] = useState(defaultPagination);
-    const [filters, setFilters] = useState({ Name: [] })
+    const [filters, setFilters] = useState({ EmployeeCode: null, UserName: null, Manual: null })
     const [totalRow, setTotalRow] = useState(0)
     const [usersFilter, setUsersFilter] = useState([])
     const [params, setParams] = useState({
-        deviceId: deviceId,
-        fromDate: dateRange ? dateRange[0]?.format(DATE_FORMAT) : "",
-        toDate: dateRange ? dateRange[1]?.format(DATE_FORMAT) : "",
+        deviceId: "All",
+        fromDate: dayjs().add(-3, "M").format(DATE_FORMAT),
+        toDate: dayjs().add(1, "days").format(DATE_FORMAT),
         tableParams: {
-            pagination
-        }
-    })
+            pagination,
+            filters,
+        },
+    });
 
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onOpen: () => {
@@ -58,16 +69,21 @@ export default function Attendances() {
         onError: (err) => {
             message.error('Kết nối tới máy chủ không thành công. Vui lòng kiểm tra lại IP máy chủ: Cài đặt -> IP máy chủ. ')
         },
-        onMessage: (event) => {
-            const response = JSON.parse(event.data);
-            setLoading(false);
-            const data = response.data;
-            if (response.type === RequestTypes.GetAttendances) {
-                setAttendances(Array.isArray(data) ? data : []);
-                setTotalRow(data.length ? +data[0]?.count : 0 )
-            }
+        onMessage: useCallback(event => handleWebSocketMessage(event), []),
+    });
 
-            if (response.type === RequestTypes.GetDevices) {
+    const handleWebSocketMessage = (event) => {
+        const response = JSON.parse(event.data);
+        setLoading(false);
+        const data = response.data;
+
+        switch (response.type) {
+            case RequestTypes.GetAttendances:
+                setAttendances(Array.isArray(data) ? data : []);
+                setTotalRow(data.length ? +data[0]?.count : 0);
+                break;
+
+            case RequestTypes.GetDevices:
                 const options = response.data?.map((item) => ({
                     label: item.Name,
                     value: item.Id,
@@ -78,9 +94,9 @@ export default function Attendances() {
                     isSelectOption: true,
                 });
                 setDevices(options);
-            }
+                break;
 
-            if (response.type === RequestTypes.SyncLogData) {
+            case RequestTypes.SyncLogData:
                 if (data.isSuccess) {
                     setAttendances((prev) =>
                         prev.map((item) =>
@@ -93,9 +109,9 @@ export default function Attendances() {
                 } else {
                     message.error(data.message);
                 }
-            }
+                break;
 
-            if (response.type === RequestTypes.UpdateLog) {
+            case RequestTypes.UpdateLog:
                 if (data.isSuccess) {
                     message.success("Update thành công.");
                     setAttendances((prev) =>
@@ -111,9 +127,9 @@ export default function Attendances() {
                 } else {
                     message.error(data.message);
                 }
-            }
+                break;
 
-            if (response.type === RequestTypes.DeleteLog) {
+            case RequestTypes.DeleteLog:
                 if (data.isSuccess) {
                     message.success("Xoá dữ liệu chấm công thành công.");
                     setAttendances((prev) =>
@@ -122,166 +138,84 @@ export default function Attendances() {
                 } else {
                     message.error(data.message);
                 }
-            }
+                break;
 
-            if (response.type === RequestTypes.GetUsersByDeviceId) {
+            case RequestTypes.GetUsersByDeviceId:
                 setUsers(
                     data?.map((user) => ({
                         label: `${user.DisplayName} - (${user.Name}) `,
                         value: user.UserId,
                     }))
                 );
+                setUsersFilter(data);
+                break;
 
-                setUsersFilter(data)
-            }
-
-            if (response.type === RequestTypes.AddLog) {
+            case RequestTypes.AddLog:
                 if (data.isSuccess) {
-                    message.success("Đã thêm một dữ liệu chấm công mới.")
-                    console.log(data.data[0])
-                    setAttendances(prev => {
-                        prev.unshift(data.data[0])
-                        return prev
-                    })
+                    message.success("Đã thêm một dữ liệu chấm công mới.");
+                    setAttendances((prev) => {
+                        prev.unshift(data.data[0]);
+                        return prev;
+                    });
                 }
-            }
+                break;
 
-            if(response.type === RequestTypes.ExportExcel){
-                const schema = [
-                    {
-                        column: 'Id',
-                        type: Number,
-                        value: att => att.Id
-                    },
-                    {
-                        column: 'Tên thiết bị',
-                        type: String,
-                        value: att => att.DeviceName
-                    },
-                    {
-                        column: 'User Id',
-                        type: String,
-                        value: att => att.UserId
-                    },
-                    {
-                        column: 'Mã nhân viên',
-                        type: String,
-                        value: att => att.EmployeeCode
-                    },
-                    {
-                        column: 'Tên trong máy',
-                        type: String,
-                        value: att => att.UserName
-                    },
-                    {
-                        column: 'Tên nhân viên',
-                        type: String,
-                        value: att => att.Name
-                    },
-                    {
-                        column: 'Ngày (DD/MM/YYYY)',
-                        type: String,
-                        value: att => dayjs(new Date(att.VerifyDate)).format(DATE_SHOW_FORMAT)
-                    },
-                    {
-                        column: 'Giờ',
-                        type: String,
-                        value: att => dayjs(new Date(att.VerifyDate)).format(TIME_FORMAT)
-                    },
-                    {
-                        column: 'Thêm thủ công',
-                        type: String,
-                        value: att => att.Manual ? "X" : ""
-                    },
-                ]
-                
+            case RequestTypes.ExportExcel:
                 writeXlsxFile(data, {
-                    schema, // (optional) column widths, etc.
-                    fileName: `Attendances_Report.xlsx`
-                }).then(res => {
-                    console.log(res)
-                })
-            }
+                    schema,
+                    fileName: `Attendances_Report.xlsx`,
+                }).then((res) => {
+                    console.log(res);
+                });
+                break;
 
-        },
-    });
-
-    useEffect(() => {
-        if (!isAuth || !dateRange) {
-            message.error("Vui lòng chọn DateRange")
-            return;
+            default:
+                console.warn(`Unhandled response type: ${response.type}`);
+                break;
         }
 
-        setLoading(true);
-        sendJsonMessage({
-            type: RequestTypes.GetAttendances,
-            data: params,
-        });
+    };
 
-        sendJsonMessage({
-            type: RequestTypes.GetDevices,
-        });
-
-        sendJsonMessage({
-            type: RequestTypes.GetUsersByDeviceId,
-            data: null
-        })
+    const fetchDevicesAndUsers = useCallback(() => {
+        sendJsonMessage({ type: RequestTypes.GetDevices });
+        sendJsonMessage({ type: RequestTypes.GetUsersByDeviceId, data: null });
     }, []);
 
-    useEffect(() => {
-        if (!isAuth || !dateRange) {
-            return
-        }
-
-        setParams(prev => Object.assign(prev, {
-            fromDate: dateRange[0].format(DATE_FORMAT),
-            toDate: dateRange[1].format(DATE_FORMAT),
-            tableParams: {
-                pagination,
-                filters
-            }
-        }))
-    }, [dateRange])
-
-    useEffect(() => {
-        if (!isAuth || !dateRange) {
-            message.error("Vui lòng chọn DateRange")
-
-            return
-        }
-
-        setParams(prev => {
-            const newParams = Object.assign(prev, {
-                tableParams: {
-                    pagination: pagination,
-                    filters: filters
-                }
-            })
-            sendJsonMessage({
-                type: RequestTypes.GetAttendances,
-                data: newParams,
-            });
-
-            return newParams
-        })
-        
+    const fetchAttendances = useCallback(() => {
+        sendJsonMessage({
+            type: RequestTypes.GetAttendances,
+            data: Object.assign(params, { tableParams: { filters, pagination } }),
+        });
     }, [filters, pagination])
 
     useEffect(() => {
-        if (!isAuth || !dateRange) {
-            return
+        if (isAuth) {
+            fetchDevicesAndUsers();
         }
-        setParams(prev => ({ ...prev, deviceId: deviceId }))
-        sendJsonMessage({
-            type: RequestTypes.GetUsersByDeviceId,
-            data: deviceId
-        })
-    }, [deviceId])
+    }, [isAuth, fetchDevicesAndUsers])
+
+    useEffect(() => {
+        if (isAuth) {
+            fetchAttendances()
+        }
+
+    }, [filters, fetchAttendances])
+
+    useEffect(() => {
+        if (isAuth) {
+            fetchAttendances()
+        }
+
+    }, [pagination, fetchAttendances])
 
     const submit = () => {
-        if (!isAuth || !dateRange) {
-            message.error("Vui lòng chọn DateRange")
+        if (!isAuth) {
             return
+        }
+
+        if (!params.fromDate || !params.toDate) {
+            message.error("Vui lòng chọn khoảng thời gian");
+            return;
         }
         sendJsonMessage({
             type: RequestTypes.GetAttendances,
@@ -289,15 +223,31 @@ export default function Attendances() {
         });
     };
 
+    const handleDateRangeChange = (value) => {
+        if (!value) {
+            return;
+        }
+
+        updateParams({
+            fromDate: value[0]?.format(DATE_FORMAT),
+            toDate: value[1]?.format(DATE_FORMAT),
+        });
+    };
+
+    const updateParams = (updates) => setParams((prev) => ({ ...prev, ...updates }));
+
     return (
         <Auth>
             <Space size={30}>
                 <Space>
                     <label>Khoảng: </label>
                     <RangePicker
-                        defaultValue={dateRange}
+                        defaultValue={[
+                            dayjs(params.fromDate, DATE_FORMAT),
+                            dayjs(params.toDate, DATE_FORMAT),
+                        ]}
                         format={DATE_FORMAT}
-                        onChange={(value) => setDateRange(value)}
+                        onChange={handleDateRangeChange}
                     />
                 </Space>
                 <Space>
@@ -306,7 +256,7 @@ export default function Attendances() {
                         options={devices}
                         style={{ width: 200 }}
                         defaultValue={"All"}
-                        onChange={(val) => setDeviceId(val)}
+                        onChange={(value) => updateParams({ deviceId: value })}
                     ></Select>
                 </Space>
                 <Button onClick={() => submit()} type="primary">
