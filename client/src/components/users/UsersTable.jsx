@@ -90,7 +90,7 @@ export default function UsersTable({
                         onConfirm={(e) => {
                             handleDelete(record);
                         }}
-                        onCancel={() => { }}
+                        onCancel={() => { setDeleteSheet(false) }}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -101,15 +101,23 @@ export default function UsersTable({
         },
     ];
 
-    const descriptionContent = (record) => (
-        <Space direction="vertical">
-            <h7>Xoá {record.Name} ({record.EmployeeCode}) khỏi thiết bị {record.DeviceName}?</h7>
-            <Space>
-                <h7>Xoá trên Sheet ? </h7>
-                <Checkbox onClick={() => setDeleteSheet(prev => !prev)}></Checkbox>
-            </Space>
-        </Space>
-    )
+    const descriptionContent = (record) => {
+        const texts = [`Xoá ${record.Name} (${record.EmployeeCode}) khỏi thiết bị ${record.DeviceName} ? `, 'Xoá trên Sheet ? ']
+
+        return (
+            <ul>
+                {texts.map((text, index) => index === 1 ? (
+                    <li key={index}>
+                        {text}
+                        <Checkbox onClick={() => setDeleteSheet(prev => !prev)} checked={deleteSheet}></Checkbox>
+                    </li>
+
+                ) : (
+                    <li key={index}>{text}</li>
+                ))}
+            </ul>
+        )
+    }
 
     const handleDelete = (record) => {
         setLoading(true);

@@ -1,5 +1,5 @@
 import { EMPLOYEE_DATA, USER_HEADER_ROW } from "../constants/common.js";
-import { UserRoles } from "../constants/userRoles.js";
+import { getRole, UserRoles } from "../constants/userRoles.js";
 import { appendRow, initSheets } from "../dbServices/dataService.js";
 import { getSheetsByDeviceIp } from "../dbServices/sheetService.js";
 import { getAllUsers } from "../dbServices/userService.js";
@@ -20,18 +20,22 @@ export const syncUserData = async (data) => {
 
         const services = await initSheets(sheetRows.map(item => ({ DocumentId: item.DocumentId, SheetName: EMPLOYEE_DATA })), USER_HEADER_ROW);
 
+        const getUserInDbById = id => {
+            return users.find(item => item.Id === id);
+        }
+
         for (const service of services) {
             if (!service.isSuccess) {
                 continue
             }
 
-            const rowsInSheets = await service.data.getRows()
-            const existedRows = rowsInSheets.map(row => +row.get(USER_HEADER_ROW[0]))
-            const newRows = users.filter(item => !existedRows.includes(item.Id)).map(item => [
+            await service.data.clearRows()
+
+            const newRows = users.map(item => [
                 item.Id,
                 item.UID,
                 item.EmployeeCode,
-                UserRoles[item.Role] ?? UserRoles[item.Role > 0 ? 6 : 0 ],
+                getRole(item.Role),
                 item.DeviceIp,
                 item.DeviceName,
                 item.Name,

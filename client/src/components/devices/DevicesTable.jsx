@@ -9,6 +9,10 @@ import {
     message,
     DatePicker,
     Dropdown,
+    Checkbox,
+    Typography,
+    List,
+    Radio,
 } from "antd";
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
@@ -28,6 +32,14 @@ const OPEN_TYPES = {
 };
 
 export default function DevicesTable({ sendJsonMessage, source, sheets }) {
+    const [open, setOpen] = useState(OPEN_TYPES.CLOSE);
+    const { setLoading } = useLoading();
+    const defaultRange = [dayjs().add(-1, 'day'), dayjs()]
+    const [range, setRange] = useState(defaultRange)
+    const [deleteManualData, setDeleteManualData] = useState(false)
+    const [device, setDevice] = useState(null)
+    const submitUserFormRef = useRef();
+
     const columns = [
         {
             title: "Id",
@@ -128,6 +140,8 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
         }
     ];
 
+    const [op, setOp] = useState(null)
+
     const actionButton = record => {
         return (
             <Dropdown
@@ -135,8 +149,11 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                     items: getItems(record),
                 }}
                 trigger={['click']}
+                open={op === record.Id}
             >
-                <a onClick={(e) => e.preventDefault()}>
+                <a onClick={(e) => {
+                    setOp(op === record.Id ? null : record.Id)
+                }}>
                     <Space>
                         Action
                         <DownOutlined />
@@ -155,16 +172,20 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                 >
                     <Popconfirm
                         title={<p>Đồng bộ dữ liệu từ thiết bị: <u><i>{record?.Name}</i></u></p>}
-                        description={<p style={{ maxWidth: 500 }}>{SYNC_ALL_ATTENDANCES_TEXT}</p>}
+                        description={descriptionContentSyncLogs}
                         onConfirm={(e) => {
                             handleSyncData(record);
+                            setOp(false);
                         }}
-                        onCancel={() => { }}
+                        onCancel={() => {
+
+                            setOp(false);
+                        }}
                         okText="Yes"
                         cancelText="No"
                     >
                         <Button
-                            disabled={!record?.IsConnected}
+                        // disabled={!record?.IsConnected}
                         >
                             Đồng bộ toàn bộ dữ liệu
                         </Button>
@@ -220,6 +241,38 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
         }
     ]
 
+    const descriptionContentSyncLogs = (
+        <ul style={{ maxWidth: "500px" }}>
+            {
+                SYNC_ALL_ATTENDANCES_TEXT.map((item, idx) => {
+                    if (idx !== SYNC_ALL_ATTENDANCES_TEXT.length - 1) {
+                        return <li key={item}>{item}</li>
+                    }
+
+                    return (
+                        <li key={`${item} ${idx} ${deleteManualData}`}>
+                            {item}
+                            <Radio.Group
+                                defaultValue={false}
+                                value={deleteManualData}
+                                onChange={e => {
+                                    setDeleteManualData(e.target.value)
+                                }}
+                            >
+                                <Radio value={true}>
+                                    Có 
+                                </Radio>
+                                <Radio value={false}>
+                                    Không.
+                                </Radio>
+                            </Radio.Group>
+                        </li>
+                    )
+                })
+            }
+        </ul>
+    )
+
     const handleClearDataAttendance = (record) => {
         setLoading(true)
         sendJsonMessage({
@@ -238,7 +291,8 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
             data: {
                 Ip: record?.Ip,
                 type: "All",
-                value: record
+                value: record,
+                deleteManualData: deleteManualData,
             },
         });
     };
@@ -284,13 +338,6 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
         }
     }
 
-    const [open, setOpen] = useState(OPEN_TYPES.CLOSE);
-    const { setLoading } = useLoading();
-    const defaultRange = [dayjs().add(-1, 'day'), dayjs()]
-    const [range, setRange] = useState(defaultRange)
-    const [device, setDevice] = useState(null)
-    const submitUserFormRef = useRef();
-
     return (
         <>
             <Modal
@@ -334,7 +381,7 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                 dataSource={source}
                 rowKey={"Id"}
                 expandable={{
-                    expandedRowRender: (record) => <SheetTable record={record} sheets={sheets}/>,
+                    expandedRowRender: (record) => <SheetTable record={record} sheets={sheets} />,
                     showExpandColumn: false,
                     defaultExpandAllRows: true,
                 }}

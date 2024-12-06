@@ -429,7 +429,7 @@ export class DeviceContainer {
 			};
 
 			const deviceId = isDeleteAll ? data?.value?.Id : null;
-			await handleSyncAttendancesDB(getAttendanceData(), users, deviceId);
+			await handleSyncAttendancesDB(getAttendanceData(), users, deviceId, data.deleteManualData);
 			return await handleSyncDataToSheet(deviceId);
 		} catch (err) {
 			return Result.Fail(500, err.message, data);

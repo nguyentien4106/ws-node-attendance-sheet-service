@@ -8694,3 +8694,20 @@
 {"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T08:05:31.081Z"}
 {"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T08:05:31.089Z"}
 {"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T08:05:31.092Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.201","timestamp":"2024-12-06T08:31:55.968Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.201","timestamp":"2024-12-06T08:58:44.023Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.201","timestamp":"2024-12-06T09:23:41.283Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T10:24:58.870Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T10:24:58.880Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T10:24:58.884Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T10:28:43.587Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T10:28:43.593Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T10:28:43.597Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.200","timestamp":"2024-12-06T10:32:31.720Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.200","timestamp":"2024-12-06T10:35:55.358Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.200","timestamp":"2024-12-06T10:36:00.277Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.201","timestamp":"2024-12-06T10:37:18.797Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.201","timestamp":"2024-12-06T10:37:24.317Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.201","timestamp":"2024-12-06T10:37:29.741Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.200","timestamp":"2024-12-06T10:37:33.396Z"}
+{"level":"error","message":"Thiết bị này chưa được kết nối. Vui lòng kết nối trước khi thực hiện hành động này. 192.168.1.201","timestamp":"2024-12-06T10:38:39.265Z"}

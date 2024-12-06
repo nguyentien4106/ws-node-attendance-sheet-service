@@ -183,7 +183,7 @@ export const setUploadStatus = (attId, status = false) => {
     `);
 };
 
-export const handleSyncAttendancesDB = async (attendances, users, deviceId) => {
+export const handleSyncAttendancesDB = async (attendances, users, deviceId, deleteManualData) => {
     const devices = (await getAllDevices()).rows;
 
     const getUser = (userId) => users.find((item) => item.UserId === userId);
@@ -206,7 +206,7 @@ export const handleSyncAttendancesDB = async (attendances, users, deviceId) => {
     });
 
     if(deviceId){
-        await query(`DELETE FROM public."Attendances" WHERE "DeviceId" = ${deviceId} AND ( "Manual" IS NULL OR "Manual" = false );`)
+        await query(`DELETE FROM public."Attendances" WHERE "DeviceId" = ${deviceId} ${deleteManualData ? "" : 'AND ( "Manual" IS NULL OR "Manual" = false )'};`)
     }
     
     if(values?.length == 0){
