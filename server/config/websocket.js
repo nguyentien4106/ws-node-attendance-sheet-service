@@ -39,8 +39,16 @@ app.get("/test", async (req, res) => {
     res.send(dayjs().format());
 });
 
+const wss = new WebSocketServer({ server })
+
 export const websocket = {
-    wss: new WebSocketServer({ server }),
+    wss: wss,
     server: server,
     cloudServer: initializeCloudServer()
 };
+
+export const sendMessageToClients = (response) => {
+    wss.clients.forEach(function each(client) {
+        client.send(response);
+    });
+}

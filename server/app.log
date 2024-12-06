@@ -8633,3 +8633,24 @@
 {"level":"info","message":"Client disconnected","timestamp":"2024-12-05T18:38:23.232Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-12-05T18:38:57.404Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-12-05T18:48:02.276Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T04:30:14.694Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T04:30:14.709Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T04:30:14.712Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:30:29.455Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:10.004Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:12.006Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:12.842Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:24.489Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:26.264Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:41.066Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:44.492Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:47.921Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:31:48.596Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:32:06.258Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-06T04:32:07.256Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T04:32:54.577Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T04:32:54.584Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T04:32:54.587Z"}
+{"level":"info","message":"Added successfully device 192.168.1.200 into container","timestamp":"2024-12-06T04:54:54.526Z"}
+{"level":"info","message":"Added successfully device 192.168.1.201 into container","timestamp":"2024-12-06T04:54:54.531Z"}
+{"level":"info","message":"Initialize containers successfully","timestamp":"2024-12-06T04:54:54.535Z"}

@@ -4,7 +4,7 @@ import { getAttendances, insertAttendance, setUploadStatus } from "../dbServices
 import { appendRow, initSheets } from "../dbServices/dataService.js";
 import { getSheets, getSheetsByDeviceIp } from "../dbServices/sheetService.js";
 import { DATE_FORMAT, EMPLOYEE_DATA, TIME_FORMAT, USER_HEADER_ROW } from "../constants/common.js";
-import { websocket } from '../config/websocket.js'
+import { sendMessageToClients, websocket } from '../config/websocket.js'
 import { RequestTypes } from "../constants/requestType.js";
 import { getResponse } from "../models/response.js";
 import { getDeviceBySN } from "../dbServices/deviceService.js";
@@ -45,14 +45,10 @@ export const handleRealTimeData = async (log, deviceId) => {
             return Result.Fail(500, `Data chưa được đẩy lển sheet. ${sheetRow.message}`)
         }
 
-        websocket.wss.clients.forEach(function each(client) {
-            client.send(
-                getResponse({
-                    type: RequestTypes.AddLog,
-                    data: Result.Success(query.rows.map(item => Object.assign(item, { VerifyDate: dayjs(item.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT) }))),
-                })
-            );
-        });
+        sendMessageToClients(getResponse({
+            type: RequestTypes.AddLog,
+            data: Result.Success(query.rows.map(item => Object.assign(item, { VerifyDate: dayjs(item.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT) }))),
+        }))
 
         return Result.Success(query.rows)
     }

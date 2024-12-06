@@ -5,3 +5,5 @@ export const UserRoles =
     6: "Quản trị viên",
     // 14: "Chủ sở hữu"
 }
+
+export const getRole = role => UserRoles[role] ?? UserRoles[role > 0 ? 6 : 0];

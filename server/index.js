@@ -15,6 +15,5 @@ server.listen(port , () => {
 
 cloudServer.listen(cloudServerPort, () => {
   console.log('Cloud Server is listening on port on ' + cloudServerPort);
-
 })
 

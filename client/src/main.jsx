@@ -10,11 +10,9 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 localStorage.setItem("server-ip", window.location.hostname)
 createRoot(document.getElementById("root")).render(
-    <StrictMode>
         <LoadingProvider>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
         </LoadingProvider>
-    </StrictMode>
 );

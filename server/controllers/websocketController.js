@@ -2,7 +2,8 @@ import { DeviceContainer } from "../models/deviceContainer.js";
 import { handleMessage } from "../services/websocketService.js";
 import { logger } from "../config/logger.js";
 import cron from "node-cron";
-import { websocket } from "../config/websocket.js";
+import { sendMessageToClients, websocket } from "../config/websocket.js";
+import { getResponse } from "../models/response.js";
 
 const deviceContainer = new DeviceContainer();
 const counter = { value: 0 }
@@ -13,14 +14,10 @@ deviceContainer.initAll().then((res) => {
     }
     else {
         logger.info(`Initialize containers failed`)
-        websocket.wss.clients.forEach(function each(client) {
-            client.send(
-                getResponse({
-                    type: "Ping",
-                    data: res.message,
-                })
-            );
-        });
+        sendMessageToClients(getResponse({
+            type: "Ping",
+            data: res.message
+        }))
     }
 });
 
@@ -31,21 +28,17 @@ cron.schedule("*/2 * * * *", () => {
 export const onConnection = (ws) => {
     try {
         ws.on("message", (message) => {
-            // cronTask.stop()
             try{
                 handleMessage(ws, message, deviceContainer);
             }
             catch(err){
                 console.log(err.message)
             }
-            // cronTask.start()
         });
 
         ws.on("close", () => {
-            logger.info("Client disconnected");
         });
     } catch (err) {
-        console.log("unhandled exception", err);
         logger.error(`Unhandled exception: ${err.message}`)
         deviceContainer.disconnectAll().then((res) => {
             console.log("disconnected all devices in unhandled exception");

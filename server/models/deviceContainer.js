@@ -8,11 +8,8 @@ import {
 	setConnectStatus,
 } from "../dbServices/deviceService.js";
 import { Result } from "./common.js";
-import Zkteco from "zkteco-js";
 import {
-	appendRow,
 	initSheet,
-	initSheets,
 	isSheetsValid,
 } from "../dbServices/dataService.js";
 import {
@@ -36,16 +33,12 @@ import dayjs from "dayjs";
 import {
 	DATE_FORMAT,
 	EMPLOYEE_DATA,
-	OPTIONS_DELETE_SHEETS,
-	TIME_FORMAT,
 	USER_HEADER_ROW,
 } from "../constants/common.js";
-import { getSheets } from "../dbServices/sheetService.js";
 import { UserRoles } from "../constants/userRoles.js";
-import { RequestTypes } from "../constants/requestType.js";
-import { websocket } from "../config/websocket.js";
+import { sendMessageToClients, websocket } from "../config/websocket.js";
 import ZktecoJsCustom from "nguyentien0620-zkteco-js";
-import { getAppScriptFile } from "../helper/common.js";
+import { notifyToSheets } from "../helper/common.js";
 const { wss } = websocket;
 const TIME_OUT = 5500;
 const IN_PORT = 2000;
@@ -148,7 +141,6 @@ export class DeviceContainer {
 
 			this.deviceSDKs.push(deviceSDK);
 			const result = await insertNewDevice(Object.assign(device, { SN: sn }));
-			// const result = await insertNewDevice(Object.assign(device, { SN: "123" }));
 
 			return result.rowCount
 				? Result.Success(result.rows[0])
@@ -169,7 +161,7 @@ export class DeviceContainer {
 		}
 	}
 
-	async connectDevice(device, ws) {
+	async connectDevice(device) {
 		try {
 			let success = false;
 			const deviceSDK = this.deviceSDKs.find((item) => item.ip === device.Ip);
@@ -178,9 +170,11 @@ export class DeviceContainer {
 				success = await deviceSDK.createSocket();
 				const pin = await deviceSDK.getPIN();
 				console.log('pin', pin)
+
 				await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
 					await handleRealTimeData(realTimeLog, device.Id);
 				});
+
 				setConnectStatus(device.Ip, success);
 
 				return success
@@ -477,28 +471,17 @@ export class DeviceContainer {
 				}
 				console.log("ping", counter);
 			} catch (err) {
+				logger.error(
+					`Device: ${deviceSDK.ip} lost connection at ${dayjs().format(
+						DATE_FORMAT
+					)}`
+				);
 				await setConnectStatus(deviceSDK.ip, false);
 				const query = await getDeviceByIp(deviceSDK.ip);
 				const deviceName = query.rowCount
 					? query.rows[0].Name
 					: `Thiết bị : ${deviceSDK.ip}`;
-				sendMail({
-					subject: "Cảnh báo mất kết nối máy chấm công.",
-					device: {
-						Name: deviceName,
-						Ip: deviceSDK.ip,
-					},
-				});
-
-				wss.clients.forEach(function each(client) {
-					client.send(
-						getResponse({
-							type: "Ping",
-							data: `${deviceSDK.ip} đã bị mất kết nối. Vui lòng kiểm tra lại.`,
-						})
-					);
-				});
-
+                    
 				this.deviceSDKs = this.deviceSDKs.map((device) => {
 					if (device.ip === deviceSDK.ip) {
 						device.ztcp.socket = null;
@@ -508,40 +491,20 @@ export class DeviceContainer {
 					return device;
 				});
 
-				logger.error(
-					`Device: ${deviceSDK.ip} lost connection at ${dayjs().format(
-						DATE_FORMAT
-					)}`
-				);
+				sendMail({
+					subject: "Cảnh báo mất kết nối máy chấm công.",
+					device: {
+						Name: deviceName,
+						Ip: deviceSDK.ip,
+					},
+				});
 
-				const sendErrorToSheet = async () => {
-					const sheets = await getSheets();
-					const sheetServices = await initSheets(
-						sheets.rows.map((item) => ({
-							SheetName: "THÔNG BÁO",
-							DocumentId: item.DocumentId,
-						})),
-						["ID", "IP", "Tên thiết bị", "Lỗi", "Ngày", "Giờ"]
-					);
+                sendMessageToClients(getResponse({
+                    type: "Ping",
+                    data: `${deviceSDK.ip} đã bị mất kết nối. Vui lòng kiểm tra lại.`,
+                }))
 
-					await appendRow(
-						sheetServices
-							.filter((item) => item.isSuccess)
-							.map((item) => item.data),
-						[
-							[
-								dayjs().unix(),
-								deviceSDK.ip,
-								deviceName,
-								"Mất kết nối",
-								dayjs().format(DATE_FORMAT),
-								dayjs().format(TIME_FORMAT),
-							],
-						]
-					);
-				};
-
-				await sendErrorToSheet();
+                await notifyToSheets(deviceSDK.ip, deviceName, 'Mất kết nối')
 			}
 		}
 	}

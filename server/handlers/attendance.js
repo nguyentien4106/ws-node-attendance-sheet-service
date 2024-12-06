@@ -3,6 +3,8 @@ import { deleteAttendance, getAttendances, insertAttendance, updateAttendance } 
 import { getResponse } from "../models/response.js";
 import { syncLogData } from "../services/attendance.js";
 import { Result } from "../models/common.js";
+import { DATE_FORMAT, TIME_FORMAT } from "../constants/common.js";
+import dayjs from "dayjs";
 
 export const attendanceHandlers = (request, ws, deviceContainer) => {
     switch (request.type) {
@@ -52,7 +54,7 @@ export const attendanceHandlers = (request, ws, deviceContainer) => {
                     getResponse({
                         type: request.type,
                         data: res.rowCount
-                            ? Result.Success(res.rows)
+                            ? Result.Success(res.rows.map(item => Object.assign(item, { VerifyDate: dayjs(item.VerifyDate).format(DATE_FORMAT + " " + TIME_FORMAT) })))
                             : Result.Fail(500, "Thêm không thành công! Vui lòng thử lại"),
                     })
                 );

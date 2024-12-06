@@ -2,7 +2,7 @@
 import pkg from "pg";
 import "dotenv/config"
 import format from "pg-format";
-import { websocket } from "./websocket.js";
+import { sendMessageToClients, websocket } from "./websocket.js";
 import { getResponse } from "../models/response.js";
 const { Pool } = pkg
 
@@ -19,14 +19,10 @@ export const query = (text, params) => {
         return pool.query(text, params)
     }
     catch(err){
-        websocket.wss.clients.forEach(function each(client) {
-            client.send(
-                getResponse({
-                    type: "Ping",
-                    data: err.code === 'ECONNREFUSED' ? "Không thể kết nối tới database. Vui lòng liên hệ quản trị." : err.message ,
-                })
-            );
-        });
+        sendMessageToClients(getResponse({
+            type: "Ping",
+            data: err.code === 'ECONNREFUSED' ? "Không thể kết nối tới database. Vui lòng liên hệ quản trị." : err.message ,
+        }))
     }
 };
 
@@ -35,13 +31,9 @@ export const queryFormat = (text, values) => {
         return pool.query(format(`${text} VALUES %L RETURNING *;`, values));
     }
     catch(err) {
-        websocket.wss.clients.forEach(function each(client) {
-            client.send(
-                getResponse({
-                    type: "Ping",
-                    data: err.code === 'ECONNREFUSED' ? "Không thể kết nối tới database. Vui lòng liên hệ quản trị." : err.message ,
-                })
-            );
-        });
+        sendMessageToClients(getResponse({
+            type: "Ping",
+            data: err.code === 'ECONNREFUSED' ? "Không thể kết nối tới database. Vui lòng liên hệ quản trị." : err.message ,
+        }))
     }
 }

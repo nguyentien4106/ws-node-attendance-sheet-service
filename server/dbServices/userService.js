@@ -1,6 +1,6 @@
 import { query, queryFormat } from "../config/db.js";
 import { EMPLOYEE_DATA, USER_HEADER_ROW } from "../constants/common.js";
-import { UserRoles } from "../constants/userRoles.js";
+import { getRole, UserRoles } from "../constants/userRoles.js";
 import { removeUserOnSheet } from "../helper/dataHelper.js";
 import { Result } from "../models/common.js";
 import { appendRow, initSheets } from "./dataService.js";
@@ -28,7 +28,7 @@ export const insertNewUsers = async (users, device, displayName, pushToSheet = t
         return result
     }
     
-    const usersToSheet = result.rows.map(item => [item.Id, item.UID, item.EmployeeCode, UserRoles[item.Role] ?? UserRoles[item.Role > 0 ? 6 : 0 ], item.DeviceIp, device.DeviceName, item.Name, item.DisplayName, item.Password, item.CardNo])
+    const usersToSheet = result.rows.map(item => [item.Id, item.UID, item.EmployeeCode, getRole(item.Role), item.DeviceIp, device.DeviceName, item.Name, item.DisplayName, item.Password, item.CardNo])
     
     let sheets = device.Sheets
     if (!sheets){

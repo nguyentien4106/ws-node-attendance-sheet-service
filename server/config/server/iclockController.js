@@ -3,6 +3,9 @@ import { logger } from '../logger.js'
 import dayjs from 'dayjs'
 import { DATABASE_DATE_FORMAT, TIME_FORMAT } from '../../constants/common.js'
 import { handleRealTimeDataBySN } from '../../helper/dataHelper.js'
+import { sendMessageToClients } from '../websocket.js'
+import { getResponse } from '../../models/response.js'
+import { RequestTypes } from '../../constants/requestType.js'
 
 const parseQueryString = (URL) => {
     return url.parse(URL, true).query
@@ -16,7 +19,12 @@ export const handShake = async (req, res) => {
     logger.info(`handshake response ${response}`)
     res.setHeader("Date", new Date().toUTCString())
     res.send(response)
-
+    sendMessageToClients(
+        getResponse({
+            type: RequestTypes.DeviceNewADMS,
+            data: params["SN"]
+        })
+    )
     return response
 }
 
