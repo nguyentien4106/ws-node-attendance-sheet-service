@@ -22,6 +22,7 @@ import { DATE_FORMAT, TIME_FORMAT } from "../../constants/common";
 import { DELETE_ATTENDANCES_TEXT, SYNC_ALL_ATTENDANCES_TEXT, SYNC_ATTENDANCES_BY_TIMES_TEXT } from "../../constants/text";
 import { DownOutlined } from '@ant-design/icons';
 import SheetTable from "./SheetTable";
+import { copyToClipboard } from "../../helper/common";
 
 const { RangePicker } = DatePicker;
 
@@ -37,6 +38,7 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
     const defaultRange = [dayjs().add(-1, 'day'), dayjs()]
     const [range, setRange] = useState(defaultRange)
     const [deleteManualData, setDeleteManualData] = useState(false)
+    const [clearDbLogs, setClearDbLogs] = useState(false)
     const [device, setDevice] = useState(null)
     const submitUserFormRef = useRef();
 
@@ -55,9 +57,10 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                 <div className="d-flex gap-2 justify-content">
                     <a>{val}</a>
                     <img
-                        onClick={() => {
+                        onClick={ async() => {
                             message.success(`Đã copy '${val}' vào bộ nhớ tạm`)
-                            navigator.clipboard.writeText(val)
+                            // navigator.clipboard.writeText(val)
+                            await copyToClipboard(val)
                         }}
                         style={{ cursor: "pointer" }}
                         width="18" height="18"
@@ -185,7 +188,7 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                         cancelText="No"
                     >
                         <Button
-                        // disabled={!record?.IsConnected}
+                            disabled={!record?.IsConnected}
                         >
                             Đồng bộ toàn bộ dữ liệu
                         </Button>
@@ -221,7 +224,7 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                 >
                     <Popconfirm
                         title={<p>Xóa toàn bộ dữ liệu trong thiết bị: <u><i>{record?.Name}</i></u></p>}
-                        description={<p style={{ maxWidth: 500 }}>{DELETE_ATTENDANCES_TEXT}</p>}
+                        description={descriptionContentClearLogs}
                         onConfirm={(e) => {
                             handleClearDataAttendance(record);
                         }}
@@ -263,7 +266,38 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                                     Có 
                                 </Radio>
                                 <Radio value={false}>
-                                    Không.
+                                    Không
+                                </Radio>
+                            </Radio.Group>
+                        </li>
+                    )
+                })
+            }
+        </ul>
+    )
+
+    const descriptionContentClearLogs = (
+        <ul style={{ maxWidth: "500px" }}>
+            {
+                DELETE_ATTENDANCES_TEXT.map((item, idx) => {
+                    if (idx !== DELETE_ATTENDANCES_TEXT.length - 1) {
+                        return <li key={item}>{item}</li>
+                    }
+
+                    return (
+                        <li key={`${item} ${idx} ${clearDbLogs}`}>
+                            {item}
+                            <Radio.Group
+                                value={clearDbLogs}
+                                onChange={e => {
+                                    setClearDbLogs(e.target.value)
+                                }}
+                            >
+                                <Radio value={true}>
+                                    Có 
+                                </Radio>
+                                <Radio value={false}>
+                                    Không
                                 </Radio>
                             </Radio.Group>
                         </li>
@@ -277,7 +311,7 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
         setLoading(true)
         sendJsonMessage({
             type: RequestTypes.DeviceClearAttendances,
-            data: record,
+            data: Object.assign(record, { clearDbLogs }),
         });
     }
 

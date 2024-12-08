@@ -1,5 +1,5 @@
 import { Button, Input, message, Modal, Popconfirm, Space } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
 import { useLoading } from "../context/LoadingContext";
@@ -8,6 +8,7 @@ import Auth from "../layout/Auth";
 import dayjs from "dayjs";
 import { DATE_SHOW_FORMAT, TIME_FORMAT } from "../constants/common";
 import ChangePasswordForm from "../components/settings/ChangePasswordForm";
+import UsageComponent from "../components/settings/UsageComponent";
 const WS_URL = getHostUrl();
 
 export default function Settings() {
@@ -17,6 +18,10 @@ export default function Settings() {
     const [time, setTime] = useState(dayjs())
     const [email, setEmail] = useState("")
     const [info, setInfo] = useState("")
+    const [open, setOpen] = useState(false);
+    const [usage, setUsage] = useState(null)
+
+    const submitRef = useRef()
 
     const { sendJsonMessage } = useWebSocket(WS_URL, {
         onError: (err) => {
@@ -33,6 +38,11 @@ export default function Settings() {
                 setTime(response.data.time)
                 setEmail(response.data.setting.Email)
                 setInfo(response.data.info)
+            }
+
+            if (response.type === "GetSystem") {
+                console.log(response.data)
+                setUsage(response.data)
             }
 
             if (response.type === RequestTypes.UpdateEmail) {
@@ -79,6 +89,20 @@ export default function Settings() {
         },
     });
 
+    const getSystem = useCallback(() => {
+        sendJsonMessage({
+            type: "GetSystem"
+        })
+    }, [])
+    
+    useEffect(() => {
+        const interval = setInterval(() => setTime(dayjs(time).add(1, "seconds")), 1000);
+        getSystem()
+        return () => {
+          clearInterval(interval);
+        };
+      }, [time]);
+
     useEffect(() => {
         if(!isAuth){
             return;
@@ -103,9 +127,14 @@ export default function Settings() {
         });
     };
 
-    const [open, setOpen] = useState(false);
+    const formatObject = (obj) => {
+        return (
+            <>
+                <label>{}</label>
+            </>
+        )
+    }
 
-    const submitRef = useRef()
 
     return (
         <Auth>
@@ -171,6 +200,7 @@ export default function Settings() {
                     <label>Thông tin: </label>
                     <label>{JSON.stringify(info)}</label>
                 </Space>
+                <UsageComponent usage={usage}></UsageComponent>
                 {
                     open && <Modal
                         open={open}

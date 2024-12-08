@@ -68,6 +68,7 @@ export const initSheet = async (documentId, sheetName, headers) => {
 
         // Check if the sheet exists; if not, create and set header row
         let sheetService = doc.sheetsByTitle[sheetName];
+        
         if (!sheetService) {
             sheetService = await doc.addSheet({ title: sheetName });
             sheetService.setHeaderRow(headers ?? HEADER_ROW, 1);
@@ -87,7 +88,6 @@ export const initSheet = async (documentId, sheetName, headers) => {
 export const initSheets = async (sheets, headers) => {
     const sheetServices = [];
 
-    console.log([...sheetServiceMap.keys()])
     for (const { DocumentId, SheetName } of sheets) {
         if(!sheetServiceMap.has(`${DocumentId}-${SheetName}`)){
             const result = await initSheet(DocumentId, SheetName, headers)

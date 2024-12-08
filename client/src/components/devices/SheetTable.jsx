@@ -1,19 +1,27 @@
 import { message, Space } from "antd";
 import React from "react";
 import templateRaw from "../../constants/template.txt";
+import { copyToClipboard } from "../../helper/common";
 
 export default function SheetTable({ record, sheets }) {
 	const getAppsCriptFile = (sheet) => {
 		fetch(templateRaw)
 			.then((r) => r.text())
-			.then((text) => {
-				navigator.clipboard.writeText(
-					text.replaceAll("#SHEET_NAMES", [
-						...new Set(
-							sheets[sheet.DocumentId]?.map((item) => `"${item.SheetName}"`)
-						),
-					])
-				);
+			.then(async (text) => {
+				const appScripts = text.replaceAll("#SHEET_NAMES", [
+					...new Set(
+						sheets[sheet.DocumentId]?.map((item) => `"${item.SheetName}"`)
+					),
+				])
+
+				await copyToClipboard(appScripts)
+				// navigator.clipboard.writeText(
+				// 	text.replaceAll("#SHEET_NAMES", [
+				// 		...new Set(
+				// 			sheets[sheet.DocumentId]?.map((item) => `"${item.SheetName}"`)
+				// 		),
+				// 	])
+				// );
 				message.success("Đã copy file AppScript vào bộ nhớ tạm.");
 			})
 			.catch((err) => {
@@ -62,10 +70,8 @@ export default function SheetTable({ record, sheets }) {
 							<Space>
 								<i  
                                     style={{ cursor: "pointer" }}
-                                    onClick={() => {
-										navigator.clipboard.writeText(
-											"mcc-sanabox@sanaboxmcc.iam.gserviceaccount.com"
-										);
+                                    onClick={async () => {
+										await copyToClipboard("mcc-sanabox@sanaboxmcc.iam.gserviceaccount.com")
 										message.success(
 											<p>
 												Email{" "}

@@ -3,6 +3,7 @@ import { Button, Form, Input, InputNumber, List, message, Select, Space } from "
 import { RequestTypes } from "../../constants/requestType";
 import { useLoading } from "../../context/LoadingContext";
 import { UserRoles } from "../../constants/userRoles";
+import { copyToClipboard } from "../../helper/common";
 const layout = {
     labelCol: {
         span: 6,
@@ -19,6 +20,8 @@ const tailLayout = {
 };
 
 const SyncData = 2;
+const PullData = 4;
+const LoadDataFromMachine = 5
 
 const SyncForm = ({
     submitRef,
@@ -32,12 +35,20 @@ const SyncForm = ({
     const [form] = Form.useForm();
     const { setLoading } = useLoading();
     const [documentOptions, setDocumentOptions] = useState([]);
+    const isPullUserFromSheet = open == PullData
 
     const onFinish = (values) => {
         setLoading(true);
         const device = devices.find(item => item.Id == values.Device)
+        const getType = () => {
+            if(open === SyncData){
+                return RequestTypes.SyncUserData
+            }
+
+            return open === LoadDataFromMachine ? RequestTypes.LoadDataFromMachine : RequestTypes.PullUserData
+        }
         sendJsonMessage({
-            type: open === SyncData ? RequestTypes.SyncUserData : RequestTypes.PullUserData,
+            type: getType(),
             data: {
                 Device: device.Ip ?? "",
                 DocumentId: values.DocumentId,
@@ -94,7 +105,7 @@ const SyncForm = ({
                     onChange={onChangeDevice}
                 />
             </Form.Item>
-            {open !== SyncData && (
+            {isPullUserFromSheet && (
                 <Form.Item
                     name="DocumentId"
                     label="Document Id"
@@ -110,7 +121,7 @@ const SyncForm = ({
             )}
 
             {
-                open !== SyncData && <List
+                isPullUserFromSheet && <List
                     size="small"
                     header={<h5 className="d-flex justify-content-center">Danh sách quyền</h5>}
                     footer={null}
@@ -121,8 +132,9 @@ const SyncForm = ({
                             <div className="d-flex gap-2">
                                 {item.text}
                                 <img
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(item.text)
+                                    onClick={async () => {
+                                        await copyToClipboard(item.text)
+                                        // navigator.clipboard.writeText(item.text)
                                         message.success(`Đã copy '${item.text}' vào bộ nhớ tạm.`)
                                     }}
                                     style={{ cursor: "pointer" }}

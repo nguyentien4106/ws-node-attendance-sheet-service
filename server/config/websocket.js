@@ -48,7 +48,6 @@ export const websocket = {
 };
 
 export const sendMessageToClients = (response) => {
-    console.log('sendMessageToClients', response)
     wss.clients.forEach(function each(client) {
         client.send(response);
     });

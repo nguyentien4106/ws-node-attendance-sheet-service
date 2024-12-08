@@ -69,3 +69,31 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } 
+
+
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 900 */
+
+.montserrat-300 {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+
+.montserrat-700 {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+.layout-container{
+  padding: 24px;
+  min-height: 360px;
+  border-radius: 20px;
+  background-color: #B6C99B;
+  height: 100%;
+}

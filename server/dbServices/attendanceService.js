@@ -282,3 +282,10 @@ export const deleteAttendance = async (log) => {
         return Result.Fail(500, err.message, log)
     }
 }
+
+export const deleteAttendancesByDeviceId = async deviceId => {
+    const sql = `
+        DELETE FROM public."Attendances" WHERE "DeviceId" = ${deviceId}
+    `
+    return query(sql)
+}

@@ -19,32 +19,34 @@ export const syncUserData = async (data) => {
         const sheetRows = (await getSheetsByDeviceIp(data?.Device)).rows
 
         const services = await initSheets(sheetRows.map(item => ({ DocumentId: item.DocumentId, SheetName: EMPLOYEE_DATA })), USER_HEADER_ROW);
-
-        const getUserInDbById = id => {
-            return users.find(item => item.Id === id);
-        }
-
         for (const service of services) {
             if (!service.isSuccess) {
                 continue
             }
-
-            await service.data.clearRows()
-
-            const newRows = users.map(item => [
-                item.Id,
-                item.UID,
-                item.EmployeeCode,
-                getRole(item.Role),
-                item.DeviceIp,
-                item.DeviceName,
-                item.Name,
-                item.DisplayName,
-                item.Password,
-                item.CardNo
-            ]);
-
+            const rows = await service.data.getRows()
+            const rowsToAppend = []
+            for(const user of users){
+                const row = rows.find(row => +row.get(USER_HEADER_ROW[0]) === user.Id)
+                if(!row){
+                    rowsToAppend.push(user)
+                }
+            }
+    
+            const newRows = rowsToAppend.map(item => [
+                    item.Id,
+                    item.UID,
+                    item.EmployeeCode,
+                    getRole(item.Role),
+                    item.DeviceIp,
+                    item.DeviceName,
+                    item.Name,
+                    item.DisplayName,
+                    item.Password,
+                    item.CardNo
+                ]);
+    
             await appendRow([service.data], newRows);
+    
         }
 
         return Result.Success(data);

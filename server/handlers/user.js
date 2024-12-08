@@ -101,5 +101,16 @@ export const userHandlers = (request, ws, deviceContainer) => {
                 );
             })
             break;
+
+        case RequestTypes.LoadDataFromMachine:
+            deviceContainer.loadUsers(request.data).then(res => {
+                ws.send(
+                    getResponse({
+                        type: request.type,
+                        data: res
+                    })
+                );
+            })
+            break;
     }
 }

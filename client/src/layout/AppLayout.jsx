@@ -126,19 +126,19 @@ const AppLayout = () => {
 				<Content
 					style={{
 						margin: "32px 16px",
-                        backgroundColor: bgColor,
+                        // backgroundColor: bgColor,
                         borderRadius: 20
 					}}
 				>
 					<div
-						style={{
-							padding: 24,
-							minHeight: 360,
-							background: colorBgContainer,
-							borderRadius: 20,
-                            backgroundColor: bgColor,
-                            
-						}}
+						// style={{
+						// 	padding: 24,
+						// 	minHeight: 360,
+						// 	background: colorBgContainer,
+						// 	borderRadius: 20,
+                        //     backgroundColor: bgColor,
+						// }}
+						className="layout-container"
 					>
 						<Outlet>{contextHolder}</Outlet>
 					</div>

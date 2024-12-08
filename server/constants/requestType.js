@@ -16,6 +16,7 @@ export const RequestTypes = {
     PullUserData: "User.PullData",
     GetUsersByDeviceId: "User.GetByDeviceId",
     EditUser: "User.Edit",
+    LoadDataFromMachine: "User.LoadDataFromMachine",
     GetAttendances: "Attendance.GetAll",
     SyncLogData: "Attendance.SyncAttendance",
     SyncData: "Attendance.SyncAttendances",
@@ -27,6 +28,7 @@ export const RequestTypes = {
     GetSheets: "GetSheets",
     UpdateEmail: "UpdateEmail",
     GetSettings: "GetSettings",
+    GetSystem: "GetSystem",
     SyncTime: "SyncTime",
     ChangePassword: "ChangePassword"
 }

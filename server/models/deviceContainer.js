@@ -13,12 +13,14 @@ import {
 	isSheetsValid,
 } from "../dbServices/dataService.js";
 import {
+	deleteAttendancesByDeviceId,
 	getAttendances,
 	handleSyncAttendancesDB,
 } from "../dbServices/attendanceService.js";
 import {
 	getAllUsers,
 	getLastUID,
+	handleLoadUsersFromMachine,
 	insertNewUsers,
 	removeUser,
 	validUserId,
@@ -169,7 +171,6 @@ export class DeviceContainer {
 			const connect = async () => {
 				success = await deviceSDK.createSocket();
 				const pin = await deviceSDK.getPIN();
-				console.log('pin', pin)
 
 				await deviceSDK.getRealTimeLogs(async (realTimeLog) => {
 					await handleRealTimeData(realTimeLog, device.Id);
@@ -298,11 +299,11 @@ export class DeviceContainer {
 		return true;
 	}
 
-	async addUserToDevice(user, deviceSDK, deviceName, pushToSheet = true) {
+	async addUserToDevice(user, deviceSDK, deviceName, pushToSheet = true, uid = null) {
 		try {
 			// const users = await deviceSDK.getUsers();
 			const query = await getLastUID(deviceSDK.ip);
-			const lastUid = query.rowCount ? query.rows[0].UID + 1 : 1;
+			const lastUid = uid ?? query.rowCount ? query.rows[0].UID + 1 : 1;
 
 			const isValidUserId = await validUserId(deviceSDK.ip, user.userId);
 			if (!isValidUserId) {
@@ -333,7 +334,7 @@ export class DeviceContainer {
 						? { ...addDBResult.rows[0], DeviceName: deviceName }
 						: null,
 				},
-				`Thiết bị: ${deviceSDK.ip}: Thêm thành công. Mã nhân viên: ${user.employeeCode} - Tên: ${user.name}`
+				`Thiết bị: ${deviceSDK.ip}: Thêm thành công. Mã nhân viên: ${user.employeeCode ?? ""} - Tên: ${user.name}`
 			);
 		} catch (err) {
 			console.log(err);
@@ -445,7 +446,6 @@ export class DeviceContainer {
 				const gmt7Offset = 7 * 60; // Offset in minutes for GMT+7
 				const localDate = new Date(date.getTime() + gmt7Offset * 60 * 1000);
 
-				console.log('localDate', localDate)
 				await device.setTime(localDate);
 				result.push(Result.Success(device.ip));
 			} catch (err) {
@@ -469,7 +469,6 @@ export class DeviceContainer {
 				} else {
 					counter.value++;
 				}
-				console.log("ping", counter);
 			} catch (err) {
 				logger.error(
 					`Device: ${deviceSDK.ip} lost connection at ${dayjs().format(
@@ -602,15 +601,41 @@ export class DeviceContainer {
 	}
 
 	async clearAttendances(data) {
+		console.log(data)
 		try {
 			const sdk = this.deviceSDKs.find((item) => item.ip === data.Ip);
 			if (!sdk || !sdk.connectionType || !sdk.ztcp?.socket) {
 				return [Result.Fail(500, UNCONNECTED_ERR_MSG + sdk?.ip)];
 			}
 			await sdk.clearAttendanceLog();
+
+			if(data.clearDbLogs){
+				await deleteAttendancesByDeviceId(data.Id)
+			}
 			return Result.Success(data, "Đã xóa toàn bộ dữ liệu thành công.");
 		} catch (err) {
 			return Result.Fail(500, err.message);
+		}
+	}
+
+	async loadUsers(data) {
+		try{
+			const sdk = this.deviceSDKs.find((item) => item.ip === data.Device);
+			if (!sdk || !sdk.connectionType || !sdk.ztcp?.socket) {
+				return [Result.Fail(500, UNCONNECTED_ERR_MSG + data.Device)];
+			}
+
+			const users = await sdk.getUsers();
+			const { resultAdd, resultUpdate, resultRemove } = await handleLoadUsersFromMachine(users.data, data.Device, data.DeviceName)
+
+			return Result.Success({
+				resultAdd: resultAdd,
+				updateUsers: resultUpdate,
+				removeUsers: resultRemove
+			});
+		}
+		catch(err){
+
 		}
 	}
 }

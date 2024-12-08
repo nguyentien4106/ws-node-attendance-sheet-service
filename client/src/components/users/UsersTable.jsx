@@ -16,13 +16,13 @@ export default function UsersTable({
             key: "Id",
             render: (text) => <a>{text}</a>,
         },
-        // {
-        //     title: "UID",
-        //     dataIndex: "UID",
-        //     key: "UID",
-        //     render: (text) => <a>{text}</a>,
-        //     width: "80px"
-        // },
+        {
+            title: "UID",
+            dataIndex: "UID",
+            key: "UID",
+            render: (text) => <a>{text}</a>,
+            width: "80px"
+        },
         {
             title: "User ID",
             dataIndex: "UserId",
@@ -40,11 +40,9 @@ export default function UsersTable({
             dataIndex: "Role",
             key: "Role",
             render: (value) => {
-                const role = UserRoles.filter((item) => item.value === value);
-                if (role.length) {
-                    return <p>{role[0].text}</p>;
-                }
-                return <p>{value}</p>;
+
+                return <p>{value === 0 ? UserRoles[0].text : UserRoles[1].text}</p>
+                
             },
         },
         {

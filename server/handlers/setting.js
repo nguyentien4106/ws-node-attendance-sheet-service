@@ -1,7 +1,22 @@
+import dayjs from "dayjs";
 import { RequestTypes } from "../constants/requestType.js";
-import { changePassword, getSettings, updateEmail } from "../dbServices/settingsService.js";
+import { changePassword, getSettings, getSystemUsage, updateSettings } from "../dbServices/settingsService.js";
 import { getSheets } from "../dbServices/sheetService.js";
+import { Result } from "../models/common.js";
 import { getResponse } from "../models/response.js";
+import os, { freemem } from "os";
+
+const updateEmail = async (data) => {
+	try {
+		const result = await updateSettings(data);
+
+		return result.rowCount
+			? Result.Success(data)
+			: Result.Fail(500, "Không thể update settings", data);
+	} catch (err) {
+		return Result.Fail(500, err.message, data);
+	}
+};
 
 export const settingHandlers = (request, ws, deviceContainer) => {
     switch (request.type) {
@@ -46,6 +61,7 @@ export const settingHandlers = (request, ws, deviceContainer) => {
 
             break;
 
+        
 
         case RequestTypes.SyncTime:
             deviceContainer.syncTime().then((res) => {
@@ -72,6 +88,17 @@ export const settingHandlers = (request, ws, deviceContainer) => {
                     })
                 );
             });
+            break;
+
+        case RequestTypes.GetSystem:
+            getSystemUsage().then(res => {
+                ws.send(
+                    getResponse({
+                        type: request.type,
+                        data: res,
+                    })
+                );
+            })
             break;
     }
 }

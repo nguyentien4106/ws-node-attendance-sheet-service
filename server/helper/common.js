@@ -14,11 +14,12 @@ export const getAppScriptFile = sheet => {
 }
 
 export const notifyToSheets = async (ip, deviceName, message) => {
-    const sheets = await getSheets();
+    const sheets = (await getSheets()).rows;
+    const uniqueSheets = [... new Set(sheets.map(item => item.DocumentId))]
     const sheetServices = await initSheets(
-        sheets.rows.map((item) => ({
+        uniqueSheets.map((did) => ({
             SheetName: "THÔNG BÁO",
-            DocumentId: item.DocumentId,
+            DocumentId: did,
         })),
         ["ID", "IP", "Tên thiết bị", "Thông báo", "Ngày", "Giờ"]
     );
