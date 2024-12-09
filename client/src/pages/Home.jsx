@@ -10,7 +10,7 @@ export default function Home() {
 		<div class="container montserrat-700">
 			<div className="d-flex gap-5 justify-content-between align-items-center">
 				<Space direction="vertical">
-					<h1>BOX SERVER</h1>
+					<h1>SBOX SERVER</h1>
 					<p style={{ fontSize: 16 }}>Giải pháp quản trị máy chấm công online đa thiết bị</p>
 				</Space>
 				<img src={model} style={{ height: "500px" }}></img>

@@ -21,8 +21,12 @@ export const insertNewUsers = async (
 		displayName ?? item.name,
 		`${item.uid}`,
 		device.Ip,
-		item.employeeCode,
+		item.employeeCode ?? "",
 	]);
+
+    if(!values.length){
+        return { rowCount: 0, rows: []}
+    }
 
 	const result = await queryFormat(
 		`INSERT INTO public."Users"("UID", "Name", "Password", "Role", "CardNo", "DisplayName", "UserId", "DeviceIp", "EmployeeCode")`,
