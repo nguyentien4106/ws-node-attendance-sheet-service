@@ -15,15 +15,7 @@ const pool = new Pool({
 });
 
 export const query = (text, params) => {
-    try{
-        return pool.query(text, params)
-    }
-    catch(err){
-        sendMessageToClients(getResponse({
-            type: "Ping",
-            data: err.code === 'ECONNREFUSED' ? "Không thể kết nối tới database. Vui lòng liên hệ quản trị." : err.message ,
-        }))
-    }
+    return pool.query(text, params)
 };
 
 export const queryFormat = (text, values) => {
