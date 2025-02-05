@@ -11,6 +11,7 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     platform: linux/arm64/v8
+    restart: always
     
   server:
     image: nguyentien0620/server-arm
@@ -28,7 +29,7 @@ services:
       - "8081:8081"
     volumes:
       - ./server:/app
-    restart: on-failure
+    restart: always
     platform: linux/arm64/v8
 
   client:
@@ -40,3 +41,4 @@ services:
     ports:
       - "3001:3001"
     platform: linux/arm64/v8
+    restart: always
