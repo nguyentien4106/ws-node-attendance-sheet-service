@@ -25,6 +25,8 @@ cron.schedule("*/2 * * * *", () => {
     deviceContainer.ping(websocket.wss, counter)
 });
 
+cron.schedule("*/2 * * * *", () => {})
+
 export const onConnection = (ws) => {
     try {
         ws.on("message", (message) => {

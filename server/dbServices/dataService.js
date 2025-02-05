@@ -2,9 +2,6 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
 import { Result } from "../models/common.js";
 import { DATABASE_DATE_FORMAT, DATE_FORMAT, HEADER_ROW, OPTIONS_DELETE_SHEETS, TIME_FORMAT } from "../constants/common.js";
-import { insertRawAttendances } from "./attendanceService.js";
-import { handleSyncDataToSheet } from "../helper/dataHelper.js";
-import dayjs from "dayjs";
 import { logger } from "../config/logger.js";
 
 // Initialize auth - see https://theoephraim.github.io/node-google-spreadsheet/#/guides/authentication

@@ -1,17 +1,8 @@
 import { getResponse } from "../models/response.js";
-import { RequestTypes } from "../constants/requestType.js";
 import { Result } from "../models/common.js";
-import {
-	changePassword,
-	getSettings,
-	updateSettings,
-} from "../dbServices/settingsService.js";
-import dayjs from "dayjs";
-import { getSheets } from "../dbServices/sheetService.js";
 import { deviceHandlers } from "../handlers/device.js";
 import { userHandlers } from "../handlers/user.js";
 import { attendanceHandlers } from "../handlers/attendance.js";
-import os from 'os'
 import { settingHandlers } from "../handlers/setting.js";
 
 export const handleMessage = (ws, message, deviceContainer) => {
