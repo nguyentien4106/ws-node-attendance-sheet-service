@@ -16,7 +16,6 @@ import UserInformationForm from "../components/users/UserInformationForm";
 import UsersTable from "../components/users/UsersTable";
 import SyncForm from "../components/users/SyncForm";
 import { getHostUrl, isAuth } from "../helper/common";
-import Auth from "../layout/Auth";
 const WS_URL = getHostUrl();
 
 const OPEN_TYPE = {
@@ -229,28 +228,44 @@ export default function Users() {
 	}, [deviceSelected]);
 
 	return (
-		<Auth>
-			<div>
-				<div className="d-flex justify-content-between">
-					<h2>Người dùng</h2>
-					<Space>
-						<h6>Thiết bị : </h6>
+		<div className="w-full">
+			{/* Header Section - Responsive */}
+			<div className="flex flex-col gap-4 mb-6">
+					<h2 className="text-2xl font-bold text-gray-800 m-0">Người dùng</h2>
+					
+					{/* Device Selector */}
+					<div className="flex flex-col sm:flex-row sm:items-center gap-2">
+						<span className="font-medium text-gray-700 whitespace-nowrap">Thiết bị:</span>
 						<Select
 							style={{
-								width: 200,
+								width: '100%',
+								maxWidth: 350,
 							}}
 							onChange={(deviceIp) => setDeviceSelected(deviceIp)}
 							options={options}
 							defaultValue={deviceSelected}
-						></Select>
-						<Button onClick={() => setOpen(OPEN_TYPE.AddUser)} type="primary">
+						/>
+					</div>
+
+					{/* Action Buttons - Responsive Grid */}
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+						<Button 
+							onClick={() => setOpen(OPEN_TYPE.AddUser)} 
+							type="primary"
+							block
+							className="h-auto py-2"
+						>
 							Thêm người dùng
 						</Button>
 						<Tooltip
 							title="Chức năng này giúp bạn đẩy dữ liệu có trong máy chấm công lên Sheet"
 							color="#108ee9"
 						>
-							<Button onClick={() => setOpen(OPEN_TYPE.SyncData)}>
+							<Button 
+								onClick={() => setOpen(OPEN_TYPE.SyncData)}
+								block
+								className="h-auto py-2"
+							>
 								Đồng bộ lên Sheet
 							</Button>
 						</Tooltip>
@@ -258,7 +273,11 @@ export default function Users() {
 							title="Chức năng này giúp bạn lấy dữ liệu user từ một trang Sheet và thêm vào máy chấm công."
 							color="#108ee9"
 						>
-							<Button onClick={() => setOpen(OPEN_TYPE.PullData)}>
+							<Button 
+								onClick={() => setOpen(OPEN_TYPE.PullData)}
+								block
+								className="h-auto py-2"
+							>
 								Đồng bộ từ Sheet
 							</Button>
 						</Tooltip>
@@ -266,27 +285,39 @@ export default function Users() {
 							title="Chức năng này giúp bạn lấy dữ liệu user từ một trang Sheet và thêm vào máy chấm công."
 							color="#108ee9"
 						>
-							<Button onClick={() => setOpen(OPEN_TYPE.LoadDataFromMachine)}>
+							<Button 
+								onClick={() => setOpen(OPEN_TYPE.LoadDataFromMachine)}
+								block
+								className="h-auto py-2"
+							>
 								Tải dữ liệu từ máy
 							</Button>
 						</Tooltip>
-					</Space>
+					</div>
 				</div>
-				<UsersTable
-					deviceIp={deviceSelected}
-					users={users}
-					sendJsonMessage={sendJsonMessage}
-					setOpen={setOpen}
-				></UsersTable>
+				
+				{/* Table Container - Responsive with horizontal scroll */}
+				<div className="w-full overflow-auto">
+					<UsersTable
+						deviceIp={deviceSelected}
+						users={users}
+						sendJsonMessage={sendJsonMessage}
+						setOpen={setOpen}
+					/>
+				</div>
+				
 				<Modal
 					onCancel={() => setOpen(OPEN_TYPE.Close)}
 					open={!!open}
 					onOk={() => submitUserFormRef.current.click()}
 					title={
-						<div className="d-flex justify-content-center mb-3">
+						<div className="text-center mb-3">
 							{open == OPEN_TYPE.AddUser ? "Thông tin" : "Thông tin"}
 						</div>
 					}
+					centered
+					width="90%"
+					style={{ maxWidth: 600 }}
 				>
 					{open === OPEN_TYPE.AddUser ? (
 						<UserInformationForm
@@ -307,9 +338,8 @@ export default function Users() {
 							open={open}
 							sheets={sheets}
 						></SyncForm>
-					)}
-				</Modal>
-			</div>
-		</Auth>
+				)}
+			</Modal>
+		</div>
 	);
 }

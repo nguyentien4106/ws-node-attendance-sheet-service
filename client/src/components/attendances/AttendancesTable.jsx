@@ -16,24 +16,28 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             title: "Id",
             dataIndex: "Id",
             key: "Id",
-            fixed: 'left'
+            fixed: 'left',
+            width: 60,
         },
         {
             title: "DeviceId",
             dataIndex: "DeviceId",
             key: "DeviceId",
-            fixed: 'left'
+            fixed: 'left',
+            width: 80,
         },
         {
             title: "Thiết bị",
             dataIndex: "DeviceName",
             key: "DeviceName",
             filterSearch: true,
+            width: 150,
         },
         {
             title: "User ID",
             dataIndex: "UserId",
             key: "UserId",
+            width: 100,
         },
         {
             title: "Mã nhân viên",
@@ -42,6 +46,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             filters: employeeCodeFilter,
             onFilter: (value, record) => record.EmployeeCode === (value),
             filterSearch: true,
+            width: 120,
         },
         {
             title: "Tên trong máy",
@@ -50,11 +55,13 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             filters: nameInDeviceFilter,
             onFilter: (value, record) => record.UserName === value,
             filterSearch: true,
+            width: 150,
         },
         {
             title: "Tên nhân viên",
             dataIndex: "Name",
             key: "Name",
+            width: 150,
         },
         {
             title: "Ngày (DD/MM/YYYY)",
@@ -63,6 +70,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             sorter: (a, b) =>
                 Date.parse(a.VerifyDate) - Date.parse(b.VerifyDate),
             render: (value) => dayjs(value).format(DATE_SHOW_FORMAT),
+            width: 130,
         },
         {
             title: "Giờ",
@@ -71,6 +79,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             render: (value) => {
                 return dayjs(value).format(TIME_FORMAT)
             },
+            width: 100,
         },
         {
             title: "Trạng thái đồng bộ",
@@ -85,19 +94,20 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
                         alt="checkmark--v1"
                     />
                 ) : (
-                    <Space>
+                    <Space direction="vertical" size="small" className="w-full">
                         <img
                             width="32"
                             height="32"
                             src="https://img.icons8.com/color/48/cancel--v1.png"
                             alt="cancel--v1"
                         />
-                        <Button type="primary" onClick={() => syncLog(rc)}>
+                        <Button type="primary" onClick={() => syncLog(rc)} size="small" block>
                             Đồng bộ ngay
                         </Button>
                     </Space>
             ),
-            fixed: 'right'
+            fixed: 'right',
+            width: 150,
 
         },
         {
@@ -105,6 +115,7 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             dataIndex: "Manual",
             key: "Manual",
             fixed: 'right',
+            width: 120,
             render: (value, rc) =>
                 value ? (
                     <img
@@ -123,8 +134,8 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
             title: "Action",
             key: "Action",
             render: (record) => (
-                <Space>
-                    <Button onClick={() => setEditItem(record)}>Sửa</Button>
+                <Space size="small" direction="vertical" className="w-full">
+                    <Button onClick={() => setEditItem(record)} size="small" block>Sửa</Button>
                     <Popconfirm
                         title={`Record ID : ${record?.Id}`}
                         description="Bạn có muốn xóa record này?"
@@ -135,13 +146,14 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button danger type="primary">
+                        <Button danger type="primary" size="small" block>
                             Xoá
                         </Button>
                     </Popconfirm>
                 </Space>
             ),
-            fixed: 'right'
+            fixed: 'right',
+            width: 100,
 
         },
     ];
@@ -188,38 +200,50 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
 
     return (
         <>
-            <div
-                className="d-flex justify-content-end"
-            >
-                <img
-                    onClick={() => {
-                        exportExcel()
-                    }}
-                    width="32"
-                    height="32"
-                    src="https://img.icons8.com/color/48/ms-excel.png"
-                    alt="ms-excel"
-                    style={{
-                        cursor: "pointer",
-                        marginBottom: 20,
-                    }}
-                />
+            <div className="flex justify-end mb-4">
+                <Button
+                    onClick={() => exportExcel()}
+                    icon={
+                        <img
+                            width="20"
+                            height="20"
+                            src="https://img.icons8.com/color/48/ms-excel.png"
+                            alt="ms-excel"
+                            className="inline-block"
+                        />
+                    }
+                    className="flex items-center gap-2"
+                >
+                    <span className="hidden sm:inline">Export Excel</span>
+                </Button>
             </div>
             <Table
                 rowKey={"Id"}
                 dataSource={attendances}
                 columns={columns}
-                pagination={{ ...pagination, total: totalRow }}
+                pagination={{ 
+                    ...pagination, 
+                    total: totalRow,
+                    showSizeChanger: true,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                    responsive: true,
+                }}
                 onChange={handleTableChange}
                 loading={false}
-            ></Table>
+                scroll={{ 
+                    x: 1500,
+                    y: window.innerHeight - 400 
+                }}
+                size="middle"
+                className="responsive-table"
+            />
 
             {editItem && (
                 <Modal
                     open={editItem}
                     onCancel={() => setEditItem(null)}
                     title={
-                        <div className="d-flex justify-content-center">
+                        <div className="text-center">
                             Thông tin chấm công
                         </div>
                     }
@@ -227,6 +251,9 @@ export default function AttendancesTable({ attendances, sendJsonMessage, paginat
                         submitRef.current.click();
                         setEditItem(null);
                     }}
+                    centered
+                    width="90%"
+                    style={{ maxWidth: 600 }}
                 >
                     <AttendanceForm
                         attendance={editItem}

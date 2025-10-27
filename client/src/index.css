@@ -1,99 +1,46 @@
-/* :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import "tailwindcss";
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Responsive table styles */
+.responsive-table .ant-table {
+  font-size: 14px;
 }
 
-
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-*/
-
-a:hover {
-    color: #535bf2;
+@media (max-width: 768px) {
+  .responsive-table .ant-table {
+    font-size: 12px;
   }
-
-  a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
+  
+  .responsive-table .ant-table-thead > tr > th {
+    padding: 8px 4px;
+    font-size: 12px;
   }
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+  
+  .responsive-table .ant-table-tbody > tr > td {
+    padding: 8px 4px;
   }
-  a:hover {
-    color: #747bff;
+  
+  .responsive-table .ant-btn {
+    font-size: 12px;
+    padding: 4px 8px;
   }
-  button {
-    background-color: #f9f9f9;
-  }
-} 
-
-
-/* // <uniquifier>: Use a unique and descriptive class name
-// <weight>: Use a value from 100 to 900 */
-
-.montserrat-300 {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
 }
 
-
-.montserrat-700 {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 700;
-  font-style: normal;
+/* Ensure modals are properly sized on mobile */
+@media (max-width: 576px) {
+  .ant-modal {
+    max-width: calc(100vw - 16px) !important;
+    margin: 8px auto;
+  }
+  
+  .ant-modal-body {
+    padding: 16px;
+  }
 }
 
-
-.layout-container{
-  padding: 24px;
-  min-height: 360px;
-  border-radius: 20px;
-  background-color: #B6C99B;
-  height: 100%;
+/* Better spacing for select and input on mobile */
+@media (max-width: 640px) {
+  .ant-select,
+  .ant-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
 }

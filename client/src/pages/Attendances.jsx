@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 import { DATE_FORMAT, DATE_SHOW_FORMAT, TIME_FORMAT } from "../constants/common";
 import AttendanceForm from "../components/attendances/AttendanceForm";
 import { getHostUrl, isAuth } from "../helper/common";
-import Auth from "../layout/Auth";
 import writeXlsxFile from "write-excel-file"
 
 const { RangePicker } = DatePicker;
@@ -230,63 +229,94 @@ export default function Attendances() {
     const updateParams = (updates) => setParams((prev) => ({ ...prev, ...updates }));
 
     return (
-        <Auth>
-            <Space size={30}>
-                <Space>
-                    <label>Khoảng: </label>
-                    <RangePicker
-                        defaultValue={[
-                            dayjs(params.fromDate, DATE_FORMAT),
-                            dayjs(params.toDate, DATE_FORMAT),
-                        ]}
-                        format={DATE_FORMAT}
-                        onChange={handleDateRangeChange}
-                    />
-                </Space>
-                <Space>
-                    <label>Thiết bị: </label>
-                    <Select
-                        options={devices}
-                        style={{ width: 200 }}
-                        defaultValue={"All"}
-                        onChange={(value) => updateParams({ deviceId: value })}
-                    ></Select>
-                </Space>
-                <Button onClick={() => submit()} type="primary">
-                    Submit
-                </Button>
-                <Button onClick={() => setOpen(OPEN_TYPES.ADD)}>
-                    Chấm công thủ công
-                </Button>
-            </Space>
-            <AttendancesTable
-                attendances={attendances}
-                sendJsonMessage={sendJsonMessage}
-                setPagination={setPagination}
-                pagination={pagination}
-                filters={filters}
-                setFilters={setFilters}
-                totalRow={totalRow}
-                usersFilter={usersFilter}
-                params={params}
-            ></AttendancesTable>
-            <Modal
-                open={open}
-                onCancel={() => setOpen(OPEN_TYPES.CLOSE)}
-                onOk={() => {
-                    submitRef.current.click();
-                    setOpen(OPEN_TYPES.CLOSE)
-                }}
-            >
-                {open === OPEN_TYPES.ADD && (
-                    <AttendanceForm
-                        devices={devices}
-                        users={users}
+        <div className="w-full space-y-4">
+            {/* Header Section - Responsive */}
+            <div className="flex flex-col gap-4">
+                    <h2 className="text-2xl font-bold text-gray-800 m-0">Chấm công</h2>
+                    
+                    {/* Filters Section - Responsive Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        {/* Date Range Picker */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-sm font-medium text-gray-700">Khoảng thời gian:</label>
+                            <RangePicker
+                                defaultValue={[
+                                    dayjs(params.fromDate, DATE_FORMAT),
+                                    dayjs(params.toDate, DATE_FORMAT),
+                                ]}
+                                format={DATE_FORMAT}
+                                onChange={handleDateRangeChange}
+                                className="w-full"
+                            />
+                        </div>
+                        
+                        {/* Device Selector */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-sm font-medium text-gray-700">Thiết bị:</label>
+                            <Select
+                                options={devices}
+                                style={{ width: '100%' }}
+                                defaultValue={"All"}
+                                onChange={(value) => updateParams({ deviceId: value })}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Action Buttons - Responsive */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <Button 
+                            onClick={() => submit()} 
+                            type="primary"
+                            block
+                            className="h-auto py-2"
+                        >
+                            Submit
+                        </Button>
+                        <Button 
+                            onClick={() => setOpen(OPEN_TYPES.ADD)}
+                            block
+                            className="h-auto py-2"
+                        >
+                            Chấm công thủ công
+                        </Button>
+                    </div>
+                </div>
+
+                {/* Table Container - Responsive with horizontal scroll */}
+                <div className="w-full overflow-auto">
+                    <AttendancesTable
+                        attendances={attendances}
                         sendJsonMessage={sendJsonMessage}
-                        submitRef={submitRef}
-                    ></AttendanceForm>
-                )}
-            </Modal>
-        </Auth>
+                        setPagination={setPagination}
+                        pagination={pagination}
+                        filters={filters}
+                        setFilters={setFilters}
+                        totalRow={totalRow}
+                        usersFilter={usersFilter}
+                        params={params}
+                    />
+                </div>
+            
+                <Modal
+                    open={open}
+                    onCancel={() => setOpen(OPEN_TYPES.CLOSE)}
+                    onOk={() => {
+                        submitRef.current.click();
+                        setOpen(OPEN_TYPES.CLOSE)
+                    }}
+                    centered
+                    width="90%"
+                    style={{ maxWidth: 600 }}
+                >
+                    {open === OPEN_TYPES.ADD && (
+                        <AttendanceForm
+                            devices={devices}
+                            users={users}
+                            sendJsonMessage={sendJsonMessage}
+                            submitRef={submitRef}
+                        ></AttendanceForm>
+                    )}
+                </Modal>
+            </div>
     );
 }

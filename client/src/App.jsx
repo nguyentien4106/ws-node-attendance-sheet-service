@@ -1,7 +1,7 @@
 import "./App.css";
 import useWebSocket from "react-use-websocket";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import AppLayout from "./layout/AppLayout";
+import MainLayout from "./layout/MainLayout";
 import Devices from "./pages/Devices";
 import Home from "./pages/Home";
 import { message, Spin } from "antd";
@@ -13,6 +13,9 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import { getHostUrl } from "./helper/common";
 import { RequestTypes } from "./constants/requestType";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+
 const WS_URL = getHostUrl();
 
 function App() {
@@ -42,16 +45,22 @@ function App() {
             {
                 loading &&  <Spin fullscreen indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
             }
-            <Routes>
-                <Route path="/" element={<AppLayout />}>
-                    <Route index element={<Home />} />
-                    <Route path="/devices" index element={<Devices />} />
-                    <Route path="/users" element={<Users />} />
-                    <Route path="/attendances" element={<Attendances />} />
-                    <Route path="/settings" element={<Settings />} />
+            <AuthProvider>
+                <Routes>
                     <Route path="/login" element={<Login />} />
-                </Route>
-            </Routes>
+                    <Route path="/" element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }>
+                        <Route index element={<Home />} />
+                        <Route path="/devices" element={<Devices />} />
+                        <Route path="/users" element={<Users />} />
+                        <Route path="/attendances" element={<Attendances />} />
+                        <Route path="/settings" element={<Settings />} />
+                    </Route>
+                </Routes>
+            </AuthProvider>
         </>
     );
 }

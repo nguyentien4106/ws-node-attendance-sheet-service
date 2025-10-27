@@ -17,7 +17,6 @@ import { CloseOutlined } from "@ant-design/icons";
 import { notification } from "antd";
 import DeviceForm from "../components/devices/DeviceForm";
 import { getHostUrl, isAuth } from "../helper/common";
-import Auth from "../layout/Auth";
 
 const WS_URL = getHostUrl();
 
@@ -142,15 +141,15 @@ export default function Devices() {
     }, []);
 
     return (
-        <Auth>
-            <div className="d-flex justify-content-between mb-3">
-                <h3>Thiết bị</h3>
+        <div className="w-full">
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-800 m-0">Thiết bị</h2>
                 <Button onClick={() => setOpen(true)} type="primary">Thêm thiết bị</Button>
             </div>
             <DevicesTable source={devices} sendJsonMessage={sendJsonMessage} sheets={sheets}/>
             <Modal
                 title={
-                    <div className="d-flex justify-content-center">
+                    <div className="text-center">
                         Thông tin thiết bị
                     </div>
                 }
@@ -159,10 +158,11 @@ export default function Devices() {
                 okText={"Thêm"}
                 onOk={() => submitRef.current.click()}
                 onCancel={() => setOpen(false)}
-                width={"50%"}
+                width="90%"
+                style={{ maxWidth: 600 }}
             >
                 <DeviceForm setLoading={setLoading} setOpen={setOpen} sendJsonMessage={sendJsonMessage} submitRef={submitRef}></DeviceForm>
             </Modal>
-        </Auth>
+        </div>
     );
 }

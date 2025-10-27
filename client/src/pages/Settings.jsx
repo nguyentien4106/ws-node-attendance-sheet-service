@@ -4,7 +4,6 @@ import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
 import { useLoading } from "../context/LoadingContext";
 import { getHostUrl, getServerIp, isAuth, setServerIp } from "../helper/common";
-import Auth from "../layout/Auth";
 import dayjs from "dayjs";
 import { DATE_SHOW_FORMAT, TIME_FORMAT } from "../constants/common";
 import ChangePasswordForm from "../components/settings/ChangePasswordForm";
@@ -137,70 +136,117 @@ export default function Settings() {
 
 
     return (
-        <Auth>
-            <div className="d-flex justify-content-start flex-column">
-                <Space style={{ width: "70%" }}>
-                    <label>Email nhận cảnh báo: </label>
-                    <Input
-                        width={500}
-                        type="email"
-                        value={email}
-                        onChange={(val) => setEmail(val.target.value)}
-                    ></Input>
-                    <Popconfirm
-                        title={`Cập nhật email.`}
-                        description="Khi cập nhật email thành công. Tên đăng nhập mới là email được nhận cảnh báo."
-                        onConfirm={(e) => {
-                            updateEmail();
-                        }}
-                        onCancel={() => { }}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button >Cập nhật</Button>
+        <div className="w-full max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Cài đặt</h2>
+                
+                <div className="space-y-6">
+                    {/* Email Setting */}
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                        <div className="flex flex-col gap-3">
+                            <label className="font-medium text-gray-700">Email nhận cảnh báo:</label>
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <Input
+                                    className="flex-1"
+                                    type="email"
+                                    value={email}
+                                    onChange={(val) => setEmail(val.target.value)}
+                                    placeholder="Nhập email"
+                                />
+                                <Popconfirm
+                                    title="Cập nhật email"
+                                    description="Khi cập nhật email thành công. Tên đăng nhập mới là email được nhận cảnh báo."
+                                    onConfirm={(e) => {
+                                        updateEmail();
+                                    }}
+                                    onCancel={() => { }}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <Button className="w-full sm:w-auto">Cập nhật</Button>
+                                </Popconfirm>
+                            </div>
+                        </div>
+                    </div>
 
-                    </Popconfirm>
-                </Space>
-                <Space style={{ width: "70%", marginTop: 20 }}>
-                    <label>Mật khẩu: </label>
-                    <Button onClick={() => setOpen(true)}>Cập nhật</Button>
-                </Space>
-                <Space style={{ width: "70%", marginTop: 20 }}>
-                    <label>IP máy chủ: </label>
-                    <Input
-                        width={500}
-                        type="email"
-                        value={ip}
-                        onChange={(val) => setIp(val.target.value)}
-                    ></Input>
-                    <Button
-                        onClick={() => {
-                            setServerIp(ip);
-                            message.success("Cài đặt IP máy chủ thành công.");
-                        }}
-                    >
-                        Cập nhật
-                    </Button>
-                </Space>
-                <Space style={{ width: "70%", marginTop: 20 }}>
-                    <label>Thời gian trên máy chủ: </label>
-                    <label>{dayjs(time).format(`${DATE_SHOW_FORMAT} ${TIME_FORMAT}`)}</label>
-                </Space>
-                <Space style={{ width: "70%", marginTop: 20 }}>
-                    <label>Thời gian trên máy: </label>
-                    <Button
-                        onClick={() => {
-                            syncTime();
-                        }}
-                    >
-                        Đồng bộ thời gian
-                    </Button>
-                </Space>
-                <Space style={{ width: "70%", marginTop: 20 }}>
-                    <label>Thông tin: </label>
-                    <label>{JSON.stringify(info)}</label>
-                </Space>
-                <UsageComponent usage={usage}></UsageComponent>
+                    {/* Password Setting */}
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <label className="font-medium text-gray-700">Mật khẩu:</label>
+                            <Button onClick={() => setOpen(true)} className="w-full sm:w-auto">
+                                Cập nhật
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Server IP Setting */}
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                        <div className="flex flex-col gap-3">
+                            <label className="font-medium text-gray-700">IP máy chủ:</label>
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <Input
+                                    className="flex-1"
+                                    type="text"
+                                    value={ip}
+                                    onChange={(val) => setIp(val.target.value)}
+                                    placeholder="Nhập IP máy chủ"
+                                />
+                                <Button
+                                    onClick={() => {
+                                        setServerIp(ip);
+                                        message.success("Cài đặt IP máy chủ thành công.");
+                                    }}
+                                    className="w-full sm:w-auto"
+                                >
+                                    Cập nhật
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Server Time Display */}
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                            <label className="font-medium text-gray-700 whitespace-nowrap">Thời gian trên máy chủ:</label>
+                            <span className="text-gray-900 font-mono text-sm sm:text-base">
+                                {dayjs(time).format(`${DATE_SHOW_FORMAT} ${TIME_FORMAT}`)}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Sync Time Setting */}
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <label className="font-medium text-gray-700">Thời gian trên máy:</label>
+                            <Button
+                                onClick={() => {
+                                    syncTime();
+                                }}
+                                className="w-full sm:w-auto"
+                            >
+                                Đồng bộ thời gian
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Info Display */}
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                        <div className="flex flex-col gap-2">
+                            <label className="font-medium text-gray-700">Thông tin:</label>
+                            <div className="bg-gray-50 p-3 rounded border border-gray-200 overflow-x-auto">
+                                <pre className="text-xs sm:text-sm text-gray-900 whitespace-pre-wrap break-all">
+                                    {JSON.stringify(info, null, 2)}
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Usage Component */}
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <UsageComponent usage={usage} />
+                    </div>
+                </div>
+
+                {/* Password Change Modal */}
                 {
                     open && <Modal
                         open={open}
@@ -208,17 +254,19 @@ export default function Settings() {
                         onOk={() => {
                             submitRef.current.click()
                         }}
+                        centered
+                        width="90%"
+                        style={{ maxWidth: 500 }}
+                        title="Thay đổi mật khẩu"
                     >
                         <ChangePasswordForm 
                             sendJsonMessage={sendJsonMessage} 
                             submitRef={submitRef} 
                             email={settings?.Email}
                             setOpen={setOpen}
-                        >
-                        </ChangePasswordForm>
+                        />
                     </Modal>
                 }
             </div>
-        </Auth>
     );
 }
