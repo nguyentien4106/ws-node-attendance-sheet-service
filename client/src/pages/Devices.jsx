@@ -4,17 +4,10 @@ import useWebSocket from "react-use-websocket";
 import { RequestTypes } from "../constants/requestType";
 import {
     Button,
-    Card,
-    Form,
-    Input,
     message,
     Modal,
-    Space,
-    Typography,
 } from "antd";
 import { useLoading } from "../context/LoadingContext";
-import { CloseOutlined } from "@ant-design/icons";
-import { notification } from "antd";
 import DeviceForm from "../components/devices/DeviceForm";
 import { getHostUrl, isAuth } from "../helper/common";
 
@@ -121,7 +114,22 @@ export default function Devices() {
                     message.error(data.message);
                 }
                 break;
-    
+            
+            case RequestTypes.UpdateDeviceSerialNumber:
+                console.log(data)
+                if (data.isSuccess) {
+                    setDevices((prev) =>
+                        prev.map((item) =>
+                            item.Id === data.data.deviceId
+                                ? { ...item, SN: data.data.serialNumber }
+                                : item
+                        )
+                    );
+                } else {
+                    message.error(data.message);
+                }
+                break;
+
             default:
                 console.warn(`Unhandled response type: ${type}`);
         }

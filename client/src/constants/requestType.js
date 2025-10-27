@@ -2,6 +2,7 @@ export const RequestTypes = {
     AddDevice: "Device.Add",
     RemoveDevice: "Device.Remove",
     UpdateDevice: "Device.Update",
+    UpdateDeviceSerialNumber: "Device.UpdateSerialNumber",
     ConnectDevice: "Device.Connect",
     GetDevices: "Device.GetAll",
     GetDevicesSheets: "Device.GetAllWithSheets",

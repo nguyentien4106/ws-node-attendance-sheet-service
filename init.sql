@@ -69,7 +69,7 @@ CREATE TABLE public."Devices" (
     "CommKey" text NOT NULL,
     "IsConnected" boolean NOT NULL,
     "Name" text,
-    "SN" text
+    "SN" VARCHAR(100)
 );
 
 

@@ -30,6 +30,7 @@ const OPEN_TYPES = {
     CLOSE: 0,
     USER_FORM: 1,
     SYNC_DATA_FORM: 2,
+    EDIT_SERIAL_NUMBER: 3,
 };
 
 export default function DevicesTable({ sendJsonMessage, source, sheets }) {
@@ -40,6 +41,7 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
     const [deleteManualData, setDeleteManualData] = useState(false)
     const [clearDbLogs, setClearDbLogs] = useState(false)
     const [device, setDevice] = useState(null)
+    const [newSerialNumber, setNewSerialNumber] = useState('')
     const submitUserFormRef = useRef();
 
     const columns = [
@@ -167,6 +169,26 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
     }
 
     const getItems = record => [
+        {
+            label: (
+                <Tooltip
+                    title="Chỉnh sửa Số Serial của thiết bị (Có thể chỉnh sửa ngay cả khi thiết bị chưa kết nối)"
+                    color="#108ee9"
+                >
+                    <Button
+                        onClick={() => {
+                            setOpen(OPEN_TYPES.EDIT_SERIAL_NUMBER)
+                            setDevice(record)
+                            setNewSerialNumber(record?.SN || '')
+                            setOp(null)
+                        }}
+                    >
+                        Chỉnh sửa Số Serial
+                    </Button>
+                </Tooltip>
+            ),
+            key: 'edit-sn'
+        },
         {
             label: (
                 <Tooltip
@@ -349,6 +371,23 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
         });
     };
 
+    const handleUpdateSerialNumber = () => {
+        if (!newSerialNumber || newSerialNumber.trim() === '') {
+            message.error('Vui lòng nhập Số Serial')
+            return
+        }
+
+        setLoading(true)
+        sendJsonMessage({
+            type: RequestTypes.UpdateDeviceSerialNumber,
+            data: {
+                deviceId: device.Id,
+                serialNumber: newSerialNumber.trim()
+            }
+        })
+        setOpen(OPEN_TYPES.CLOSE)
+    }
+
     const handleOk = () => {
         setLoading(true)
 
@@ -370,6 +409,11 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
             })
             return;
         }
+
+        if (open === OPEN_TYPES.EDIT_SERIAL_NUMBER) {
+            handleUpdateSerialNumber()
+            return;
+        }
     }
 
     return (
@@ -379,6 +423,8 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                     <div className="d-flex justify-content-center">
                         {open === OPEN_TYPES.USER_FORM
                             ? "Thông tin người dùng"
+                            : open === OPEN_TYPES.EDIT_SERIAL_NUMBER
+                            ? "Chỉnh sửa Số Serial"
                             : "Khoảng thời gian cần đồng bộ"}
                     </div>
                 }
@@ -395,6 +441,34 @@ export default function DevicesTable({ sendJsonMessage, source, sheets }) {
                         submitRef={submitUserFormRef}
                         sendJsonMessage={sendJsonMessage}
                     />
+                ) : open === OPEN_TYPES.EDIT_SERIAL_NUMBER ? (
+                    <div className="p-4">
+                        <div className="mb-4">
+                            <p className="text-gray-700 mb-2">
+                                <strong>Thiết bị:</strong> {device?.Name} ({device?.Ip})
+                            </p>
+                            <p className="text-gray-600 text-sm mb-4">
+                                Số Serial hiện tại: <strong>{device?.SN || 'Chưa có'}</strong>
+                            </p>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Số Serial mới:
+                            </label>
+                            <input
+                                type="text"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={newSerialNumber}
+                                onChange={(e) => setNewSerialNumber(e.target.value)}
+                                placeholder="Nhập Số Serial mới"
+                            />
+                        </div>
+                        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                            <p className="text-sm text-blue-800">
+                                ℹ️ Bạn có thể chỉnh sửa Số Serial ngay cả khi thiết bị chưa kết nối.
+                            </p>
+                        </div>
+                    </div>
                 ) : (
                     <Space className="d-flex justify-content-center p-10">
                         <RangePicker

@@ -142,7 +142,7 @@ export class DeviceContainer {
 			}
 
 			this.deviceSDKs.push(deviceSDK);
-			const result = await insertNewDevice(Object.assign(device, { SN: sn }));
+			const result = await insertNewDevice(Object.assign(device, { SN: `${sn}` }));
 
 			return result.rowCount
 				? Result.Success(result.rows[0])

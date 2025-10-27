@@ -65,3 +65,11 @@ export const deleteDevice = async device => {
 }
 
 export const getDeviceBySN = sn => query(`SELECT * FROM "Devices" WHERE "SN" = '${sn}'`)
+
+export const updateDeviceSerialNumber = async ({ deviceId, serialNumber }) => {
+    return query(`
+        UPDATE "Devices"
+        SET "SN" = '${serialNumber}'
+        WHERE "Id" = ${deviceId}
+    `);
+}   

@@ -7,6 +7,7 @@ export const RequestTypes = {
     GetDevicesSheets: "Device.GetAllWithSheets",
     DisconnectDevice: "Device.Disconnect",    
     DeviceClearAttendances: "Device.ClearAttendances",
+    UpdateDeviceSerialNumber: "Device.UpdateSerialNumber",
     DeviceNewADMS: "Device.NewADMS",
     GetUsers: "User.GetUsers",
     AddUser: "User.Add",
@@ -30,5 +31,5 @@ export const RequestTypes = {
     GetSettings: "GetSettings",
     GetSystem: "GetSystem",
     SyncTime: "SyncTime",
-    ChangePassword: "ChangePassword"
+    ChangePassword: "ChangePassword",
 }

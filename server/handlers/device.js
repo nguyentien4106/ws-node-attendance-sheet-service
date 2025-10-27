@@ -99,5 +99,15 @@ export const deviceHandlers = (request, ws, deviceContainer) => {
                 );
             });
             break;
+
+        case RequestTypes.UpdateDeviceSerialNumber:
+            DeviceService.updateDeviceSerialNumber(request.data).then((res) => {
+                ws.send(
+                    getResponse({
+                        type: request.type,
+                        data: res.rowCount ? Result.Success(request.data) : Result.Fail("Cập nhật số serial thất bại"),
+                    })
+                );
+            });
     }
 }
