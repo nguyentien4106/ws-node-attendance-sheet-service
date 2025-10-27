@@ -50,7 +50,6 @@ export const Header = () => {
   const { toggleSidebar } = useSidebar()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const navigate = useNavigate()
-
   const handleLogout = async () => {
     await logout()
     navigate('/login')
@@ -93,10 +92,10 @@ export const Header = () => {
           >
             <div className="text-right hidden md:block">
               <p className="text-sm font-medium">{user?.name || 'User'}</p>
-              <p className="text-xs text-gray-500">{user?.email || 'user@example.com'}</p>
+              <p className="text-xs text-gray-500">{user}</p>
             </div>
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-sm md:text-base">
-              {user ? getInitials(user.name) : 'U'}
+              {user ? getInitials(user) : 'U'}
             </div>
           </Button>
           

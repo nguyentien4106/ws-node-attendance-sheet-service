@@ -37,6 +37,7 @@ export default function Settings() {
                 setTime(response.data.time)
                 setEmail(response.data.setting.Email)
                 setInfo(response.data.info)
+                console.log('settings', response.data)
             }
 
             if (response.type === "GetSystem") {
